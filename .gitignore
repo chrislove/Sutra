@@ -1,0 +1,29 @@
+# Git
+*.orig
+
+# Builds
+obj/
+bin/
+
+# NCrunch
+_NCrunch_*
+
+
+# NuGet Packages
+packages/
+*.nupkg
+download.error
+
+
+# User Settings
+*.user
+*.DotSettings
+.vs/
+.idea/
+*.userprefs
+
+
+# Misc
+*.stackdump
+Thumbs.db
+*.DS_Store
