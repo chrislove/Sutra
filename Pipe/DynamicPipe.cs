@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using System;
 
-namespace Tests
+namespace SharpPipe
 {
 	//public delegate dynamic F(dynamic obj);
 	//public delegate void A(dynamic obj);

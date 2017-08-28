@@ -46,10 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ActPipe.cs" />
     <Compile Include="DynamicPipe.cs" />
+    <Compile Include="GetPipe.cs" />
+    <Compile Include="Pipe.cs" />
     <Compile Include="PipeBase.cs" />
+    <Compile Include="PipeEnd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests.cs" />
+    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
