@@ -8,6 +8,8 @@ namespace SharpPipe {
 		private static DateTime AddDays(DateTime dateTime, int days ) => dateTime.AddDays(days);
 		private static Func<DateTime, DateTime> AddDaysF( int days ) => d => AddDays(d, days);
 
+		private static SharpFunc<DateTime, DateTime> AddDaysSF(int days) => _( AddDaysF(days) );
+
 
 		private static string GetLongDate( DateTime date ) => date.ToLongDateString();
 
@@ -32,8 +34,8 @@ namespace SharpPipe {
 		public void TestActPipe() {
 			_(
 			  IN(DateTime.Now)
-			  | _(AddDaysF(+30))
-			  | _<DateTime, string>(GetShortDate)
+			  | _( AddDaysF(+30) )
+			  | _<DateTime, string>(GetLongDate)
 			  | _<string, string>(i => "Next month: " + i)
 			  | _<object>(Console.WriteLine)
 			 );

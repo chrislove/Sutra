@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,14 +48,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActPipe.cs" />
-    <Compile Include="DynamicPipe.cs" />
-    <Compile Include="FuncExtensions.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="GetPipe.cs" />
+    <Compile Include="GetPipe[TOut].cs" />
     <Compile Include="Pipe.cs" />
     <Compile Include="PipeBase.cs" />
     <Compile Include="PipeEnd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharpFunc.cs" />
+    <Compile Include="SharpFunc[TIn, TOut].cs" />
+    <Compile Include="SharpFunc[TIn].cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>

@@ -1,11 +1,9 @@
 ﻿namespace SharpPipe
 {
-	public class PipeBase {
+	public abstract class PipeBase {
 		protected bool IsInitialized { get; }= false;
 
-		internal PipeBase() : this(false) {}
-
-		internal PipeBase( bool isInitialized ) {
+		protected PipeBase( bool isInitialized ) {
 			IsInitialized = isInitialized;
 		}
 	}
