@@ -12,13 +12,7 @@ namespace SharpPipe {
 			Act(null);
 		}
 
-		/// <summary>
-		/// Returns a new pipe
-		/// </summary>
-		[NotNull]
-		public static ActPipe APipe(A act) => new ActPipe(act);
-
-		private ActPipe([NotNull] A act) : base(true) {
+		public ActPipe([NotNull] A act) : base(true) {
 			if (act == null) throw new ArgumentNullException(nameof(act));
 			Act = act;
 		}
@@ -29,5 +23,16 @@ namespace SharpPipe {
 		{
 			return new ActPipe(act);
 		}
+
+		/// <summary>
+		/// Forward pipe operator
+		/// </summary>
+		[NotNull]
+		public static ActPipe operator |(ActPipe lhs, PipeEnd pipeEnd)
+		{
+			//Do nothing
+			return lhs;
+		}
+
 	}
 }

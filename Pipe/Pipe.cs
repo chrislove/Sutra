@@ -3,38 +3,46 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
 	public static class Pipe {
-		[NotNull] public static GetPipe PIPE => GetPipe.Empty;
-
-		[NotNull] public static PipeEnd<T> END<T>() => new PipeEnd<T>();
-
-		[NotNull] public static PipeEnd<dynamic> DYN => new PipeEnd<dynamic>();
-		[NotNull] public static PipeEnd<object> OBJ => new PipeEnd<object>();
-
-		[NotNull] public static PipeEnd<string> STR => END<string>();
-		[NotNull] public static PipeEnd<short> SHORT => END<short>();
-		[NotNull] public static PipeEnd<ushort> USHORT => END<ushort>();
-		[NotNull] public static PipeEnd<int> INT => END<int>();
-		[NotNull] public static PipeEnd<uint> UINT => END<uint>();
-		[NotNull] public static PipeEnd<long> LONG => END<long>();
-		[NotNull] public static PipeEnd<ulong> ULONG => END<ulong>();
-		[NotNull] public static PipeEnd<bool> BOOL => END<bool>();
-		[NotNull] public static PipeEnd<float> FLT => END<float>();
-		[NotNull] public static PipeEnd<double> DBL => END<double>();
-		[NotNull] public static PipeEnd<decimal> DEC => END<decimal>();
-		[NotNull] public static PipeEnd<DateTime> DTTM => END<DateTime>();
-		[NotNull] public static PipeEnd<Array> ARR => END<Array>();
-		[NotNull] public static PipeEnd<byte> BYTE => END<byte>();
-		[NotNull] public static PipeEnd<char> CHAR => END<char>();
+		/// <summary>
+		/// Marks the beginning of a pipe.
+		/// </summary>
+		[NotNull] public static EmptyPipe PIPE => new EmptyPipe();
 
 		/// <summary>
-		/// Evaluates a pipe.
+		/// Signals a pipe to return its value.
+		/// </summary>
+		[NotNull] public static PipeEnd END => new PipeEnd();
+
+		/// <summary>
+		/// Signals a pipe to return its value.
+		/// </summary>
+		[NotNull] public static PipeEnd __ => END;
+
+		/// <summary>
+		/// Initializes pipe with an object.
+		/// </summary>
+		[NotNull] public static GetPipe<TIn> IN<TIn>( [NotNull] TIn obj) => new GetPipe<TIn>(obj);
+
+		/// <summary>
+		/// Executes a pipe.
 		/// </summary>
 		/// <example>
 		/// <code>
 		///    _( PIPE | DateTime.Now | Print );
 		/// </code>
 		/// </example>
-		public static void _(ActPipe pipe) => pipe.Do();
+		public static void _( [NotNull] ActPipe pipe) => pipe.Do();
+
+		/*
+		/// <summary>
+		/// Returns pipe contents
+		/// </summary>
+		/// <typeparam name="TOut"></typeparam>
+		/// <param name="pipeResult"></param>
+		/// <returns></returns>
+		[NotNull]
+		public static TOut _<TOut>( [NotNull] TOut pipeResult ) => pipeResult;
+		*/
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.
@@ -44,10 +52,18 @@ namespace SharpPipe {
 		///    _{DateTime}( p => GetDate(p) )
 		/// </code>
 		/// </example>
-		/// <typeparam name="TParam">Function parameter type.</typeparam>
+		/// <typeparam name="TIn">Function parameter type.</typeparam>
 		/// <param name="func">Function to convert</param>
-		[NotNull] public static F _<TParam>(Func<TParam, object> func) => p => func(p.To<TParam>());
+		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => new SharpFunc<TIn, TOut>(func);
 
+		//[NotNull] public static GetPipe<TOut> _<TOut>([CanBeNull] Func<dynamic, TOut> func) => new GetPipe<TOut>(func);
+
+		[NotNull] public static ActPipe _<TIn>([CanBeNull] Action<TIn> act) => new ActPipe(i =>act(i.To<TIn>()));
+
+		//public static ActPipe _([NotNull] Action<dynamic> pipe) => pipe.Do();
+
+
+		/*
 		/// <summary>
 		/// Creates a pipe-compatible function.
 		/// </summary>
@@ -57,8 +73,9 @@ namespace SharpPipe {
 		/// </code>
 		/// </example>
 		/// <param name="func">Function to convert</param>
-		[NotNull] public static F _(Func<dynamic, object> func) => p => func(p);
+		[NotNull] public static F _( [CanBeNull] Func<dynamic, object> func) => p => func(p);*/
 
+			/*
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible action.
 		/// </summary>
@@ -67,9 +84,9 @@ namespace SharpPipe {
 		///    __{string}(Console.WriteLine)
 		/// </code>
 		/// </example>
-		/// <typeparam name="TParam">Action parameter type.</typeparam>
+		/// <typeparam name="TIn">Action parameter type.</typeparam>
 		/// <param name="act">Action to convert</param>
-		[NotNull] public static A __<TParam>(Action<TParam> act) => p => act(p.To<TParam>());
+		[NotNull] public static A __<TIn>( [CanBeNull] Action<TIn> act) => p => act(p.To<TIn>());
 
 		/// <summary>
 		/// Creates a pipe-compatible action.
@@ -80,7 +97,7 @@ namespace SharpPipe {
 		/// </code>
 		/// </example>
 		/// <param name="act">Action to convert</param>
-		[NotNull] public static A __(Action<dynamic> act) => p => act(p);
+		[NotNull] public static A __( [CanBeNull] Action<dynamic> act) => p => act(p);*/
 
 	}
 }
