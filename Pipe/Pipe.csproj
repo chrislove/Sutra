@@ -54,7 +54,6 @@
     <Compile Include="Source\FuncExtensions.cs" />
     <Compile Include="Source\GetPipe.cs" />
     <Compile Include="Source\GetPipe[TOut].cs" />
-    <Compile Include="Source\InFunc.cs" />
     <Compile Include="Source\Interfaces.cs" />
     <Compile Include="Source\OutFunc.cs" />
     <Compile Include="Source\OutFunc[TOut].cs" />
@@ -66,7 +65,7 @@
     <Compile Include="Source\SharpAct[TIn].cs" />
     <Compile Include="Source\SharpFunc.cs" />
     <Compile Include="Source\SharpFunc[TIn, TOut].cs" />
-    <Compile Include="Source\InFunc[TIn].cs" />
+    <Compile Include="Source\TypeMismatchException.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Source\TypeExtensions.cs" />
   </ItemGroup>

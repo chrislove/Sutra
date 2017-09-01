@@ -15,13 +15,12 @@ namespace SharpPipe {
 		/// </summary>
 		[CanBeNull]
 		public static T To<T>( [CanBeNull] this object obj ) {
-			//if (obj == null) throw new ArgumentNullException(nameof(obj));
 			if (obj == null) return default;
 
 			try {
 				return (T) obj;
 			} catch (Exception) {
-				throw new InvalidOperationException($"Unable to cast type [{obj.GetType()}] to {typeof(T)}.");
+				throw new InvalidOperationException($"Unable to cast object of type [{obj.GetType()}] to [{typeof(T)}]. Pipe type mismatch?");
 			}
 		}
 	}

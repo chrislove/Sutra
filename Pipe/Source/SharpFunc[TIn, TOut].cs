@@ -11,7 +11,8 @@ namespace SharpPipe
 		Func<TIn, object> IInFunc<TIn>.Func         => base.Func.ToIn<TIn>();
 		Func<object, TOut> IOutFunc<TOut>.Func      => base.Func.ToOut<TOut>();
 
-		internal SharpFunc( [NotNull] Func<TIn, TOut> func ) : base(i => func( i.To<TIn>() )) {	}
+		internal SharpFunc( [NotNull] Func<TIn, TOut> func, Type inType = null, Type outType = null ) :
+										base(i => func(i.To<TIn>()), inType, outType) { }
 
 		/// <summary>
 		/// Function composition operator
@@ -20,6 +21,8 @@ namespace SharpPipe
 		public static SharpFunc<TIn, TOut> operator +( [NotNull] IOutFunc<TIn> lhs, [NotNull] SharpFunc<TIn, TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			// Type validation not needed
 
 			Func<object, TIn> lhsFunc    = lhs.Func;
 			Func<TIn, TOut>   rhsFunc    = rhs.Func;
@@ -37,6 +40,8 @@ namespace SharpPipe
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
+			// Type validation not needed
+
 			TOut CombinedFunc(object i) => rhs.Func(lhs(i));
 
 			return OutFunc.FromFunc(CombinedFunc);
@@ -51,6 +56,8 @@ namespace SharpPipe
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
+			// Type validation not needed
+
 			void Combined(TIn obj) => rhs( lhs.Func(obj) );
 
 			return SharpAct.FromAction<TIn>(Combined);
@@ -63,6 +70,8 @@ namespace SharpPipe
 		public static GetPipe<TOut> operator |([NotNull] GetPipe<TIn> lhs, [NotNull] SharpFunc<TIn, TOut> rhs) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			// Type validation not needed
 
 			return GetPipe.FromFunc(lhs.Func + rhs);
 		}
@@ -77,6 +86,8 @@ namespace SharpPipe
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (func == null) throw new ArgumentNullException(nameof(func));
+
+			// Type validation not needed
 
 			var enumerable = lhs.Get.Select(i => func.Func(i).To<TOut>());
 

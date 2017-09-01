@@ -2,12 +2,12 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public sealed class OutFunc<TOut> : SharpFunc<object, TOut>
-	{
+	public sealed class OutFunc<TOut> : SharpFunc<object, TOut> {
 		[NotNull] internal new Func<object, TOut> Func => base.Func;
 
 		internal OutFunc([NotNull] Func<object, TOut> func) : base(func) { }
 
+		internal OutFunc( [NotNull] Func<object, TOut> func, Type inType ) : base(func, inType) {		}
 		
 		/// <summary>
 		/// Function composition operator
@@ -17,6 +17,8 @@ namespace SharpPipe {
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			lhs.ValidateCompatibilityWith(rhs);
 
 			return ( i => lhs.Func(i) ) + rhs;
 		}
@@ -29,6 +31,8 @@ namespace SharpPipe {
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			// Type validation not possible
 
 			return OutFunc.FromFunc(
 			                        i => rhs.Func( lhs(i) )
@@ -45,6 +49,8 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
+			// Type validation not needed
+
 			return SharpAct.FromAction<TOut>(
 			                               i => rhs( lhs.Func(i) )
 			                              );
@@ -59,6 +65,8 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
+			// Type validation not needed
+
 			return lhs + rhs.Action;
 		}
 
@@ -71,6 +79,8 @@ namespace SharpPipe {
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			lhs.ValidateCompatibilityWith(rhs);
 
 			return GetPipe.FromFunc(lhs.Func + rhs);
 		}
