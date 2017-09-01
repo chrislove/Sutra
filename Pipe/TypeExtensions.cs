@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace SharpPipe {
 	public static class TypeExtensions {
@@ -12,7 +13,15 @@ namespace SharpPipe {
 		/// <summary>
 		/// Casts object to a given type.
 		/// </summary>
-		public static T To<T>( this object obj ) {
+		[NotNull]
+		public static T To<T>( [NotNull] this object obj ) {
+			if (obj == null) {
+				if (typeof(T).IsValueType)
+					throw new InvalidOperationException($"Unable to convert a null object to type {typeof(T)}");
+
+				return default;
+			}
+
 			try {
 				return (T) obj;
 			} catch (Exception) {

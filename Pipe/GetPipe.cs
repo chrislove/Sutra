@@ -1,15 +1,26 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public class GetPipe : PipeBase {
-		protected GetPipe( bool isInitialized ) : base(isInitialized) {}
+	public static class GetPipe {
+		[NotNull] internal static GetPipe<T> FromObject<T>(T obj) => FromFunc(OutFunc.WithValue(obj));
+		[NotNull] internal static GetPipe<T> FromFunc<T>(IOutFunc<T> func) => new GetPipe<T>(func);
 
-		internal F Func { get; set; }
+	}
+
+	/*
+	public abstract class GetPipe : PipeBase {
+		[NotNull] internal SharpFunc Func { get; }
+
+		protected GetPipe( [NotNull] SharpFunc func ) : base(true) {
+			Func = func ?? throw new ArgumentNullException(nameof(func));
+		}
+
 
 		private object Get() {
 			if (!IsInitialized) throw new InvalidOperationException("Uninitialized pipe.");
 
-			return Func(null);
+			return Func.Func(null);
 		}
 
 
@@ -22,5 +33,5 @@ namespace SharpPipe {
 
 			return pipeContent.To<T>();
 		}
-	}
+	}*/
 }

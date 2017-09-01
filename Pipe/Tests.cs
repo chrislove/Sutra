@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Pipe;
 
@@ -37,8 +38,23 @@ namespace SharpPipe {
 			  | _( AddDaysF(+30) )
 			  | _<DateTime, string>(GetLongDate)
 			  | _<string, string>(i => "Next month: " + i)
-			  | _<object>(Console.WriteLine)
+			  | _<string>(Console.WriteLine)
 			 );
+		}
+
+		[Test]
+		public void TestEnumerablePipe() {
+			var enumerable =
+				IN(Enumerable.Range(0, 10)) + Enumerable.Range(10, 20)
+				| _<int>(Console.WriteLine);
+		}
+
+		[Test]
+		public void TestFunctionComposition() {
+			var add10Func = SharpFunc.FromFunc((int i) => i + 10);
+			var mult5Func = SharpFunc.FromFunc((int i) => i * 5);
+
+			var combined = add10Func + mult5Func;
 		}
 	}
 }

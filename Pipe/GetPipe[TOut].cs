@@ -2,38 +2,47 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public sealed class GetPipe<TOut> : GetPipe {
-		internal GetPipe( TOut obj ) : this(_ => obj) {}
+	public class GetPipe<TOut> : PipeBase
+	{
+		[NotNull] internal OutFunc<TOut> Func { get; }
 
-		internal GetPipe( [NotNull] Func<object, TOut> func ) : base(true) {
-			if (func == null) throw new ArgumentNullException(nameof(func));
-			Func = i => func(i);
+		internal GetPipe([NotNull] ISharpFunc func ) {
+			//Unable to cast object of type SharpFunc<DateTime, DateTime> to type OutFunc<DateTime>
+
+			Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<TOut>();
 		}
 
+		internal TOut Get => Func.Func(null);
+
+
+		/*
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
 		[NotNull]
-		public static ActPipe operator |(GetPipe<TOut> lhs, ActPipe rhs)
+		public static ActPipe<TOut> operator |(GetPipe<TOut> lhs, ActPipe<TOut> rhs)
 		{
 			return lhs | (p => rhs.Act(p) );
-		}
+		}*/
 
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
 		[NotNull]
-		public static ActPipe operator |( GetPipe<TOut> lhs, A rhs ) {
-			Action<object> combined = i => rhs(lhs.Func(i));
-			return new ActPipe(i => combined(i));
+		public static ActPipe<TOut> operator |(GetPipe<TOut> lhs, Action<TOut> rhs)
+		{
+			var combined = lhs.Func + rhs;
+
+			return ActPipe.FromAction(combined);
 		}
+
 
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
 		[NotNull]
 		public static TOut operator |( GetPipe<TOut> lhs, PipeEnd pipeEnd ) {
-			return lhs.Get<TOut>();
+			return lhs.Get;
 		}
 	}
 }

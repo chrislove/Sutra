@@ -3,35 +3,53 @@ using System;
 
 namespace SharpPipe
 {
-	public class SharpFunc {
+	public abstract class SharpFunc {
+		[NotNull] internal Func<object, object> Func { get; }
+
 		protected SharpFunc( [NotNull] Func<object, object> func ) {
-			_func = func ?? throw new ArgumentNullException(nameof(func));
+			Func = func ?? throw new ArgumentNullException(nameof(func));
 		}
 
-		public SharpFunc( [CanBeNull] object value) : this(i => value) {	}
-
-		[NotNull] private readonly Func<object, object> _func;
+		//[NotNull] internal static SharpFunc   FromFunc( [NotNull] Func<object, object> func ) => new SharpFunc(func);
 
 		[NotNull]
-		private Func<object, object> GetFunc() => i => _func(i);
-
+		internal static SharpFunc<TIn, TOut> FromFunc<TIn, TOut>( [NotNull] Func<TIn, TOut> func )
+																		=> new SharpFunc<TIn, TOut>(func);
+		/*
+		/// <summary>
+		/// Function composition operator
+		/// </summary>
 		[NotNull]
-		internal Func<TIn, TOut> GetFunc<TIn, TOut>() => i => _func(i).To<TOut>();
+		public static SharpFunc operator +([NotNull] Func<object, object> lhs, [NotNull] SharpFunc rhs) {
+			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
+			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			object CombinedFunc( object i ) => rhs.Func(lhs(i));
+
+			return SharpFunc.FromFunc(CombinedFunc);
+		}
+		
+		/// <summary>
+		/// Function composition operator
+		/// </summary>
+		[NotNull]
+		public static SharpFunc operator +([NotNull] SharpFunc lhs, [NotNull] SharpFunc rhs) {
+			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
+			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			return lhs.Func + rhs;
+		}*/
 
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
 		[NotNull]
-		public static SharpFunc operator +( [NotNull] F lhs, [NotNull] SharpFunc rhs) {
+		public static SharpAct<object> operator +([NotNull] SharpFunc lhs, [NotNull] Action<object> rhs)
+		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			Func<object, object> lhsFunc = i => lhs(i);
-			Func<object, object> rhsFunc = rhs.GetFunc();
-
-			Func<object, object> combined = i => rhsFunc(lhsFunc(i));
-
-			return new SharpFunc(combined);
+			return SharpAct.FromAction( lhs.Func.CombineWith(rhs) );
 		}
 	}
 }
