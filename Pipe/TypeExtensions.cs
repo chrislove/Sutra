@@ -16,8 +16,7 @@ namespace SharpPipe {
 		[NotNull]
 		public static T To<T>( [NotNull] this object obj ) {
 			if (obj == null) {
-				if (typeof(T).IsValueType)
-					throw new InvalidOperationException($"Unable to convert a null object to type {typeof(T)}");
+				//if (typeof(T).IsValueType) throw new InvalidOperationException($"Unable to convert a null object to type {typeof(T)}");
 
 				return default;
 			}

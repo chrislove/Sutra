@@ -44,17 +44,22 @@ namespace SharpPipe {
 
 		[Test]
 		public void TestEnumerablePipe() {
-			var enumerable =
-				IN(Enumerable.Range(0, 10)) + Enumerable.Range(10, 20)
-				| _<int>(Console.WriteLine);
+			_(
+				IN(Enumerable.Range(0, 10)) + Enumerable.Range(10, 10)
+				| _<int>(Console.WriteLine)
+				);
 		}
 
 		[Test]
 		public void TestFunctionComposition() {
-			var add10Func = SharpFunc.FromFunc((int i) => i + 10);
-			var mult5Func = SharpFunc.FromFunc((int i) => i * 5);
+			var add10Func = _( (int i) => i + 10 );
+			var mult5Func = _( (int i) => i * 5 );
 
-			var combined = add10Func + mult5Func;
+			int pipe = IN(2)
+			           | add10Func + mult5Func
+					   | __;
+
+			Assert.That(pipe, Is.EqualTo(60));
 		}
 	}
 }
