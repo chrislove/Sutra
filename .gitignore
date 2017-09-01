@@ -27,3 +27,6 @@ download.error
 *.stackdump
 Thumbs.db
 *.DS_Store
+
+# Unity
+*.meta

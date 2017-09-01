@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
-	public static class Pipe {
+namespace SharpPipe
+{
+	public static class Pipe
+	{
 		/// <summary>
 		/// Signals a pipe to return its value.
 		/// </summary>
-		[NotNull] public static PipeEnd __ => new PipeEnd();
+		[NotNull] public static PipeEnd ___ => new PipeEnd();
 
 		/// <summary>
 		/// Initializes pipe with an object.
@@ -38,11 +40,18 @@ namespace SharpPipe {
 		///    _{DateTime}( p => GetDate(p) )
 		/// </code>
 		/// </example>
-		/// <typeparam name="TIn">Function parameter type.</typeparam>
-		/// <param name="func">Function to convert</param>
-		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
+		[NotNull] public static OutFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => OutFunc.FromFunc(func);
 
+		/// <summary>
+		/// Creates a strongly-typed pipe-compatible function.
+		/// </summary>
+		/// <example>
+		/// <code>
+		///    _{DateTime, string}( p => GetDate(p) )
+		/// </code>
+		/// </example>
+		[NotNull] public static OutFunc<TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => OutFunc.FromFunc(i => func(i.To<TIn>()));
 
-		[NotNull] public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i =>act(i.To<TIn>()));
+		[NotNull] public static SharpAct<TIn> __<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}
 }

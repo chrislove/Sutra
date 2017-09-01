@@ -12,7 +12,7 @@ namespace SharpPipe {
 		/// Function composition operator
 		/// </summary>
 		[NotNull]
-		public static IOutFunc<TOut> operator +([NotNull] SharpFunc lhs, [NotNull] OutFunc<TOut> rhs)
+		public static OutFunc<TOut> operator +([NotNull] SharpFunc lhs, [NotNull] OutFunc<TOut> rhs)
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
@@ -24,7 +24,7 @@ namespace SharpPipe {
 		/// Function composition operator
 		/// </summary>
 		[NotNull]
-		public static IOutFunc<TOut> operator +([NotNull] Func<object, object> lhs, [NotNull] OutFunc<TOut> rhs)
+		public static OutFunc<TOut> operator +([NotNull] Func<object, object> lhs, [NotNull] OutFunc<TOut> rhs)
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
@@ -59,6 +59,19 @@ namespace SharpPipe {
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
 			return lhs + rhs.Action;
+		}
+
+
+		/// <summary>
+		/// Forward pipe operator
+		/// </summary>
+		[NotNull]
+		public static GetPipe<TOut> operator |([NotNull] GetPipe lhs, [NotNull] OutFunc<TOut> rhs)
+		{
+			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
+			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+			return GetPipe.FromFunc(lhs.Func + rhs);
 		}
 	}
 }

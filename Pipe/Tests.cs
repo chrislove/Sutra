@@ -7,10 +7,7 @@ namespace SharpPipe {
 	[TestFixture]
 	public sealed class Tests {
 		private static DateTime AddDays(DateTime dateTime, int days ) => dateTime.AddDays(days);
-		private static Func<DateTime, DateTime> AddDaysF( int days ) => d => AddDays(d, days);
-
-		private static SharpFunc<DateTime, DateTime> AddDaysSF(int days) => _( AddDaysF(days) );
-
+		private static OutFunc<DateTime> AddDaysF( int days ) => _( (DateTime d) => AddDays(d, days) );
 
 		private static string GetLongDate( DateTime date ) => date.ToLongDateString();
 
@@ -23,10 +20,10 @@ namespace SharpPipe {
 		public void TestGetPipe() {
 			var yesterday =
 					IN(DateTime.Now)
-					| _( AddDaysF(-1) )
-					| _<DateTime, string>(GetShortDate)
-					| _<string, string>(i => "Yesterday: " + i)
-					| __;
+					| AddDaysF(-1)
+					| _( (DateTime d) => GetShortDate(d) )
+					| _(i => "Yesterday: " + i)
+					| ___;
 
 			Console.WriteLine(yesterday);
 		}
@@ -35,10 +32,10 @@ namespace SharpPipe {
 		public void TestActPipe() {
 			_(
 			  IN(DateTime.Now)
-			  | _( AddDaysF(+30) )
-			  | _<DateTime, string>(GetLongDate)
-			  | _<string, string>(i => "Next month: " + i)
-			  | _<string>(Console.WriteLine)
+			  | AddDaysF(+30)
+			  | _( (DateTime d) => GetLongDate(d))
+			  | _(i => "Next month: " + i)
+			  | __<string>(Console.WriteLine)
 			 );
 		}
 
@@ -46,7 +43,7 @@ namespace SharpPipe {
 		public void TestEnumerablePipe() {
 			_(
 				IN(Enumerable.Range(0, 10)) + Enumerable.Range(10, 10)
-				| _<int>(Console.WriteLine)
+				| __<int>(Console.WriteLine)
 				);
 		}
 
@@ -57,7 +54,7 @@ namespace SharpPipe {
 
 			int pipe = IN(2)
 			           | add10Func + mult5Func
-					   | __;
+					   | ___;
 
 			Assert.That(pipe, Is.EqualTo(60));
 		}

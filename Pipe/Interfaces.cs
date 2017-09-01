@@ -1,6 +1,11 @@
 using System;
 
 namespace SharpPipe {
+	/*
+	public interface IGetPipe {
+		OutFunc<object> Func { get; }
+	}*/
+
 	public interface ISharpFunc {
 		Func<object, object> Func { get; }
 	}
@@ -10,6 +15,7 @@ namespace SharpPipe {
 	{
 		new Func<TIn, object> Func { get; }
 	}
+
 
 	public interface IOutFunc<out TOut> : ISharpFunc
 	{
