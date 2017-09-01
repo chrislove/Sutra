@@ -5,7 +5,7 @@ using static SharpPipe.PipeUtil;
 
 namespace SharpPipe.Tests {
 	[TestFixture]
-	public sealed class MainTests {
+	public sealed class Tests {
 		private static SharpFunc<DateTime, DateTime> AddDays( int days ) => _(( DateTime d ) => d.AddDays(days) );
 
 		private static SharpFunc<DateTime, string> GetLongDate => _(( DateTime d ) => d.ToLongDateString());

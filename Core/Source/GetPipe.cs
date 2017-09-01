@@ -5,7 +5,7 @@ namespace SharpPipe
 {
 	public abstract class GetPipe : PipeBase
 	{
-		[NotNull] internal OutFunc<object> Func { get; }
+		[NotNull] internal SharpFunc<object> Func { get; }
 
 		protected GetPipe( [NotNull] ISharpFunc func, Type outType = null ) {
 			if (func == null) throw new ArgumentNullException(nameof(func));
@@ -37,7 +37,7 @@ namespace SharpPipe
 
 
 
-		[NotNull] internal static GetPipe<T> FromObject<T>(T obj) => FromFunc(OutFunc.WithValue(obj));
+		[NotNull] internal static GetPipe<T> FromObject<T>(T obj) => FromFunc(SharpFunc.WithValue(obj));
 		[NotNull] internal static GetPipe<T> FromFunc<T>(IOutFunc<T> func) => new GetPipe<T>(func);
 	}
 }

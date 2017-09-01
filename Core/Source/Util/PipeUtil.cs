@@ -40,7 +40,7 @@ namespace SharpPipe
 		///    _{DateTime}( p => GetDate(p) )
 		/// </code>
 		/// </example>
-		[NotNull] public static OutFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => OutFunc.FromFunc(func);
+		[NotNull] public static SharpFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => SharpFunc.FromFunc(func);
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.

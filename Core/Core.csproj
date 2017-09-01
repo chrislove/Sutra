@@ -52,8 +52,8 @@
     <Compile Include="Source\EnumerablePipe.cs" />
     <Compile Include="Source\EnumerablePipe[TOut].cs" />
     <Compile Include="Source\Operators\EnumerablePipe[TOut].Pipe.cs" />
-    <Compile Include="Source\Operators\OutFunc[TOut].Composition.cs" />
-    <Compile Include="Source\Operators\OutFunc[TOut].Pipe.cs" />
+    <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
+    <Compile Include="Source\Operators\SharpFunc[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Source\GetPipe.cs" />
@@ -61,8 +61,7 @@
     <Compile Include="Source\Operators\GetPipe[TOut].Pipe.cs" />
     <Compile Include="Source\Interfaces.cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Composition.cs" />
-    <Compile Include="Source\OutFunc.cs" />
-    <Compile Include="Source\OutFunc[TOut].cs" />
+    <Compile Include="Source\SharpFunc[TOut].cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Pipe.cs" />
     <Compile Include="Source\Util\PipeUtil.cs" />
     <Compile Include="Source\Util\Pipe.Usability.cs" />

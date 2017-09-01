@@ -42,6 +42,6 @@ namespace SharpPipe {
 		/// Converts to a SharpFunc of a different type.
 		/// </summary>
 		[NotNull]
-		public static OutFunc<TOut> ToOut<TOut>(this ISharpFunc sharpFunc) => OutFunc.FromFunc(sharpFunc.Func.To<object, TOut>());
+		public static SharpFunc<TOut> ToOut<TOut>(this ISharpFunc sharpFunc) => SharpFunc.FromFunc(sharpFunc.Func.To<object, TOut>());
 	}
 }
