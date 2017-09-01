@@ -51,6 +51,7 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		//[NotNull] public static OutFunc<TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => OutFunc.FromFunc(i => func(i.To<TIn>()));
+
 		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
 
 		[NotNull] public static SharpAct<TIn> __<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));

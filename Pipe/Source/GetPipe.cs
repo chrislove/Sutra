@@ -22,7 +22,7 @@ namespace SharpPipe
 
 		internal void ValidateCompatibilityWith(ISharpFunc rhsFunc)
 		{
-			Console.WriteLine($"ValidateCompatibilityWith {GetType()} & {rhsFunc.GetType()}");
+			Console.WriteLine($"ValidateCompatibilityWith {GetType()} with {rhsFunc.GetType()}");
 
 			rhsFunc.ValidateInType(OutType);
 			this.ValidateOutType(rhsFunc.InType);
@@ -32,9 +32,7 @@ namespace SharpPipe
 			if (OutType == null || type == null) return;
 
 			if (OutType != type)
-				throw new TypeMismatchException(GetType(), type, OutType);
-
-			Console.WriteLine($"{GetType()} types match: {type} == {OutType}");
+				throw new TypeMismatchException(GetType(), type, OutType, "Out");
 		}
 
 

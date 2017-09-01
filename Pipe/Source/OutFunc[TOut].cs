@@ -5,9 +5,9 @@ namespace SharpPipe {
 	public sealed class OutFunc<TOut> : SharpFunc<object, TOut> {
 		[NotNull] internal new Func<object, TOut> Func => base.Func;
 
-		internal OutFunc([NotNull] Func<object, TOut> func) : base(func) { }
+		internal OutFunc([NotNull] Func<object, TOut> func) : this(func, typeof(TOut)) { }
 
-		internal OutFunc( [NotNull] Func<object, TOut> func, Type inType ) : base(func, inType) {		}
+		private OutFunc( [NotNull] Func<object, TOut> func, Type outType ) : base(func, null, outType) {}
 		
 		/// <summary>
 		/// Function composition operator

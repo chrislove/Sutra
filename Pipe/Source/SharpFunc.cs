@@ -28,7 +28,7 @@ namespace SharpPipe
 			if (type == null || InType == null) return;
 
 			if (InType != type)
-				throw new TypeMismatchException(GetType(), type, InType);
+				throw new TypeMismatchException(GetType(), type, InType, "In");
 		}
 
 		public void ValidateOutType(Type type) {
@@ -37,7 +37,7 @@ namespace SharpPipe
 			if (OutType == null) return;
 
 			if (OutType != type)
-				throw new TypeMismatchException(GetType(), type, OutType);
+				throw new TypeMismatchException(GetType(), type, OutType, "Out");
 		}
 
 		[NotNull]

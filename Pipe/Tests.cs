@@ -13,20 +13,18 @@ namespace SharpPipe {
 
 		private static string GetShortDate( DateTime date ) => date.ToShortDateString();
 
-		private static void WriteStuff<T>( T stuff ) => Console.WriteLine(stuff);
-		private static void DoStuff( DateTime stuff ) => Console.WriteLine(stuff);
-
 		[Test]
 		public void TestGetPipe() {
 			var yesterday =
 				IN(DateTime.Now)
 				| AddDaysF(-1)
 				| _(( DateTime d ) => GetShortDate(d))
-				//| _<DateTime, string>( GetShortDate )
-				| _(i => "Yesterday: " + i)
+				| _((string i) => "Yesterday: " + i)
 				| ___;
 
-			Console.WriteLine(yesterday);
+			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
+
+			Assert.That(yesterday, Is.EqualTo(expected));
 		}
 
 		[Test]
