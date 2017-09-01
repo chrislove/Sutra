@@ -33,7 +33,7 @@ namespace SharpPipe
 		/// Function composition operator
 		/// </summary>
 		[NotNull]
-		public static IOutFunc<TOut> operator +([NotNull] Func<object, TIn> lhs, [NotNull] SharpFunc<TIn, TOut> rhs ) {
+		public static OutFunc<TOut> operator +([NotNull] Func<object, TIn> lhs, [NotNull] SharpFunc<TIn, TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 

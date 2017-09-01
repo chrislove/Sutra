@@ -13,13 +13,10 @@ namespace SharpPipe {
 		/// <summary>
 		/// Casts object to a given type.
 		/// </summary>
-		[NotNull]
-		public static T To<T>( [NotNull] this object obj ) {
-			if (obj == null) {
-				//if (typeof(T).IsValueType) throw new InvalidOperationException($"Unable to convert a null object to type {typeof(T)}");
-
-				return default;
-			}
+		[CanBeNull]
+		public static T To<T>( [CanBeNull] this object obj ) {
+			//if (obj == null) throw new ArgumentNullException(nameof(obj));
+			if (obj == null) return default;
 
 			try {
 				return (T) obj;

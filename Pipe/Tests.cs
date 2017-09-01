@@ -22,6 +22,7 @@ namespace SharpPipe {
 					IN(DateTime.Now)
 					| AddDaysF(-1)
 					| _( (DateTime d) => GetShortDate(d) )
+					//| _<DateTime, string>( GetShortDate )
 					| _(i => "Yesterday: " + i)
 					| ___;
 

@@ -6,8 +6,9 @@ namespace SharpPipe {
 	{
 		[NotNull] internal new Func<object, TOut> Func => base.Func;
 
-		internal OutFunc([NotNull] Func<object, TOut> func) : base(i => func(i.To<TOut>())) { }
+		internal OutFunc([NotNull] Func<object, TOut> func) : base(func) { }
 
+		
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
@@ -17,7 +18,7 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			return lhs.Func + rhs;
+			return ( i => lhs.Func(i) ) + rhs;
 		}
 
 		/// <summary>
@@ -30,7 +31,7 @@ namespace SharpPipe {
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
 			return OutFunc.FromFunc(
-			                        i => rhs.Func(lhs(i).To<TOut>())
+			                        i => rhs.Func( lhs(i) )
 			                       );
 		}
 

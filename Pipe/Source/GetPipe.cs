@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace SharpPipe
 {
-	public class GetPipe : PipeBase
+	public abstract class GetPipe : PipeBase
 	{
 		[NotNull] internal OutFunc<object> Func { get; }
 
