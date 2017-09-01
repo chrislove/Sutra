@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace SharpPipe
 {
-	public static class Pipe
+	public static partial class PipeUtil
 	{
 		/// <summary>
 		/// Signals a pipe to return its value.
@@ -53,6 +53,8 @@ namespace SharpPipe
 		//[NotNull] public static OutFunc<TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => OutFunc.FromFunc(i => func(i.To<TIn>()));
 
 		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
+
+		[NotNull] public static SharpFunc<string, TOut> _<TOut>([CanBeNull] Func<string, TOut> func) => SharpFunc.FromFunc(func);
 
 		[NotNull] public static SharpAct<TIn> __<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}

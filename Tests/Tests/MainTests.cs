@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using static SharpPipe.Pipe;
+using static SharpPipe.PipeUtil;
 
-namespace SharpPipe {
+namespace SharpPipe.Tests {
 	[TestFixture]
-	public sealed class Tests {
-		private static DateTime AddDays( DateTime dateTime, int days ) => dateTime.AddDays(days);
-		private static SharpFunc<DateTime, DateTime> AddDaysF( int days ) => _(( DateTime d ) => AddDays(d, days));
+	public sealed class MainTests {
+		private static SharpFunc<DateTime, DateTime> AddDays( int days ) => _(( DateTime d ) => d.AddDays(days) );
 
-		private static string GetLongDate( DateTime date ) => date.ToLongDateString();
-
-		private static string GetShortDate( DateTime date ) => date.ToShortDateString();
+		private static SharpFunc<DateTime, string> GetLongDate => _(( DateTime d ) => d.ToLongDateString());
+		private static SharpFunc<DateTime, string> GetShortDate => _(( DateTime d ) => d.ToShortDateString());
 
 		[Test]
 		public void TestGetPipe() {
 			var yesterday =
 				IN(DateTime.Now)
-				| AddDaysF(-1)
-				| _(( DateTime d ) => GetShortDate(d))
-				| _((string i) => "Yesterday: " + i)
+				| AddDays(-1)
+				| GetShortDate
+				| _(i => "Yesterday: " + i)
 				| ___;
 
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
@@ -31,10 +29,10 @@ namespace SharpPipe {
 		public void TestActPipe() {
 			_(
 			  IN(DateTime.Now)
-			  | AddDaysF(+30)
-			  | _(( DateTime d ) => GetLongDate(d))
+			  | AddDays(+30)
+			  | GetLongDate
 			  | _(i => "Next month: " + i)
-			  | __<string>(Console.WriteLine)
+			  | WriteLine
 			 );
 		}
 
@@ -42,7 +40,7 @@ namespace SharpPipe {
 		public void TestEnumerablePipe() {
 			_(
 			  IN(Enumerable.Range(0, 10)) + Enumerable.Range(10, 10)
-			  | __<int>(Console.WriteLine)
+			  | WriteLine
 			 );
 		}
 

@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public static class TypeExtensions {
+	internal static class TypeExtensions {
 		/// <summary>
 		/// Compares object with a given type.
 		/// </summary>
@@ -20,7 +20,7 @@ namespace SharpPipe {
 			try {
 				return (T) obj;
 			} catch (Exception) {
-				throw new InvalidOperationException($"Unable to cast object of type [{obj.GetType()}] to [{typeof(T)}]. Pipe type mismatch?");
+				throw new TypeMismatchException(obj.GetType(), typeof(T));
 			}
 		}
 	}

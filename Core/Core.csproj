@@ -7,10 +7,11 @@
     <ProjectGuid>{B7FCE9F6-A994-43C4-B660-1A1FAB3ECF5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>SharpPipe</RootNamespace>
+    <AssemblyName>SharpPipe</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,9 +35,6 @@
     <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,15 +47,25 @@
   <ItemGroup>
     <Compile Include="Source\ActPipe.cs" />
     <Compile Include="Source\ActPipe[TIn].cs" />
+    <Compile Include="Source\Operators\EnumerablePipe[TOut].Composition.cs" />
+    <Compile Include="Source\Operators\ActPipe[TIn].Pipe.cs" />
     <Compile Include="Source\EnumerablePipe.cs" />
     <Compile Include="Source\EnumerablePipe[TOut].cs" />
-    <Compile Include="Source\FuncExtensions.cs" />
+    <Compile Include="Source\Operators\EnumerablePipe[TOut].Pipe.cs" />
+    <Compile Include="Source\Operators\OutFunc[TOut].Composition.cs" />
+    <Compile Include="Source\Operators\OutFunc[TOut].Pipe.cs" />
+    <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
+    <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Source\GetPipe.cs" />
     <Compile Include="Source\GetPipe[TOut].cs" />
+    <Compile Include="Source\Operators\GetPipe[TOut].Pipe.cs" />
     <Compile Include="Source\Interfaces.cs" />
+    <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Composition.cs" />
     <Compile Include="Source\OutFunc.cs" />
     <Compile Include="Source\OutFunc[TOut].cs" />
-    <Compile Include="Source\Pipe.cs" />
+    <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Pipe.cs" />
+    <Compile Include="Source\Util\PipeUtil.cs" />
+    <Compile Include="Source\Util\Pipe.Usability.cs" />
     <Compile Include="Source\PipeBase.cs" />
     <Compile Include="Source\PipeEnd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,9 +73,8 @@
     <Compile Include="Source\SharpAct[TIn].cs" />
     <Compile Include="Source\SharpFunc.cs" />
     <Compile Include="Source\SharpFunc[TIn, TOut].cs" />
-    <Compile Include="Source\TypeMismatchException.cs" />
-    <Compile Include="Tests.cs" />
-    <Compile Include="Source\TypeExtensions.cs" />
+    <Compile Include="Source\Util\TypeMismatchException.cs" />
+    <Compile Include="Source\Util\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
