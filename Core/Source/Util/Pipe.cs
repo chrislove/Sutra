@@ -11,11 +11,6 @@ namespace SharpPipe
 		[NotNull] internal static Pipe<T> FromFunc<T>(IOutFunc<T> func) => new Pipe<T>(func);
 
 		/// <summary>
-		/// Signals a pipe to return its value.
-		/// </summary>
-		[NotNull] public static DoEnd ___ => new DoEnd();
-
-		/// <summary>
 		/// Initializes pipe with an object.
 		/// </summary>
 		[NotNull] public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
@@ -67,8 +62,7 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
-		[NotNull] public static EnumFunc<TIn, TOut> __<TIn, TOut>([CanBeNull] Func<TIn, IEnumerable<TOut>> func)
-											=> EnumFunc.FromFunc(func);
+		//[NotNull] public static EnumFunc<TIn, TOut> __<TIn, TOut>([CanBeNull] Func<TIn, IEnumerable<TOut>> func) => EnumFunc.FromFunc(func);
 
 		[NotNull] public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}

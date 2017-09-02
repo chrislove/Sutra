@@ -13,14 +13,6 @@ namespace SharpPipe {
 			return SharpAct.FromAction(combined);
 		}
 
-		/// <summary>
-		/// Forward pipe operator
-		/// </summary>
-		[NotNull]
-		public static TOut operator |( Pipe<TOut> lhs, DoEnd doEnd ) {
-			return lhs.Get;
-		}
-
 		[NotNull]
 		public static SharpAct operator |( Pipe<TOut> lhs, SharpAct<object> rhs ) {
 			return lhs | (p => rhs.Action(p));

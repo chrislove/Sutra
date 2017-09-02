@@ -17,7 +17,7 @@ namespace SharpPipe.Tests {
 				| AddDays(-1)
 				| GetShortDate
 				| _(i => "Yesterday: " + i)
-				| ___;
+				| OUT;
 
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 
@@ -42,7 +42,7 @@ namespace SharpPipe.Tests {
 
 			int pipe = IN(2)
 			           | add10Func + mult5Func
-			           | ___;
+			           | OUT;
 
 			Assert.That(pipe, Is.EqualTo(60));
 		}
