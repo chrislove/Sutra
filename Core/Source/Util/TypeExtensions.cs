@@ -4,13 +4,6 @@ using JetBrains.Annotations;
 namespace SharpPipe {
 	internal static class TypeExtensions {
 		/// <summary>
-		/// Compares object with a given type.
-		/// </summary>
-		public static bool Is<T>( this Type type ) {
-			return type == typeof(T);
-		}
-
-		/// <summary>
 		/// Casts object to a given type.
 		/// </summary>
 		[CanBeNull]

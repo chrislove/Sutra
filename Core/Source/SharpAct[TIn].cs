@@ -4,7 +4,7 @@ using System;
 namespace SharpPipe
 {
 	public class SharpAct<TIn> : SharpFunc<TIn, object> {
-		[NotNull] internal Action<TIn> Action => i => base.Func(i);
+		[NotNull] internal Action<TIn> Action => i => Func(i);
 
 		internal SharpAct([NotNull] Action<TIn> act) : base( act.ToFunc() ) {}
 

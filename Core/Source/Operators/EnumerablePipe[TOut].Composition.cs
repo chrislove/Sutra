@@ -14,8 +14,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			// Type validation not needed
-
 			return lhs + EnumerablePipe.FromEnumerable(rhs);
 		}
 
@@ -27,8 +25,6 @@ namespace SharpPipe {
 		public static EnumerablePipe<TOut> operator +( [NotNull] EnumerablePipe<TOut> lhs, [NotNull] EnumerablePipe<TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-
-			// Type validation not needed
 
 			var combined = lhs.Get.Concat(rhs.Get);
 

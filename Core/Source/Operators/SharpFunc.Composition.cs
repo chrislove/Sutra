@@ -11,8 +11,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			// Type validation not needed
-
 			return SharpAct.FromAction(lhs.Func.CombineWith(rhs));
 		}
 	}

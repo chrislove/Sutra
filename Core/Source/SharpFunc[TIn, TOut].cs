@@ -10,6 +10,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Returns wrapped function.
 		/// </summary>
+		[NotNull]
 		public static Func<TIn, TOut> operator ~(SharpFunc<TIn, TOut> sharpFunc) => sharpFunc.Func;
 
 

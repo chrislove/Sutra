@@ -18,10 +18,6 @@ namespace SharpPipe {
 									=> i => func(i).To<TOut>();
 
 		[NotNull]
-		public static Func<TIn, object> ToIn<TIn>( this Func<object, object> func )
-									=> i => func(i);
-
-		[NotNull]
 		public static Func<TIn, object> ToFunc<TIn>(this Action<TIn> action ) {
 			object TempFunc(TIn obj ) {
 				action(obj);
@@ -30,13 +26,6 @@ namespace SharpPipe {
 
 			return TempFunc;
 		}
-
-
-		/// <summary>
-		/// Converts to a SharpFunc of a different type
-		/// </summary>
-		[NotNull]
-		public static SharpFunc<TIn, TOut> To<TIn, TOut>(this ISharpFunc sharpFunc) => SharpFunc.FromFunc(sharpFunc.Func.To<TIn, TOut>());
 
 		/// <summary>
 		/// Converts to a SharpFunc of a different type.

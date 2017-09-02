@@ -22,8 +22,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			// Type validation not possible
-
 			return SharpFunc.FromFunc(
 			                        i => rhs.Func(lhs(i))
 			                       );
@@ -37,8 +35,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			// Type validation not needed
-
 			return SharpAct.FromAction<TOut>(
 			                                 i => rhs(lhs.Func(i))
 			                                );
@@ -51,8 +47,6 @@ namespace SharpPipe {
 		public static SharpAct<TOut> operator +( [NotNull] SharpFunc<TOut> lhs, [NotNull] SharpAct<TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-
-			// Type validation not needed
 
 			return lhs + rhs.Action;
 		}

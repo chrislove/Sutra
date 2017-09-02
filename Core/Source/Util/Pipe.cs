@@ -4,10 +4,11 @@ using JetBrains.Annotations;
 
 namespace SharpPipe
 {
-	public delegate TOut EnumFunc<in TIn, out TOut>( TIn i );
-
 	public static partial class Pipe
 	{
+		[NotNull] internal static Pipe<T> FromObject<T>(T obj) => FromFunc(SharpFunc.WithValue(obj));
+		[NotNull] internal static Pipe<T> FromFunc<T>(IOutFunc<T> func) => new Pipe<T>(func);
+
 		/// <summary>
 		/// Signals a pipe to return its value.
 		/// </summary>
@@ -16,7 +17,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Initializes pipe with an object.
 		/// </summary>
-		[NotNull] public static GetPipe<TOut> IN<TOut>([NotNull] TOut obj) => GetPipe.FromObject(obj);
+		[NotNull] public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
 
 		/// <summary>
 		/// Initializes pipe with an object.
@@ -53,11 +54,7 @@ namespace SharpPipe
 		///    _{DateTime, string}( p => GetDate(p) )
 		/// </code>
 		/// </example>
-		//[NotNull] public static OutFunc<TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => OutFunc.FromFunc(i => func(i.To<TIn>()));
-
 		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
-
-		//[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] SharpFunc<TIn, TOut> func) => func;
 
 		[NotNull] public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}

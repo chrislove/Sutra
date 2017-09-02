@@ -11,8 +11,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			// Type validation not needed
-
 			Func<object, TIn> lhsFunc = lhs.Func;
 			Func<TIn, TOut> rhsFunc = rhs.Func;
 
@@ -29,8 +27,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			// Type validation not needed
-
 			TOut CombinedFunc( object i ) => rhs.Func(lhs(i));
 
 			return SharpFunc.FromFunc(CombinedFunc);
@@ -43,8 +39,6 @@ namespace SharpPipe {
 		public static SharpAct<TIn> operator +( [NotNull] SharpFunc<TIn, TOut> lhs, [NotNull] Action<TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-
-			// Type validation not needed
 
 			void Combined( TIn obj ) => rhs(lhs.Func(obj));
 

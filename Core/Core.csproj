@@ -53,9 +53,8 @@
     <Compile Include="Source\Operators\SharpFunc[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
-    <Compile Include="Source\GetPipe.cs" />
-    <Compile Include="Source\GetPipe[TOut].cs" />
-    <Compile Include="Source\Operators\GetPipe[TOut].Pipe.cs" />
+    <Compile Include="Source\Pipe[TOut].cs" />
+    <Compile Include="Source\Operators\Pipe[TOut].Pipe.cs" />
     <Compile Include="Source\Interfaces.cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Composition.cs" />
     <Compile Include="Source\SharpFunc[TOut].cs" />
