@@ -45,10 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Operators\EnumerablePipe[TOut].Composition.cs" />
-    <Compile Include="Source\EnumerablePipe.cs" />
-    <Compile Include="Source\EnumerablePipe[TOut].cs" />
-    <Compile Include="Source\Operators\EnumerablePipe[TOut].Pipe.cs" />
+    <Compile Include="Source\EnumFunc.cs" />
+    <Compile Include="Source\EnumFunc[TIn, TOut].cs" />
+    <Compile Include="Source\Operators\EnumPipe[TOut].Composition.cs" />
+    <Compile Include="Source\EnumPipe.cs" />
+    <Compile Include="Source\EnumPipe[TOut].cs" />
+    <Compile Include="Source\Operators\EnumPipe[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />

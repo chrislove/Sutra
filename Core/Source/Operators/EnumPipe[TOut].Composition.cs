@@ -4,17 +4,17 @@ using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public sealed partial class EnumerablePipe<TOut> {
+	public sealed partial class EnumPipe<TOut> {
 		/// <summary>
 		/// Pipe composition operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}
 		/// </summary>
 		[NotNull]
-		public static EnumerablePipe<TOut> operator +([NotNull] EnumerablePipe<TOut> lhs, [NotNull] IEnumerable<TOut> rhs)
+		public static EnumPipe<TOut> operator +([NotNull] EnumPipe<TOut> lhs, [NotNull] IEnumerable<TOut> rhs)
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			return lhs + EnumerablePipe.FromEnumerable(rhs);
+			return lhs + EnumPipe.FromEnumerable(rhs);
 		}
 
 
@@ -22,13 +22,13 @@ namespace SharpPipe {
 		/// Pipe composition operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}
 		/// </summary>
 		[NotNull]
-		public static EnumerablePipe<TOut> operator +( [NotNull] EnumerablePipe<TOut> lhs, [NotNull] EnumerablePipe<TOut> rhs ) {
+		public static EnumPipe<TOut> operator +( [NotNull] EnumPipe<TOut> lhs, [NotNull] EnumPipe<TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
 			var combined = lhs.Get.Concat(rhs.Get);
 
-			return EnumerablePipe.FromEnumerable(combined);
+			return EnumPipe.FromEnumerable(combined);
 		}
 	}
 }

@@ -21,13 +21,13 @@ namespace SharpPipe
 		/// </summary>
 		[NotNull]
 		[UsedImplicitly]
-		public static EnumerablePipe<TOut> operator |( [NotNull] EnumerablePipe<TIn> lhs, [NotNull] SharpFunc<TIn, TOut> func ) {
+		public static EnumPipe<TOut> operator |( [NotNull] EnumPipe<TIn> lhs, [NotNull] SharpFunc<TIn, TOut> func ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (func == null) throw new ArgumentNullException(nameof(func));
 
 			var enumerable = lhs.Get.Select(i => func.Func(i).To<TOut>());
 
-			return EnumerablePipe.FromEnumerable(enumerable);
+			return EnumPipe.FromEnumerable(enumerable);
 		}
 	}
 }

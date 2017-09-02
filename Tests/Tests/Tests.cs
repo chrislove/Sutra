@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Pipe;
@@ -18,7 +19,7 @@ namespace SharpPipe.Tests {
 				| AddDays(-1)
 				| GetShortDate
 				| _(i => "Yesterday: " + i)
-				| __;
+				| ___;
 
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 
@@ -37,11 +38,21 @@ namespace SharpPipe.Tests {
 		}
 
 		[Test]
-		public void TestEnumerablePipe() {
+		public void TestEnumerablePipeAction() {
 			_(
 			  IN(Enumerable.Range(0, 10)) + Enumerable.Range(10, 10)
 			  | WriteLine
 			 );
+		}
+
+		[Test]
+		public void TestEnumerablePipe() {
+			Func<string, IEnumerable<string>> getEnumFunc = assemblyPath => Enumerable.Repeat("test", 10);
+
+			var enumPipe = IN("in")
+			               | __(getEnumFunc)
+			               | ___;
+
 		}
 
 		[Test]
@@ -51,7 +62,7 @@ namespace SharpPipe.Tests {
 
 			int pipe = IN(2)
 			           | add10Func + mult5Func
-			           | __;
+			           | ___;
 
 			Assert.That(pipe, Is.EqualTo(60));
 		}
