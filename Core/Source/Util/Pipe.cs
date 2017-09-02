@@ -29,7 +29,7 @@ namespace SharpPipe
 		/// Creates an empty EnumPipe{T}
 		/// </summary>
 		public static EnumPipe<TOut> ENUM<TOut>() => EnumPipe.FromEnumerable( Enumerable.Empty<TOut>() );
-		
+
 		/// <summary>
 		/// Executes a SharpAct.
 		/// </summary>
@@ -38,7 +38,7 @@ namespace SharpPipe
 		///    _( PIPE | DateTime.Now | Print );
 		/// </code>
 		/// </example>
-		public static void _( [NotNull] SharpAct act ) => act.Action(null);
+		public static void _( SharpAct act ) => act.Action();
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.
@@ -48,7 +48,7 @@ namespace SharpPipe
 		///    _{DateTime}( p => GetDate(p) )
 		/// </code>
 		/// </example>
-		[NotNull] public static SharpFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => SharpFunc.FromFunc(func);
+		public static SharpFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => SharpFunc.FromFunc(func);
 
 
 		/// <summary>
@@ -59,9 +59,9 @@ namespace SharpPipe
 		///    _{DateTime, string}( p => GetDate(p) )
 		/// </code>
 		/// </example>
-		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
+		public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
 		//[NotNull] public static EnumFunc<TIn, TOut> __<TIn, TOut>([CanBeNull] Func<TIn, IEnumerable<TOut>> func) => EnumFunc.FromFunc(func);
 
-		[NotNull] public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
+		public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}
 }

@@ -6,7 +6,6 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
 		public static SharpAct<object> operator +( [NotNull] SharpFunc lhs, [NotNull] Action<object> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));

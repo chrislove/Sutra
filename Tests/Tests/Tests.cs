@@ -2,9 +2,9 @@
 using NUnit.Framework;
 using static SharpPipe.Pipe;
 
-namespace SharpPipe.Tests {
+namespace SharpPipe.Tests  {
 	[TestFixture]
-	public sealed class Tests {
+	public sealed class Tests : TestBase {
 		private static SharpFunc<DateTime, DateTime> AddDays( int days ) => _(( DateTime d ) => d.AddDays(days) );
 
 		private static SharpFunc<DateTime, string> GetLongDate  => _(( DateTime d ) => d.ToLongDateString());
@@ -26,14 +26,22 @@ namespace SharpPipe.Tests {
 
 		[Test]
 		public void TestActPipe() {
-			_(
-			  IN(DateTime.Now)
-			  | AddDays(+30)
-			  | GetLongDate
-			  | _(i => "Next month: " + i)
-			  | WriteLine
-			 );
+			// Arrange
+
+			// Act
+			var pipe =
+				IN(DateTime.Now)
+				| AddDays(+30)
+				| GetLongDate
+				| _(i => "Next month: " + i)
+				| ~WriteLine;
+
+			// Assert
+			string expectedOutput = "Next month: " + DateTime.Now.AddDays(+30).ToLongDateString();
+			
+			Assert.That(WriteLineOutput, Is.EqualTo(expectedOutput) );
 		}
+
 
 		[Test]
 		public void TestFunctionComposition() {

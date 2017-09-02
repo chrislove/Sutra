@@ -5,12 +5,21 @@ namespace SharpPipe {
 	/// <summary>
 	/// A wrapper around System.Action
 	/// </summary>
-	public sealed class SharpAct : SharpAct<object> {
-		private SharpAct([NotNull] Action act) : base( _ => act() ) { }
+	public partial struct SharpAct {
+		internal SharpAct([NotNull] Action act) => Action = act ?? throw new ArgumentNullException(nameof(act));
 
-		[NotNull] internal static SharpAct<T> FromAction<T>(Action<T> action) => new SharpAct<T>(action);
+		[NotNull] internal readonly Action Action;
 
-		[NotNull] internal static SharpAct FromAction(Action action) => new SharpAct(action);
-		[NotNull] internal static SharpAct FromAction<T>(SharpAct<T> action) => new SharpAct( () => action.Action(default(T)) );
+		internal static SharpAct<T> FromAction<T>(Action<T> action) => new SharpAct<T>(action);
+
+		internal static SharpAct FromAction(Action action) => new SharpAct(action);
+		internal static SharpAct FromAction<T>(SharpAct<T> action) => new SharpAct( () => action.Action(default(T)) );
+		
+		/// <summary>
+		/// Executes the action
+		/// </summary>
+		public static DoExecute operator ~( SharpAct act ) {
+			return DoExecute.FromAction(act.Action);
+		}
 	}
 }

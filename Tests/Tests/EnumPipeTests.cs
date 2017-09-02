@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Pipe;
@@ -8,25 +7,27 @@ using static SharpPipe.Pipe;
 
 namespace SharpPipe.Tests {
     [TestFixture]
-    public sealed class EnumPipeTests {
+    public sealed class EnumPipeTests : TestBase {
         [Test]
         public void Test_EnumPipeAction() {
-            _(
-              ENUM<int>()
-              + Enumerable.Range(0, 10)
-              + Enumerable.Range(10, 10)
-              | WriteLine
-             );
+            var pipe =
+                ENUM<string>()
+                + Enumerable.Repeat("A", 3)
+                | CONCAT("")
+                | ~WriteLine;
+
+            const string expectedOutput = "AAA";
+            Assert.That(WriteLineOutput, Is.EqualTo(expectedOutput) );
         }
 
         [Test]
         public void Test_EnumerablePipe_FuncComposition() {
-            Func<string, IEnumerable<string>> getEnumFuncA = i => Enumerable.Repeat(i, 2);
-            Func<string, IEnumerable<string>> getEnumFuncB = i => Enumerable.Repeat(i, 3);
+            IEnumerable<string> GetEnumFuncA( string i ) => Enumerable.Repeat(i, 2);
+            IEnumerable<string> GetEnumFuncB( string i ) => Enumerable.Repeat(i, 3);
 
             string enumPipeStr = ENUM<string>()
-                              + getEnumFuncA("A")
-                              + getEnumFuncB("B")
+                              + GetEnumFuncA("A")
+                              + GetEnumFuncB("B")
                               | ~CONCAT("");
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));

@@ -2,25 +2,18 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public sealed partial class SharpFunc<TOut> {
+	public partial struct SharpFunc<TOut> {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static SharpFunc<TOut> operator +( [NotNull] SharpFunc lhs, [NotNull] SharpFunc<TOut> rhs ) {
-			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
-			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-
-			return (i => lhs.Func(i)) + rhs;
-		}
+		public static SharpFunc<TOut> operator +( [NotNull] ISharpFunc lhs, SharpFunc<TOut> rhs )
+			=> (i => lhs.Func(i)) + rhs;
 
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static SharpFunc<TOut> operator +( [NotNull] Func<object, object> lhs, [NotNull] SharpFunc<TOut> rhs ) {
+		public static SharpFunc<TOut> operator +( [NotNull] Func<object, object> lhs, SharpFunc<TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
-			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
 			return SharpFunc.FromFunc(
 			                        i => rhs.Func(lhs(i))
@@ -30,9 +23,7 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static SharpAct<TOut> operator +( [NotNull] SharpFunc<TOut> lhs, [NotNull] Action<TOut> rhs ) {
-			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
+		public static SharpAct<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] Action<TOut> rhs ) {
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
 			return SharpAct.FromAction<TOut>(
@@ -43,12 +34,6 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static SharpAct<TOut> operator +( [NotNull] SharpFunc<TOut> lhs, [NotNull] SharpAct<TOut> rhs ) {
-			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
-			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-
-			return lhs + rhs.Action;
-		}
+		public static SharpAct<TOut> operator +( SharpFunc<TOut> lhs, SharpAct<TOut> rhs ) => lhs + rhs.Action;
 	}
 }

@@ -30,13 +30,11 @@ namespace SharpPipe {
 		/// <summary>
 		/// Converts to a SharpFunc of a different type.
 		/// </summary>
-		[NotNull]
 		public static SharpFunc<TOut> ToOut<TOut>(this ISharpFunc sharpFunc) => SharpFunc.FromFunc(sharpFunc.Func.To<object, TOut>());
 		
 		/// <summary>
 		/// Converts to a SharpAct of a different type.
 		/// </summary>
-		[NotNull]
 		public static SharpAct<TOut> ToOut<TOut>(this SharpAct<object> sharpAct) => SharpAct.FromAction<TOut>(i => sharpAct.Action(i));
 	}
 }

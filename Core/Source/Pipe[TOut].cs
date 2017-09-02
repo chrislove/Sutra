@@ -5,7 +5,7 @@ using static SharpPipe.Pipe;
 namespace SharpPipe {
 	public partial struct Pipe<TOut> : IPipe
 	{
-		[NotNull] internal SharpFunc<TOut> Func { get; }
+		internal SharpFunc<TOut> Func { get; }
 		SharpFunc<object> IPipe.Func => SharpFunc.FromFunc<object>(Func);
 
 		internal Pipe([NotNull] ISharpFunc func) {

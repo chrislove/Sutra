@@ -11,7 +11,7 @@ namespace SharpPipe
 			Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<IEnumerable<TOut>>();
 		}
 		
-		[NotNull] internal SharpFunc<IEnumerable<TOut>> Func { get; }
+		internal SharpFunc<IEnumerable<TOut>> Func { get; }
 		SharpFunc<object> IPipe.Func => SharpFunc.FromFunc<object>(Func);
 
 

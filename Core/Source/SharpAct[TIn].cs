@@ -3,15 +3,16 @@ using System;
 
 namespace SharpPipe
 {
-	public class SharpAct<TIn> : SharpFunc<TIn, object> {
-		[NotNull] internal Action<TIn> Action => i => Func(i);
+	public struct SharpAct<TIn> {
+		internal SharpAct([NotNull] Action<TIn> act) => Action = act ?? throw new ArgumentNullException(nameof(act));
 
-		internal SharpAct([NotNull] Action<TIn> act) : base( act.ToFunc() ) {}
-
+		[NotNull] internal readonly Action<TIn> Action;
+		
 		/// <summary>
-		/// Returns wrapped action.
+		/// Executes the action.
 		/// </summary>
-		[NotNull]
-		public static Action<TIn> operator ~(SharpAct<TIn> sharpFunc) => sharpFunc.Action;
+		public static DoExecute operator ~( SharpAct<TIn> act ) {
+			return DoExecute.FromAction( act.Action );
+		}
 	}
 }
