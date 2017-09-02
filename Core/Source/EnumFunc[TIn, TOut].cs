@@ -9,10 +9,8 @@ namespace SharpPipe {
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		[NotNull]
-		public static EnumPipe<TOut> operator |([NotNull] Pipe<TIn> lhs, [NotNull] EnumFunc<TIn, TOut> rhs)
+		public static EnumPipe<TOut> operator |(Pipe<TIn> lhs, [NotNull] EnumFunc<TIn, TOut> rhs)
 		{
-			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
 			return EnumPipe.FromFunc(lhs.Func + rhs);

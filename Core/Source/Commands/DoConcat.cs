@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
 using static SharpPipe.Pipe;
+// ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Pipe {
@@ -23,9 +24,7 @@ namespace SharpPipe {
         }
 
         public struct ToValue {
-            public static partial class Pipe {
-                public static DoToList TOLIST => new DoToList();
-            }            [CanBeNull] internal readonly string Separator;
+            [CanBeNull] internal readonly string Separator;
 		
             internal ToValue( [CanBeNull] string separator ) {
                 Separator = separator;
@@ -33,11 +32,10 @@ namespace SharpPipe {
         }
     }
 
-    public partial class EnumPipe<TOut> {
+    public partial struct EnumPipe<TOut> {
         /// <summary>
         /// Concatenates pipe contents into a string
         /// </summary>
-        [NotNull]
         public static Pipe<string> operator |( EnumPipe<TOut> lhs, DoConcat act ) {
             if (typeof(TOut) != typeof(string))
                 throw new TypeMismatchException("CONCAT can only be done on EnumPipe<string>");

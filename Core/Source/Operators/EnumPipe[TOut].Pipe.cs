@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Pipe;
 
 namespace SharpPipe {
-	public partial class EnumPipe<TOut> {
+	public partial struct EnumPipe<TOut> {
 		/// <summary>
 		/// Forward pipe operator. Performs an action on EnumerablePipe.
 		/// </summary>
 		[NotNull]
 		[UsedImplicitly]
-		public static SharpAct<IEnumerable<TOut>> operator |([NotNull] EnumPipe<TOut> lhs, [NotNull] SharpAct<IEnumerable<TOut>> act)
+		public static SharpAct<IEnumerable<TOut>> operator |(EnumPipe<TOut> lhs, [NotNull] SharpAct<IEnumerable<TOut>> act)
 		{
-			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (act == null) throw new ArgumentNullException(nameof(act));
 
 			return SharpAct.FromAction<IEnumerable<TOut>>(_ => act.Action(lhs.Get));
@@ -24,8 +21,7 @@ namespace SharpPipe {
 		/// </summary>
 		[NotNull]
 		[UsedImplicitly]
-		public static SharpAct operator |( [NotNull] EnumPipe<TOut> lhs, [NotNull] SharpAct<TOut> act ) {
-			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
+		public static SharpAct operator |( EnumPipe<TOut> lhs, [NotNull] SharpAct<TOut> act ) {
 			if (act == null) throw new ArgumentNullException(nameof(act));
 
 			void Transformed( IEnumerable<TOut> _ ) {

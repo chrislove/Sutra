@@ -2,6 +2,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 using static SharpPipe.Pipe;
+// ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Pipe {
@@ -20,11 +21,10 @@ namespace SharpPipe {
         public struct ToValue {}
     }
 
-    public partial class EnumPipe<TOut> {
+    public partial struct EnumPipe<TOut> {
         /// <summary>
         /// Converts pipe contents into List{TOut}
         /// </summary>
-        [NotNull]
         public static Pipe<List<TOut>> operator |( EnumPipe<TOut> lhs, DoToList act ) => IN(lhs.Get.ToList());
         
         /// <summary>

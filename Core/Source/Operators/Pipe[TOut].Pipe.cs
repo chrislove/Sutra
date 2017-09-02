@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public partial class Pipe<TOut> {
+	public partial struct Pipe<TOut> {
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>

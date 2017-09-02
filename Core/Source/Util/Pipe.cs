@@ -7,29 +7,27 @@ namespace SharpPipe
 {
 	public static partial class Pipe
 	{
-		[NotNull] internal static Pipe<T> FromObject<T>(T obj) => FromFunc(SharpFunc.WithValue(obj));
-		[NotNull] internal static Pipe<T> FromFunc<T>(IOutFunc<T> func) => new Pipe<T>(func);
+		internal static Pipe<T> FromObject<T>(T obj) => FromFunc(SharpFunc.WithValue(obj));
+		internal static Pipe<T> FromFunc<T>(IOutFunc<T> func) => new Pipe<T>(func);
 
 		/// <summary>
 		/// Initializes pipe with an object.
 		/// </summary>
-		[NotNull] public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
+		public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
 
 		/// <summary>
 		/// Initializes EnumPipe with contents.
 		/// </summary>
-		[NotNull]
 		public static EnumPipe<TOut> ENUM<TOut>( [NotNull] params TOut[] objs ) => EnumPipe.FromEnumerable(objs);
 
 		/// <summary>
 		/// Initializes EnumPipe with IEnumerable{T}
 		/// </summary>
-		[NotNull] public static EnumPipe<TOut> ENUM<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
+		public static EnumPipe<TOut> ENUM<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
 
 		/// <summary>
 		/// Creates an empty EnumPipe{T}
 		/// </summary>
-		[NotNull]
 		public static EnumPipe<TOut> ENUM<TOut>() => EnumPipe.FromEnumerable( Enumerable.Empty<TOut>() );
 		
 		/// <summary>

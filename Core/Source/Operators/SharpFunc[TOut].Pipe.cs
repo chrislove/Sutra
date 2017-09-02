@@ -6,7 +6,6 @@ namespace SharpPipe {
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		[NotNull]
 		public static Pipe<TOut> operator |( [NotNull] IPipe lhs, [NotNull] SharpFunc<TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
