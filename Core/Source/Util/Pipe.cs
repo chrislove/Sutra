@@ -4,12 +4,14 @@ using JetBrains.Annotations;
 
 namespace SharpPipe
 {
-	public static partial class PipeUtil
+	public delegate TOut EnumFunc<in TIn, out TOut>( TIn i );
+
+	public static partial class Pipe
 	{
 		/// <summary>
 		/// Signals a pipe to return its value.
 		/// </summary>
-		[NotNull] public static PipeEnd ___ => new PipeEnd();
+		[NotNull] public static PipeEnd __ => new PipeEnd();
 
 		/// <summary>
 		/// Initializes pipe with an object.
@@ -23,14 +25,14 @@ namespace SharpPipe
 
 
 		/// <summary>
-		/// Executes a pipe.
+		/// Executes a SharpAct.
 		/// </summary>
 		/// <example>
 		/// <code>
 		///    _( PIPE | DateTime.Now | Print );
 		/// </code>
 		/// </example>
-		public static void _<TIn>([NotNull] ActPipe<TIn> pipe) => pipe.Do();
+		public static void _( [NotNull] SharpAct act ) => act.Action(default);
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.
@@ -41,6 +43,7 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		[NotNull] public static SharpFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => SharpFunc.FromFunc(func);
+
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.
@@ -54,8 +57,8 @@ namespace SharpPipe
 
 		[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
 
-		[NotNull] public static SharpFunc<string, TOut> _<TOut>([CanBeNull] Func<string, TOut> func) => SharpFunc.FromFunc(func);
+		//[NotNull] public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] SharpFunc<TIn, TOut> func) => func;
 
-		[NotNull] public static SharpAct<TIn> __<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
+		[NotNull] public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}
 }

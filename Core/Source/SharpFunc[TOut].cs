@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
 	public sealed partial class SharpFunc<TOut> : SharpFunc<object, TOut> {
-		[NotNull] internal new Func<object, TOut> Func => base.Func;
+		[NotNull] internal new Func<object, TOut> Func => ~this;
 
 		internal SharpFunc([NotNull] Func<object, TOut> func) : this(func, typeof(TOut)) { }
 

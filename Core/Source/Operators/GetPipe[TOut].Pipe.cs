@@ -7,12 +7,12 @@ namespace SharpPipe {
 		/// Forward pipe operator
 		/// </summary>
 		[NotNull]
-		public static ActPipe<TOut> operator |( GetPipe<TOut> lhs, Action<TOut> rhs ) {
+		public static SharpAct operator |( GetPipe<TOut> lhs, Action<TOut> rhs ) {
 			// Type validation not needed
 
 			var combined = lhs.Func + rhs;
 
-			return ActPipe.FromAction(combined);
+			return SharpAct.FromAction(combined);
 		}
 
 		/// <summary>
@@ -24,14 +24,14 @@ namespace SharpPipe {
 		}
 
 		[NotNull]
-		public static ActPipe<TOut> operator |( GetPipe<TOut> lhs, SharpAct<object> rhs ) {
+		public static SharpAct operator |( GetPipe<TOut> lhs, SharpAct<object> rhs ) {
 			// Type validation not needed
 
 			return lhs | (p => rhs.Action(p));
 		}
 
 		[NotNull]
-		public static ActPipe<TOut> operator |( GetPipe<TOut> lhs, SharpAct<TOut> rhs ) {
+		public static SharpAct operator |( GetPipe<TOut> lhs, SharpAct<TOut> rhs ) {
 			// Type validation not needed
 
 			return lhs | (p => rhs.Action(p));

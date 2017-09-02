@@ -1,8 +1,9 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Linq;
-using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace SharpPipe
+{
 	public partial class SharpFunc<TIn, TOut> {
 		/// <summary>
 		/// Forward pipe operator

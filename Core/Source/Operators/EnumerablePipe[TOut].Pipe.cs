@@ -9,14 +9,14 @@ namespace SharpPipe {
 		/// </summary>
 		[NotNull]
 		[UsedImplicitly]
-		public static ActPipe<IEnumerable<TOut>> operator |([NotNull] EnumerablePipe<TOut> lhs, [NotNull] SharpAct<IEnumerable<TOut>> act)
+		public static SharpAct<IEnumerable<TOut>> operator |([NotNull] EnumerablePipe<TOut> lhs, [NotNull] SharpAct<IEnumerable<TOut>> act)
 		{
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (act == null) throw new ArgumentNullException(nameof(act));
 
 			// Type validation not needed
 
-			return ActPipe.FromAction<IEnumerable<TOut>>(_ => act.Action(lhs.Get));
+			return SharpAct.FromAction<IEnumerable<TOut>>(_ => act.Action(lhs.Get));
 		}
 
 		/// <summary>
@@ -24,7 +24,7 @@ namespace SharpPipe {
 		/// </summary>
 		[NotNull]
 		[UsedImplicitly]
-		public static ActPipe<IEnumerable<TOut>> operator |( [NotNull] EnumerablePipe<TOut> lhs, [NotNull] SharpAct<TOut> act ) {
+		public static SharpAct<IEnumerable<TOut>> operator |( [NotNull] EnumerablePipe<TOut> lhs, [NotNull] SharpAct<TOut> act ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (act == null) throw new ArgumentNullException(nameof(act));
 
@@ -34,7 +34,7 @@ namespace SharpPipe {
 				                                        foreach (var item in lhs.Get) act.Action(item);
 			                                        };
 
-			return ActPipe.FromAction(transformed);
+			return SharpAct.FromAction(transformed);
 		}
 	}
 }

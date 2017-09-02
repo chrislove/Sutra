@@ -14,6 +14,12 @@ namespace SharpPipe
 		}
 
 		/// <summary>
+		/// Returns wrapped function.
+		/// </summary>
+		[NotNull]
+		public static Func<object, object> operator ~(SharpFunc sharpFunc) => sharpFunc.Func;
+
+		/// <summary>
 		/// Used for validation, in case the in type is known.
 		/// </summary>
 		public Type InType  { get; }

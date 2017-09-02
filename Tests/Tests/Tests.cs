@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using static SharpPipe.PipeUtil;
+using static SharpPipe.Pipe;
 
 namespace SharpPipe.Tests {
 	[TestFixture]
@@ -18,7 +18,7 @@ namespace SharpPipe.Tests {
 				| AddDays(-1)
 				| GetShortDate
 				| _(i => "Yesterday: " + i)
-				| ___;
+				| __;
 
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 
@@ -51,7 +51,7 @@ namespace SharpPipe.Tests {
 
 			int pipe = IN(2)
 			           | add10Func + mult5Func
-			           | ___;
+			           | __;
 
 			Assert.That(pipe, Is.EqualTo(60));
 		}

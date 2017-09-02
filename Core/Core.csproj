@@ -45,10 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\ActPipe.cs" />
-    <Compile Include="Source\ActPipe[TIn].cs" />
     <Compile Include="Source\Operators\EnumerablePipe[TOut].Composition.cs" />
-    <Compile Include="Source\Operators\ActPipe[TIn].Pipe.cs" />
     <Compile Include="Source\EnumerablePipe.cs" />
     <Compile Include="Source\EnumerablePipe[TOut].cs" />
     <Compile Include="Source\Operators\EnumerablePipe[TOut].Pipe.cs" />
@@ -63,7 +60,7 @@
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Composition.cs" />
     <Compile Include="Source\SharpFunc[TOut].cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Pipe.cs" />
-    <Compile Include="Source\Util\PipeUtil.cs" />
+    <Compile Include="Source\Util\Pipe.cs" />
     <Compile Include="Source\Util\Pipe.Usability.cs" />
     <Compile Include="Source\PipeBase.cs" />
     <Compile Include="Source\PipeEnd.cs" />
