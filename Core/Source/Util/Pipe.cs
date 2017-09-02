@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe
@@ -20,15 +21,21 @@ namespace SharpPipe
 		[NotNull] public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
 
 		/// <summary>
-		/// Initializes pipe with an object.
+		/// Initializes EnumPipe with contents.
 		/// </summary>
 		[NotNull]
 		public static EnumPipe<TOut> ENUM<TOut>( [NotNull] params TOut[] objs ) => EnumPipe.FromEnumerable(objs);
 
 		/// <summary>
-		/// Initializes pipe with an object.
+		/// Initializes EnumPipe with IEnumerable{T}
 		/// </summary>
-		[NotNull] public static EnumPipe<TOut> IN<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
+		[NotNull] public static EnumPipe<TOut> ENUM<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
+
+		/// <summary>
+		/// Creates an empty EnumPipe{T}
+		/// </summary>
+		[NotNull]
+		public static EnumPipe<TOut> ENUM<TOut>() => EnumPipe.FromEnumerable( Enumerable.Empty<TOut>() );
 		
 		/// <summary>
 		/// Executes a SharpAct.
