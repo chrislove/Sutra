@@ -8,7 +8,7 @@ namespace SharpPipe {
 		/// </summary>
 		[CanBeNull]
 		public static T To<T>( [CanBeNull] this object obj ) {
-			if (obj == null) return default;
+			if (obj == null) return default(T);
 
 			try {
 				return (T) obj;

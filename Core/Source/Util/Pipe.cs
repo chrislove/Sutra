@@ -12,7 +12,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Signals a pipe to return its value.
 		/// </summary>
-		[NotNull] public static PipeEnd ___ => new PipeEnd();
+		[NotNull] public static DoEnd ___ => new DoEnd();
 
 		/// <summary>
 		/// Initializes pipe with an object.
@@ -22,9 +22,14 @@ namespace SharpPipe
 		/// <summary>
 		/// Initializes pipe with an object.
 		/// </summary>
+		[NotNull]
+		public static EnumPipe<TOut> ENUM<TOut>( [NotNull] params TOut[] objs ) => EnumPipe.FromEnumerable(objs);
+
+		/// <summary>
+		/// Initializes pipe with an object.
+		/// </summary>
 		[NotNull] public static EnumPipe<TOut> IN<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
-
-
+		
 		/// <summary>
 		/// Executes a SharpAct.
 		/// </summary>
@@ -33,7 +38,7 @@ namespace SharpPipe
 		///    _( PIPE | DateTime.Now | Print );
 		/// </code>
 		/// </example>
-		public static void _( [NotNull] SharpAct act ) => act.Action(default);
+		public static void _( [NotNull] SharpAct act ) => act.Action(null);
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.

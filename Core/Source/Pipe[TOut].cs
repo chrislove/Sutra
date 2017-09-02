@@ -12,6 +12,6 @@ namespace SharpPipe {
 			Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<TOut>();
 		}
 
-		internal TOut Get => Func.Func(default);
+		internal TOut Get => Func.Func(default(TOut));
 	}
 }

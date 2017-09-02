@@ -46,13 +46,16 @@ namespace SharpPipe.Tests {
 		}
 
 		[Test]
-		public void TestEnumerablePipe() {
-			Func<string, IEnumerable<string>> getEnumFunc = assemblyPath => Enumerable.Repeat("test", 10);
+		public void TestEnumerablePipeComposition() {
+			Func<string, IEnumerable<string>> getEnumFuncA = i => Enumerable.Repeat(i, 2);
+			Func<string, IEnumerable<string>> getEnumFuncB = i => Enumerable.Repeat(i, 3);
 
-			var enumPipe = IN("in")
-			               | __(getEnumFunc)
-			               | ___;
+			var enumPipeStr = ENUM("")
+			                  + getEnumFuncA("A")
+			                  + getEnumFuncB("B")
+			                  | CONCAT("");
 
+			Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
 		}
 
 		[Test]

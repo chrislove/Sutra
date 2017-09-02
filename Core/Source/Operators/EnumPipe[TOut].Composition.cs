@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public sealed partial class EnumPipe<TOut> {
+	public partial class EnumPipe<TOut> {
 		/// <summary>
 		/// Pipe composition operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}
 		/// </summary>

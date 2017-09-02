@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public sealed partial class EnumPipe<TOut> {
+	public partial class EnumPipe<TOut> {
 		/// <summary>
 		/// Forward pipe operator. Performs an action on EnumerablePipe.
 		/// </summary>

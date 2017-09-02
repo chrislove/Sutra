@@ -63,7 +63,7 @@
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Pipe.cs" />
     <Compile Include="Source\Util\Pipe.cs" />
     <Compile Include="Source\Util\Pipe.Usability.cs" />
-    <Compile Include="Source\PipeEnd.cs" />
+    <Compile Include="Source\PipeActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\SharpAct.cs" />
     <Compile Include="Source\SharpAct[TIn].cs" />
