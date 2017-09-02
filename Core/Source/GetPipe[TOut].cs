@@ -6,7 +6,7 @@ namespace SharpPipe {
 	{
 		[NotNull] internal new SharpFunc<TOut> Func { get; }
 
-		internal GetPipe([NotNull] ISharpFunc func) : base(func, typeof(TOut)) {
+		internal GetPipe([NotNull] ISharpFunc func) : base(func) {
 			Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<TOut>();
 		}
 

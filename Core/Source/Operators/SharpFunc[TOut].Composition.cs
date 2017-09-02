@@ -11,8 +11,6 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-			lhs.ValidateCompatibilityWith(rhs);
-
 			return (i => lhs.Func(i)) + rhs;
 		}
 

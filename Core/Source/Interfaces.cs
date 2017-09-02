@@ -1,14 +1,8 @@
 using System;
-using JetBrains.Annotations;
 
-namespace SharpPipe {
-	public interface IValidatableFunc {
-		Type InType { get; }
-
-		void ValidateInType( [CanBeNull] Type type );
-	}
-
-	public interface ISharpFunc : IValidatableFunc
+namespace SharpPipe
+{
+	public interface ISharpFunc
 	{
 		Func<object, object> Func { get; }
 	}
