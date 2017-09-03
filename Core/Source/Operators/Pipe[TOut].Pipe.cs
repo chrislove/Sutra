@@ -5,18 +5,13 @@ namespace SharpPipe {
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static SharpAct operator |( Pipe<TOut> lhs, Action<TOut> rhs ) {
+		public static SharpAct operator -( Pipe<TOut> lhs, Action<TOut> rhs ) {
 			var combined = lhs.Func + rhs;
 
 			return SharpAct.FromAction(combined);
 		}
-
-		public static SharpAct operator |( Pipe<TOut> lhs, SharpAct<object> rhs ) {
-			return lhs | (p => rhs.Action(p));
-		}
-
-		public static SharpAct operator |( Pipe<TOut> lhs, SharpAct<TOut> rhs ) {
-			return lhs | (p => rhs.Action(p));
-		}
+		
+		public static Pipe<TOut> operator |( Pipe<TOut> lhs, Func<TOut, TOut> rhs ) => Pipe.FromFunc(lhs.Func + SharpFunc.FromFunc(rhs) );
+		public static ActPipe<TOut> operator |( Pipe<TOut> lhs, ToActPipe rhs ) => ActPipe.FromPipe(lhs);
 	}
 }

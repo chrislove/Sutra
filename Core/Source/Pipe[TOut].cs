@@ -11,7 +11,7 @@ namespace SharpPipe {
 		internal Pipe( [NotNull] ISharpFunc func ) => Func = SharpFunc.FromFunc<TOut>(func);
 		internal Pipe( [NotNull] Func<TOut> func ) => Func = SharpFunc.FromFunc(func);
 
-		[CanBeNull] internal TOut Get => Func.Func(null);
+		[CanBeNull] private TOut Get => Func.Func(null);
 
 		/// <summary>
 		/// Pipe decomposition operator.

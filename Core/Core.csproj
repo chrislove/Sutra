@@ -45,12 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\ActPipe.cs" />
+    <Compile Include="Source\ActPipe{TOut].cs" />
     <Compile Include="Source\Commands\DoConcat.cs" />
     <Compile Include="Source\Commands\DoConcat.ToValue.cs" />
     <Compile Include="Source\Commands\DoExecute.cs" />
     <Compile Include="Source\Commands\DoEnd.cs" />
     <Compile Include="Source\Commands\DoToArray.cs" />
     <Compile Include="Source\Commands\DoToList.cs" />
+    <Compile Include="Source\EnumActPipe.cs" />
+    <Compile Include="Source\EnumActPipe{TOut].cs" />
     <Compile Include="Source\EnumFunc[TIn, TOut].cs" />
     <Compile Include="Source\Operators\EnumPipe[TOut].Composition.cs" />
     <Compile Include="Source\EnumPipe.cs" />
@@ -59,6 +63,7 @@
     <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
+    <Compile Include="Source\ToActPipe.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Source\Pipe[TOut].cs" />
     <Compile Include="Source\Operators\Pipe[TOut].Pipe.cs" />
@@ -66,6 +71,7 @@
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Composition.cs" />
     <Compile Include="Source\SharpFunc[TOut].cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Pipe.cs" />
+    <Compile Include="Source\Util\PathUtil.cs" />
     <Compile Include="Source\Util\Pipe.cs" />
     <Compile Include="Source\Util\Pipe.Usability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

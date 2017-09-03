@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+// ReSharper disable InconsistentNaming
 
 namespace SharpPipe
 {
@@ -51,6 +51,11 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		public static SharpFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => SharpFunc.FromFunc(func);
+		
+		/// <summary>
+		/// Same input and output type
+		/// </summary>
+		public static SharpFunc<T, T> _<T>([CanBeNull] Func<T, T> func)            => SharpFunc.FromFunc(func);
 		
 		public static EnumInFunc<TIn, TOut> ENUM<TIn, TOut>([CanBeNull] Func<IEnumerable<TIn>, TOut> func) => EnumInFunc.FromFunc(func);
 
