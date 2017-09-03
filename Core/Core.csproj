@@ -45,13 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Commands\DoExecute.cs" />
     <Compile Include="Source\Commands\DoConcat.cs" />
+    <Compile Include="Source\Commands\DoConcat.ToValue.cs" />
+    <Compile Include="Source\Commands\DoExecute.cs" />
     <Compile Include="Source\Commands\DoEnd.cs" />
     <Compile Include="Source\Commands\DoToArray.cs" />
     <Compile Include="Source\Commands\DoToList.cs" />
-    <Compile Include="Source\Commands\SharpAct.cs" />
-    <Compile Include="Source\EnumFunc.cs" />
     <Compile Include="Source\EnumFunc[TIn, TOut].cs" />
     <Compile Include="Source\Operators\EnumPipe[TOut].Composition.cs" />
     <Compile Include="Source\EnumPipe.cs" />

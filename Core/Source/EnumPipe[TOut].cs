@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SharpPipe
 {
-	public partial struct EnumPipe<TOut> : IPipe {
+	public partial struct EnumPipe<TOut> {
 		internal EnumPipe([CanBeNull] IEnumerable<TOut> obj) : this(SharpFunc.WithValue(obj) ) { }
 
 		internal EnumPipe( [NotNull] IOutFunc<IEnumerable<TOut>> func ) {
@@ -12,8 +12,6 @@ namespace SharpPipe
 		}
 		
 		internal SharpFunc<IEnumerable<TOut>> Func { get; }
-		SharpFunc<object> IPipe.Func => SharpFunc.FromFunc<object>(Func);
-
 
 		[CanBeNull] internal IEnumerable<TOut> Get => Func.Func(default(IEnumerable<TOut>));
 

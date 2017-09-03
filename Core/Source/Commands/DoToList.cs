@@ -8,15 +8,13 @@ namespace SharpPipe {
     public static partial class Pipe {
         public static DoToList TOLIST => new DoToList();
     }
-    
+
     public struct DoToList {
         /// <summary>
         /// Pipe decomposition operator.
         /// Returns the value contained within Pipe{List{T}}
         /// </summary>
-        public static ToValue operator ~( DoToList x ) {
-            return new ToValue();
-        }
+        public static ToValue operator ~( DoToList x ) => new ToValue();
 
         public struct ToValue {}
     }

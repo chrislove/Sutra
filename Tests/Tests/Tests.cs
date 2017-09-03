@@ -7,39 +7,47 @@ namespace SharpPipe.Tests  {
 	public sealed class Tests : TestBase {
 		private static SharpFunc<DateTime, DateTime> AddDays( int days ) => _(( DateTime d ) => d.AddDays(days) );
 
-		private static SharpFunc<DateTime, string> GetLongDate  => _(( DateTime d ) => d.ToLongDateString());
 		private static SharpFunc<DateTime, string> GetShortDate => _(( DateTime d ) => d.ToShortDateString());
 
+		private static Pipe<string> YesterdayPipe {
+			get {
+				return IN(DateTime.Now)
+				       | AddDays(-1)
+				       | GetShortDate
+				       | _(i => "Yesterday: " + i);
+			}
+		}
+		
 		[Test]
-		public void TestGetPipe() {
+		public void Test_Pipe_OUT() {
 			var yesterday =
-				IN(DateTime.Now)
-				| AddDays(-1)
-				| GetShortDate
-				| _(i => "Yesterday: " + i)
+				YesterdayPipe
 				| OUT;
-
+			
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
-
 			Assert.That(yesterday, Is.EqualTo(expected));
 		}
 
-		[Test]
-		public void TestActPipe() {
-			// Arrange
 
-			// Act
+		[Test]
+		public void Test_SharpAct_DecompositionOperator_Executes() {
 			var pipe =
-				IN(DateTime.Now)
-				| AddDays(+30)
-				| GetLongDate
-				| _(i => "Next month: " + i)
+				YesterdayPipe
 				| ~WriteLine;
 
-			// Assert
-			string expectedOutput = "Next month: " + DateTime.Now.AddDays(+30).ToLongDateString();
-			
-			Assert.That(WriteLineOutput, Is.EqualTo(expectedOutput) );
+			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
+			Assert.That(WriteLineOutput, Is.EqualTo(expected) );
+		}
+		
+		[Test]
+		public void Test_SharpAct_DO_Executes() {
+			var pipe =
+				YesterdayPipe
+				| WriteLine
+				| DO;
+
+			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
+			Assert.That(WriteLineOutput, Is.EqualTo(expected) );
 		}
 
 

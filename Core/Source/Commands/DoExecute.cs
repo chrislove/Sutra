@@ -7,7 +7,6 @@ using static SharpPipe.Pipe;
 
 namespace SharpPipe {
     public static partial class Pipe {
-        // ReSharper disable once MemberCanBePrivate.Global
         public static DoExecute DO => new DoExecute();
 
         public struct VOID {
@@ -24,19 +23,6 @@ namespace SharpPipe {
     }
 
     public partial struct EnumPipe<TOut> {       
-        /*
-        /// <summary>
-        /// Performs an action on every item of the EnumPipe
-        /// </summary>
-        [UsedImplicitly]
-        public static SharpAct operator |( EnumPipe<TOut> lhs, SharpAct<TOut> act ) {
-            void Transformed( IEnumerable<TOut> _ ) {
-                foreach (var item in lhs.Get) act.Action(item);
-            }
-
-            return SharpAct.FromAction( () => Transformed(null) );
-        }*/
-
         /// <summary>
         /// Performs an action either on every item of the EnumPipe, or on the EnumPipe itself (depending on DoExecute function input).
         /// </summary>
@@ -53,10 +39,11 @@ namespace SharpPipe {
     }
 
     public struct DoExecute {
-        [NotNull] internal readonly Action<object> Action;
+        [NotNull]
+        internal readonly Action<object> Action;
         internal readonly Type InType;
 
-        internal DoExecute( [NotNull] Action<object> action, Type inType = null ) {
+        private DoExecute( [NotNull] Action<object> action, Type inType = null ) {
             Action = action ?? throw new ArgumentNullException(nameof(action));
             InType = inType;
         }

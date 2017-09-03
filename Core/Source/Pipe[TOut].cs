@@ -8,11 +8,10 @@ namespace SharpPipe {
 		internal SharpFunc<TOut> Func { get; }
 		SharpFunc<object> IPipe.Func => SharpFunc.FromFunc<object>(Func);
 
-		internal Pipe([NotNull] ISharpFunc func) {
-			Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<TOut>();
-		}
+		internal Pipe( [NotNull] ISharpFunc func ) => Func = SharpFunc.FromFunc<TOut>(func);
+		internal Pipe( [NotNull] Func<TOut> func ) => Func = SharpFunc.FromFunc(func);
 
-		[CanBeNull] internal TOut Get => Func.Func(default(TOut));
+		[CanBeNull] internal TOut Get => Func.Func(null);
 
 		/// <summary>
 		/// Pipe decomposition operator.

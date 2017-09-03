@@ -1,23 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public struct EnumFunc<TIn, TOut> {
-		[NotNull] public Func<TIn, IEnumerable<TOut>> Func { get; }
+	/// <summary>
+	/// Transforms IEnumerable{TIn} into {TOut}
+	/// </summary>
+	public struct EnumInFunc<TIn, TOut> : IOutFunc<TOut> {
+		[NotNull] public Func<IEnumerable<TIn>, TOut> Func { get; }
 
-		internal EnumFunc( [NotNull] Func<TIn, IEnumerable<TOut>> func ) {
+		internal EnumInFunc( [NotNull] Func<IEnumerable<TIn>, TOut> func ) {
 			Func = func ?? throw new ArgumentNullException(nameof(func));
 		}
-
-		/*
+		
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static EnumPipe<TOut> operator |( Pipe<TIn> lhs, EnumFunc<TIn, IEnumerable<TOut>> rhs ) {
-			var combined = lhs.Get.Concat(rhs.Get);
+		public static Pipe<TOut> operator |( EnumPipe<TIn> lhs, EnumInFunc<TIn, TOut> rhs ) {
+			return Pipe.FromFunc( () => rhs.Func(lhs.Get) );
+		}
 
-			return EnumPipe.FromEnumerable(combined);
-		}*/
+		Func<object, object> ISharpFunc.Func {
+			get {
+				var @this = this;
+				return i => @this.Func(i.To<IEnumerable<TIn>>());
+			}
+		}
+
+		Func<object, TOut> IOutFunc<TOut>.Func {
+			get {
+				var @this = this;
+				return i => @this.Func(i.To<IEnumerable<TIn>>());
+			}
+		}
+	}
+
+	internal static class EnumInFunc {
+		public static EnumInFunc<TIn, TOut> FromFunc<TIn, TOut>(Func<IEnumerable<TIn>, TOut> func) => new EnumInFunc<TIn, TOut>(func);
 	}
 }

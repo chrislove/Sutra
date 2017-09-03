@@ -14,6 +14,7 @@ namespace SharpPipe
 																		=> new SharpFunc<TIn, TOut>(func);
 
 		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] Func<object, TOut> func) => new SharpFunc<TOut>(func);
+		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] Func<TOut> func) => new SharpFunc<TOut>( func );
 		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] ISharpFunc sharpFunc)
 													=> new SharpFunc<TOut>(i => sharpFunc.Func(i).To<TOut>());
 

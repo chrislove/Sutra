@@ -1,15 +1,9 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
 	public partial struct EnumPipe<TOut> {
-		/// <summary>
-		/// Returns SharpAct performing an action on EnumPipe.
-		/// </summary>
-		[UsedImplicitly]
-		public static SharpAct<IEnumerable<TOut>> operator |(EnumPipe<TOut> lhs, SharpAct<IEnumerable<TOut>> act)
-			=> SharpAct.FromAction<IEnumerable<TOut>>(_ => act.Action(lhs.Get));
-
 		/// <summary>
 		/// Returns SharpAct performing an action on every item of the EnumPipe.
 		/// </summary>

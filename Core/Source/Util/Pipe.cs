@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -9,6 +10,7 @@ namespace SharpPipe
 	{
 		internal static Pipe<T> FromObject<T>(T obj) => FromFunc(SharpFunc.WithValue(obj));
 		internal static Pipe<T> FromFunc<T>(IOutFunc<T> func) => new Pipe<T>(func);
+		internal static Pipe<T> FromFunc<T>(Func<T> func) => new Pipe<T>(func);
 
 		/// <summary>
 		/// Initializes pipe with an object.
@@ -49,7 +51,8 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		public static SharpFunc<TOut> _<TOut>([CanBeNull] Func<object, TOut> func) => SharpFunc.FromFunc(func);
-
+		
+		public static EnumInFunc<TIn, TOut> ENUM<TIn, TOut>([CanBeNull] Func<IEnumerable<TIn>, TOut> func) => EnumInFunc.FromFunc(func);
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.

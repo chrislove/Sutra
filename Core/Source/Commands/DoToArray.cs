@@ -1,6 +1,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 using static SharpPipe.Pipe;
+
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
@@ -13,9 +14,7 @@ namespace SharpPipe {
         /// Pipe decomposition operator.
         /// Returns the value contained within Pipe{T[]}
         /// </summary>
-        public static ToValue operator ~( DoToArray x ) {
-            return new ToValue();
-        }
+        public static ToValue operator ~( DoToArray x ) => new ToValue();
 
         public struct ToValue {}
     }
