@@ -9,8 +9,8 @@ namespace SharpPipe {
         internal EnumActPipe( [NotNull] IOutFunc<IEnumerable<TOut>> func ) {
             Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<IEnumerable<TOut>>();
         }
-		
-        internal SharpFunc<IEnumerable<TOut>> Func { get; }
+
+        private SharpFunc<IEnumerable<TOut>> Func { get; }
 
         [CanBeNull] internal IEnumerable<TOut> Get => Func.Func(default(IEnumerable<TOut>));
     }

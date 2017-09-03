@@ -7,7 +7,7 @@ namespace SharpPipe {
 	/// Transforms IEnumerable{TIn} into {TOut}
 	/// </summary>
 	public struct EnumInFunc<TIn, TOut> : IOutFunc<TOut> {
-		[NotNull] public Func<IEnumerable<TIn>, TOut> Func { get; }
+		[NotNull] private Func<IEnumerable<TIn>, TOut> Func { get; }
 
 		internal EnumInFunc( [NotNull] Func<IEnumerable<TIn>, TOut> func ) {
 			Func = func ?? throw new ArgumentNullException(nameof(func));

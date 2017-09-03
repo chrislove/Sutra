@@ -13,17 +13,17 @@ namespace SharpPipe
 		internal static Pipe<T> FromFunc<T>(Func<T> func) => new Pipe<T>(func);
 
 		/// <summary>
-		/// Initializes pipe with an object.
+		/// Creates and initializes Pipe{T} with an object.
 		/// </summary>
 		public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
 
 		/// <summary>
-		/// Initializes EnumPipe with contents.
+		/// Creates and initializes EnumPipe{T} with objects.
 		/// </summary>
 		public static EnumPipe<TOut> ENUM<TOut>( [NotNull] params TOut[] objs ) => EnumPipe.FromEnumerable(objs);
 
 		/// <summary>
-		/// Initializes EnumPipe with IEnumerable{T}
+		/// Creates and initializes EnumPipe{T} with an IEnumerable{T}.
 		/// </summary>
 		public static EnumPipe<TOut> ENUM<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
 
@@ -31,16 +31,6 @@ namespace SharpPipe
 		/// Creates an empty EnumPipe{T}
 		/// </summary>
 		public static EnumPipe<TOut> ENUM<TOut>() => EnumPipe.FromEnumerable( Enumerable.Empty<TOut>() );
-
-		/// <summary>
-		/// Executes a SharpAct.
-		/// </summary>
-		/// <example>
-		/// <code>
-		///    _( PIPE | DateTime.Now | Print );
-		/// </code>
-		/// </example>
-		public static void _( SharpAct act ) => act.Action();
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.

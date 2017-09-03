@@ -4,7 +4,7 @@ using System;
 namespace SharpPipe
 {
 	public partial struct SharpFunc<TIn, TOut> : IOutFunc<TOut> {
-		[NotNull] public Func<TIn, TOut> Func { get; }
+		[NotNull] private Func<TIn, TOut> Func { get; }
 
 		internal SharpFunc([NotNull] Func<TIn, TOut> func) {
 			Func = func ?? throw new ArgumentNullException(nameof(func));

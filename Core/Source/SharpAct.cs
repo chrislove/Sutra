@@ -9,7 +9,7 @@ namespace SharpPipe {
 	public partial struct SharpAct {
 		private SharpAct([NotNull] Action act) => Action = act ?? throw new ArgumentNullException(nameof(act));
 
-		[NotNull] internal readonly Action Action;
+		[NotNull] private readonly Action Action;
 
 		internal static SharpAct<T> FromAction<T>(Action<T> action) => new SharpAct<T>(action);
 
