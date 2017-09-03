@@ -14,12 +14,6 @@ namespace SharpPipe {
         internal DoConcat( [CanBeNull] string separator ) => Separator = separator;
 
         /// <summary>
-        /// Pipe decomposition operator.
-        /// Returns the concatenated value.
-        /// </summary>
-        public static ToValue operator ~( DoConcat x ) => new ToValue(x.Separator);
-
-        /// <summary>
         /// Concatenates pipe contents into a string
         /// </summary>
         public static Pipe<string> operator |( EnumPipe<string> lhs, DoConcat act ) {

@@ -47,12 +47,12 @@
   <ItemGroup>
     <Compile Include="Source\ActPipe.cs" />
     <Compile Include="Source\ActPipe{TOut].cs" />
-    <Compile Include="Source\Commands\DoConcat.cs" />
-    <Compile Include="Source\Commands\DoConcat.ToValue.cs" />
     <Compile Include="Source\Commands\DoExecute.cs" />
     <Compile Include="Source\Commands\DoEnd.cs" />
-    <Compile Include="Source\Commands\DoToArray.cs" />
-    <Compile Include="Source\Commands\DoToList.cs" />
+    <Compile Include="Source\Commands\Enum\DoConcat.cs" />
+    <Compile Include="Source\Commands\Enum\DoDistinct.cs" />
+    <Compile Include="Source\Commands\Enum\DoToArray.cs" />
+    <Compile Include="Source\Commands\Enum\DoToList.cs" />
     <Compile Include="Source\EnumActPipe.cs" />
     <Compile Include="Source\EnumActPipe{TOut].cs" />
     <Compile Include="Source\EnumFunc[TIn, TOut].cs" />

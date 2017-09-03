@@ -57,21 +57,5 @@ namespace SharpPipe.Tests {
 
             
         }
-
-        [Test]
-        public void Test_Decomposition() {
-            var enumerable = Enumerable.Repeat("A", 3);
-
-            var pipe = ENUM<string>()
-                       + enumerable;
-
-            string str        = pipe | ~CONCAT("");
-            List<string> list = pipe | ~TOLIST;
-            string[] array    = pipe | ~TOARRAY;
-
-            Assert.That(str, Is.EqualTo("AAA"));
-            Assert.That(list, Is.EqualTo(enumerable.ToList()));
-            Assert.That(array, Is.EqualTo(enumerable.ToArray()));
-        }
     }
 }
