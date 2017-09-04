@@ -10,7 +10,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ENUM.STR
                            + "A" + "B" + "C"
-                           | THROW & IF(ifInput);
+                           - THROW * IF(ifInput);
             }
             
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
@@ -22,7 +22,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ENUM.STR
                            + "A" + "B" + "C"
-                           | THROW & EXC("throws") & IF(ifInput);
+                           - THROW * EXC("throws") * IF(ifInput);
             }
             
             ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
@@ -34,7 +34,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ENUM.STR
                            + "A" + "B" + "C"
-                           | THROWIF(i => i == ifInput) & EXC("throws");
+                           - THROWIF(i => i == ifInput) * EXC("throws");
             }
             
             ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");

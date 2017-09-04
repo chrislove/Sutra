@@ -14,6 +14,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoNotNull act ) => lhs | FILTER(i => i != null);
+        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoNotNull act ) => lhs - WHERE(i => i != null);
     }
 }

@@ -1,32 +1,45 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
-using static SharpPipe.Commands;
-using static SharpPipe.Pipe;
+using System.Linq;
 
 namespace SharpPipe {
     /// <summary>
     /// A wrapper around System.IO.Path.
     /// </summary>
     public static class PathUtil {
-        public static SharpFunc<string, string> ChangeExtension  ( string extension )  => _<string>(path    => Path.ChangeExtension(path, extension) );
+        ///public static Func<string, string> ChangeExtension  ( string extension )  => path    => Path.ChangeExtension(path, extension);
         
-        public static SharpFunc<string, string> CombineAppend    ( string b )  => _<string>(a => Path.Combine(a, b) );
-        public static SharpFunc<string, string> CombinePrepend   ( string a )  => _<string>(b => Path.Combine(a, b) );
+        public static Func<string, string> CombineAppend    ( string b )  => a => Path.Combine(a, b);
+        public static Func<string, string> CombinePrepend   ( string a )  => b => Path.Combine(a, b);
         
-        public static SharpFunc<string, string> GetDirectoryName	           => _<string>(Path.GetDirectoryName);
-        public static SharpFunc<string, string> GetExtension		           => _<string>(Path.GetExtension);
-        public static SharpFunc<string, string> GetFileName		               => _<string>(Path.GetFileName);
-        public static SharpFunc<string, string> GetFileNameWithoutExtension    => _<string>(Path.GetFileNameWithoutExtension);
-        public static SharpFunc<string, string> GetFullPath		               => _<string>(Path.GetFullPath);
-        public static SharpFunc<string, string> GetPathRoot		               => _<string>(Path.GetPathRoot);
+        /*
+        public static Func<string, string> GetDirectoryName	              => Path.GetDirectoryName;
+        public static Func<string, string> GetExtension		              => Path.GetExtension;
+        public static Func<string, string> GetFileName		              => Path.GetFileName;
+        public static Func<string, string> GetFileNameWithoutExtension    => Path.GetFileNameWithoutExtension;
+        public static Func<string, string> GetFullPath		              => Path.GetFullPath;
+        public static Func<string, string> GetPathRoot		              => Path.GetPathRoot;
         
-        public static SharpFunc<string, bool>   HasExtension		           => _<string, bool>(Path.HasExtension);
-        public static SharpFunc<string, bool>   IsPathRooted	               => _<string, bool>(Path.IsPathRooted);
+        public static Func<string, bool>   HasExtension		              => Path.HasExtension;
+        public static Func<string, bool>   IsPathRooted	                  => Path.IsPathRooted;
         
         public static Pipe<string>              GetRandomFileName		       => PIPE.STR | Path.GetRandomFileName();
         public static Pipe<string>              GetTempFileName		           => PIPE.STR | Path.GetTempFileName();
         public static Pipe<string>              GetTempPath		               => PIPE.STR | Path.GetTempPath();
         
         public static Pipe<char[]>              GetInvalidPathChars		       => PIPE.IN( Path.GetInvalidPathChars() );
-        public static Pipe<char[]>              GetInvalidFileNameChars	       => PIPE.IN( Path.GetInvalidFileNameChars() );
+        public static Pipe<char[]>              GetInvalidFileNameChars	       => PIPE.IN( Path.GetInvalidFileNameChars() );*/
+        
+        /// <summary>
+        /// EnumPipe commands
+        /// </summary>
+        public static class E {
+            public static Func<IEnumerable<string>, IEnumerable<string>> CombineAppend    ( string b )
+                                                                            => inenum => inenum.Select(PathUtil.CombineAppend(b));
+            
+            public static Func<IEnumerable<string>, IEnumerable<string>> CombinePrepend( string a )
+                                                                            => inenum => inenum.Select(PathUtil.CombinePrepend(a));
+        }
     }
 }

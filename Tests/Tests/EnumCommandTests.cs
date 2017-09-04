@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
+using static SharpPipe.Pipe;
 
 namespace SharpPipe.Tests {
     [TestFixture]
@@ -12,9 +13,9 @@ namespace SharpPipe.Tests {
                              + Enumerable.Repeat("A", 5)
                              + Enumerable.Repeat("B", 10)
                              + Enumerable.Repeat("C", 12)
-                             | DISTINCT
-                             | CONCAT("")
-                             | OUT;
+                             - DISTINCT
+                             - CONCAT("")
+                             - OUT;
 
             Assert.That(pipeStr, Is.EqualTo("ABC"));
         }
@@ -26,9 +27,9 @@ namespace SharpPipe.Tests {
             var pipe = ENUM.STR
                        + enumerable;
 
-            string str        = pipe | CONCAT("") | OUT;
-            List<string> list = pipe | TOLIST     | OUT;
-            string[] array    = pipe | TOARRAY    | OUT;
+            string str        = pipe - CONCAT("") - OUT;
+            List<string> list = pipe - TOLIST     - OUT;
+            string[] array    = pipe - TOARRAY    - OUT;
 
             Assert.That(str,   Is.EqualTo("AAA"));
             Assert.That(list,  Is.EqualTo(enumerable.ToList()));
@@ -40,7 +41,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ENUM.STR
                            + "A" + "B" + "C" + (string) null
-                           | THROW & IFNULL;
+                           - THROW * IFNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
@@ -51,8 +52,8 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ENUM.STR
                            + "A" + "B" + "C" + (string) null
-                           | NOTNULL
-                           | THROW & IFNULL;
+                           - NOTNULL
+                           - THROW * IFNULL;
             }
 
             Assert.That(TestDelegate, Throws.Nothing);
@@ -62,10 +63,34 @@ namespace SharpPipe.Tests {
         public void Test_Filter() {
             string result = ENUM.STR
                          + "A" + "B" + "C"
-                         | FILTER(i => i != "B")
-                         | CONCAT("") | OUT;
+                         - WHERE(i => i != "B")
+                         - CONCAT("") - OUT;
             
             Assert.That(result, Is.EqualTo("AC"));
+        }
+        
+        [Test]
+        public void Test_Filter_If() {
+            bool IsLower( string str ) => str.ToCharArray().All(char.IsLower);
+            
+            string result = ENUM.STR
+                         + "A" + "B" + "C"
+                         - WHERE(i => i != "B") * IF(i => IsLower(i))
+                         - CONCAT("") - OUT;
+            
+            Assert.That(result, Is.EqualTo("ABC"));
+        }
+        
+        [Test]
+        public void Test_Select() {
+            bool IsLower( string str ) => str.ToCharArray().All(char.IsLower);
+            
+            string result = ENUM.STR
+                         + "A" + "B" + "C"
+                         - SELECT( (string i) => $"[{i}]")
+                         - CONCAT("") - OUT;
+            
+            Assert.That(result, Is.EqualTo("[A][B][C]"));
         }
     }
 }

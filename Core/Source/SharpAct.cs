@@ -20,7 +20,7 @@ namespace SharpPipe {
 		/// Executes the SharpAct
 		/// </summary>
 		[UsedImplicitly]
-		public static VOID operator |( SharpAct lhs, DoExecute execute ) {
+		public static VOID operator -( SharpAct lhs, DoExecute execute ) {
 			lhs.Action();
 			
 			return VOID.New;

@@ -15,7 +15,7 @@ namespace SharpPipe {
     }
     
     public partial struct Pipe<TOut> {
-        public static VOID operator |( Pipe<TOut> lhs, DoExecute act ) {
+        public static VOID operator -( Pipe<TOut> lhs, DoExecute act ) {
             act.Action(lhs.Get);
             
             return VOID.New;
@@ -26,7 +26,7 @@ namespace SharpPipe {
         /// <summary>
         /// Performs an action either on every item of the EnumPipe, or on the EnumPipe itself (depending on DoExecute function input).
         /// </summary>
-        public static VOID operator |( EnumPipe<TOut> lhs, DoExecute doExecute ) {
+        public static VOID operator -( EnumPipe<TOut> lhs, DoExecute doExecute ) {
             bool isOperatingOnEnumerable = typeof(IEnumerable<TOut>).IsAssignableFrom( doExecute.InType );
 
             if (isOperatingOnEnumerable)

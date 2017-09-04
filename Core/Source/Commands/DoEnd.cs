@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+// ReSharper disable InconsistentNaming
 
 namespace SharpPipe
 {
@@ -16,6 +17,6 @@ namespace SharpPipe
 		/// Forward pipe operator.
 		/// </summary>
 		[NotNull]
-		public static TOut operator |( Pipe<TOut> lhs, DoEnd doEnd ) => lhs.Get;
+		public static TOut operator -( Pipe<TOut> lhs, DoEnd doEnd ) => lhs.Get;
 	}
 }

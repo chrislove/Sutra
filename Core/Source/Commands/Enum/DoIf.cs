@@ -21,8 +21,8 @@ namespace SharpPipe {
     }
 
     public struct DoIf {
-        [NotNull] internal readonly Func<dynamic, bool> Predicate;
+        [NotNull] internal readonly Func<object, bool> Predicate;
 
-        public DoIf( [NotNull] Func<dynamic, bool> predicate ) => Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+        public DoIf( [NotNull] Func<object, bool> predicate ) => Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
     }
 }

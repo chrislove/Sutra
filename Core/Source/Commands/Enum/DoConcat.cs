@@ -16,7 +16,7 @@ namespace SharpPipe {
         /// <summary>
         /// Concatenates pipe contents into a string
         /// </summary>
-        public static Pipe<string> operator |( EnumPipe<string> lhs, DoConcat act ) {
+        public static Pipe<string> operator -( EnumPipe<string> lhs, DoConcat act ) {
             string str = lhs.Get.Aggregate("", ( a, b ) => a + b + act.Separator);
 
             return PIPE.IN(str);

@@ -19,6 +19,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static Pipe<TOut> operator |( EnumPipe<TOut> lhs, DoFirst act ) => PIPE.IN( lhs.Get.First( i => act.Predicate(i) ) );
+        public static Pipe<TOut> operator -( EnumPipe<TOut> lhs, DoFirst act ) => PIPE.IN( lhs.Get.First( i => act.Predicate(i) ) );
     }
 }

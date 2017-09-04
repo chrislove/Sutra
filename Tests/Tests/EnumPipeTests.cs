@@ -19,9 +19,9 @@ namespace SharpPipe.Tests {
             var pipe =
                 ENUM.INT
                 + Enumerable.Range(0, 3)
-                | ConvertToString
-                | CONCAT("")
-                | ~WriteLine;
+                - ConvertToString
+                - CONCAT("")
+                - ~WriteLine;
 
             const string expectedOutput = "012";
             Assert.That(WriteLineOutput, Is.EqualTo(expectedOutput));
@@ -35,8 +35,8 @@ namespace SharpPipe.Tests {
             string enumPipeStr = ENUM.STR
                                  + GetEnumFuncA("A")
                                  + GetEnumFuncB("B")
-                                 | CONCAT("")
-                                 | OUT;
+                                 - CONCAT("")
+                                 - OUT;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }
@@ -46,10 +46,22 @@ namespace SharpPipe.Tests {
             string enumPipeStr = ENUM.STR
                                  + Enumerable.Repeat("A", 2)
                                  + Enumerable.Repeat("B", 3)
-                                 | CONCAT("")
-                                 | OUT;
+                                 - CONCAT("")
+                                 - OUT;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
+        }
+
+        [Test]
+        public void Test_PipeConversion() {
+            IEnumerable<string> ToEnumerable( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
+
+            string result = (PIPE.IN("IN")
+                             ^ ToEnumerable)
+                            - CONCAT(";") - OUT;
+            
+            Assert.That(result, Is.EqualTo("IN0;IN1;IN2;"));
+
         }
 
         [Test]

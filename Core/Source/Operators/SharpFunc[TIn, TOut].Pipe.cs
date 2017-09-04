@@ -8,7 +8,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static Pipe<TOut> operator |( Pipe<TIn> lhs, SharpFunc<TIn, TOut> rhs ) => PIPE.IN(lhs.Func + rhs);
+		public static Pipe<TOut> operator -( Pipe<TIn> lhs, SharpFunc<TIn, TOut> rhs ) => PIPE.IN(lhs.Func + rhs);
 
 		
 		
@@ -16,7 +16,7 @@ namespace SharpPipe
 		/// Forward pipe operator. Transforms an EnumerablePipe.
 		/// </summary>
 		[UsedImplicitly]
-		public static EnumPipe<TOut> operator |( EnumPipe<TIn> lhs, SharpFunc<TIn, TOut> func ) {
+		public static EnumPipe<TOut> operator -( EnumPipe<TIn> lhs, SharpFunc<TIn, TOut> func ) {
 			var enumerable = lhs.Get.Select(i => func.Func(i).To<TOut>());
 
 			return EnumPipe.FromEnumerable(enumerable);

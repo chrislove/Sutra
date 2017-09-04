@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using JetBrains.Annotations;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe
 {
-	public static class Pipe
+	public static partial class Pipe
 	{
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.

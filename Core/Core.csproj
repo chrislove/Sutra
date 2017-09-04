@@ -53,7 +53,8 @@
     <Compile Include="Source\Commands\Enum\DoConcat.cs" />
     <Compile Include="Source\Commands\Enum\DoDistinct.cs" />
     <Compile Include="Source\Commands\Enum\DoException.cs" />
-    <Compile Include="Source\Commands\Enum\DoFilter.cs" />
+    <Compile Include="Source\Commands\Enum\DoSelect.cs" />
+    <Compile Include="Source\Commands\Enum\DoWhere.cs" />
     <Compile Include="Source\Commands\Enum\DoFirst.cs" />
     <Compile Include="Source\Commands\Enum\DoIf.cs" />
     <Compile Include="Source\Commands\Enum\DoNotNull.cs" />

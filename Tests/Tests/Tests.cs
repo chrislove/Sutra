@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using NUnit.Framework;
+using static System.IO.Path;
 using static SharpPipe.PathUtil;
 using static SharpPipe.Commands;
 using static SharpPipe.Pipe;
@@ -15,9 +15,9 @@ namespace SharpPipe.Tests  {
 		private static Pipe<string> YesterdayPipe {
 			get {
 				return PIPE.IN(DateTime.Now)
-				       | AddDays(-1)
-				       | GetShortDate
-				       | _(i => "Yesterday: " + i);
+				       - AddDays(-1)
+				       - GetShortDate
+				       - _(i => "Yesterday: " + i);
 			}
 		}
 		
@@ -25,7 +25,7 @@ namespace SharpPipe.Tests  {
 		public void Test_Pipe_OUT() {
 			var yesterday =
 				YesterdayPipe
-				| OUT;
+				- OUT;
 			
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(yesterday, Is.EqualTo(expected));
@@ -36,7 +36,7 @@ namespace SharpPipe.Tests  {
 		public void Test_SharpAct_DecompositionOperator_Executes() {
 			var pipe =
 				YesterdayPipe
-				| ~WriteLine;
+				- ~WriteLine;
 
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(WriteLineOutput, Is.EqualTo(expected) );
@@ -46,8 +46,8 @@ namespace SharpPipe.Tests  {
 		public void Test_SharpAct_DO_Executes() {
 			var pipe =
 				YesterdayPipe
-				| A | WriteLine
-				| DO;
+				- A - WriteLine
+				- DO;
 
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(WriteLineOutput, Is.EqualTo(expected) );
@@ -60,8 +60,8 @@ namespace SharpPipe.Tests  {
 			var mult5Func = _<int>(i => i * 5);
 
 			int pipe = PIPE.IN(2)
-			           | add10Func + mult5Func
-			           | OUT;
+			           - (add10Func + mult5Func)
+			           - OUT;
 
 			Assert.That(pipe, Is.EqualTo(60));
 		}
@@ -72,11 +72,11 @@ namespace SharpPipe.Tests  {
 			const string inPath = @"Library\Assembly.dll";
 
 			string combined = PIPE.IN(inPath)
-			                  | CombinePrepend(projectDirectory)
-			                  | GetFullPath
-			                  | OUT;
+			                  - CombinePrepend(projectDirectory)
+			                  - GetFullPath
+			                  - OUT;
 			
-			Assert.That(combined, Is.EqualTo( Path.Combine(projectDirectory, inPath) ));
+			Assert.That(combined, Is.EqualTo( Combine(projectDirectory, inPath) ));
 		}
 	}
 }

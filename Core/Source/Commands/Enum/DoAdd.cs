@@ -12,7 +12,7 @@ namespace SharpPipe {
     }
 
     public struct DoStartAdd {
-        public static DoAdd operator &( DoStartAdd lhs, [CanBeNull] object obj ) => new DoAdd(obj);
+        public static DoAdd operator *( DoStartAdd lhs, [CanBeNull] object obj ) => new DoAdd(obj);
     }
 
     public struct DoAdd {
@@ -25,7 +25,7 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoAdd act ) {           
+        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoAdd act ) {           
             if (act.Obj is TOut[])
                 return lhs + act.Obj.To<TOut[]>();
             

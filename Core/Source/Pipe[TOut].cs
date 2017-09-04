@@ -17,6 +17,6 @@ namespace SharpPipe {
 		/// Returns the value contained within the pipe. An equivalent of: pipe | OUT
 		/// </summary>
 		[NotNull]
-		public static TOut operator ~( Pipe<TOut> pipe ) => pipe | OUT;
+		public static TOut operator ~( Pipe<TOut> pipe ) => pipe - OUT;
 	}
 }

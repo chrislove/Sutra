@@ -7,4 +7,8 @@ namespace SharpPipe {
     }
     
     public struct ToActPipe {}
+
+    public partial struct Pipe<TOut> {
+        public static ActPipe<TOut> operator -( Pipe<TOut> lhs, ToActPipe rhs )        => ActPipe.FromPipe(lhs);
+    }
 }
