@@ -1,6 +1,6 @@
 using System;
 using JetBrains.Annotations;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
 	/// <summary>

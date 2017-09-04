@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using static SharpPipe.Commands;
 using static SharpPipe.Pipe;
 
 // ReSharper disable SuggestVarOrType_Elsewhere

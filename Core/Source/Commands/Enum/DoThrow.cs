@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Throws an exception if any object in the EnumPipe matches the predicate on the right.
         /// Usage: THROW & IF(null)

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
+// ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Appends a value to EnumPipe{T}.
-        /// Usage: ADD & obj
         /// </summary>
-        // ReSharper disable once InconsistentNaming
         public static DoStartAdd ADD => new DoStartAdd();
+        public static DoAdd IN([CanBeNull] object obj) => new DoAdd(obj);
     }
 
     public struct DoStartAdd {

@@ -22,6 +22,6 @@ namespace SharpPipe
 		/// Creates a SharpFunc that contains the input value.
 		/// </summary>
 		/// <param name="obj">Value to wrap</param>
-		public static SharpFunc<TOut> WithValue<TOut>(TOut obj) => SharpFunc.FromFunc(i => obj);
+		public static IOutFunc<TOut> WithValue<TOut>(TOut obj) => SharpFunc.FromFunc(i => obj);
 	}
 }

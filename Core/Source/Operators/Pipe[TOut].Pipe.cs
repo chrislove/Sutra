@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace SharpPipe {
 	public partial struct Pipe<TOut> {
@@ -11,8 +12,22 @@ namespace SharpPipe {
 			return SharpAct.FromAction(combined);
 		}
 		
-		public static Pipe<TOut>    operator |( Pipe<TOut> lhs, Func<TOut, TOut> rhs ) => Pipe.FromFunc(lhs.Func + SharpFunc.FromFunc(rhs) );
+		public static Pipe<TOut>    operator |( Pipe<TOut> lhs, Func<TOut, TOut> rhs ) => PIPE.IN(lhs.Func + SharpFunc.FromFunc(rhs) );
 		
 		public static ActPipe<TOut> operator |( Pipe<TOut> lhs, ToActPipe rhs )        => ActPipe.FromPipe(lhs);
+
+		/// <summary>
+		/// Forward pipe operator
+		/// </summary>
+		public static Pipe<TOut> operator |( Pipe<TOut> lhs, [NotNull] IOutFunc<TOut> rhs ) {
+			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+			
+			return PIPE.IN(lhs.Func + rhs);
+		}
+		
+		/// <summary>
+		/// Replaces pipe contents with object
+		/// </summary>
+		public static Pipe<TOut> operator |( Pipe<TOut> lhs, TOut rhs ) => PIPE.IN(rhs);
 	}
 }

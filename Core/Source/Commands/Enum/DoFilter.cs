@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         public static DoFilter FILTER<T>(Func<T, bool> predicate) => FILTER(i => predicate(i.To<T>()));
         public static DoFilter FILTER(Func<dynamic, bool> predicate) => new DoFilter(predicate);
     }

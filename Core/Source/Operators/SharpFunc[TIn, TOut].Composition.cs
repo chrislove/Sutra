@@ -6,7 +6,8 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		public static SharpFunc<TIn, TOut> operator +( [NotNull] IOutFunc<TIn> lhs, SharpFunc<TIn, TOut> rhs ) {
+		[NotNull]
+		public static IOutFunc<TOut> operator +( [NotNull] IOutFunc<TIn> lhs, SharpFunc<TIn, TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 
 			Func<object, TIn> lhsFunc = lhs.Func;
@@ -20,7 +21,7 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		public static SharpFunc<TOut> operator +( [NotNull] Func<object, TIn> lhs, SharpFunc<TIn, TOut> rhs ) {
+		public static IOutFunc<TOut> operator +( [NotNull] Func<object, TIn> lhs, SharpFunc<TIn, TOut> rhs ) {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 
 			TOut CombinedFunc( object i ) => rhs.Func(lhs(i));

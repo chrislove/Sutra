@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Specifies the type to be used for a command.
         /// </summary>

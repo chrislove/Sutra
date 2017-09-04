@@ -1,6 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests {
     [TestFixture]
@@ -9,7 +9,7 @@ namespace SharpPipe.Tests {
         public void Test_ADD_WithIncompatibleType_Throws() {
             void TestDelegate() {
                 var pipe = ENUM.STR
-                           | ADD & 0;
+                           | IN(0);
             }
             
             Assert.That(TestDelegate, Throws.TypeOf<TypeMismatchException>());
@@ -19,7 +19,8 @@ namespace SharpPipe.Tests {
         public void Test_ADD_WithCompatibleType_DoesntThrow() {
             void TestDelegate() {
                 var pipe = ENUM.STR
-                           | ADD & "test";
+                           | ADD & "test"
+                           | IN("test");
             }
             
             Assert.That(TestDelegate, Throws.Nothing);
@@ -31,20 +32,22 @@ namespace SharpPipe.Tests {
 
             string result = ENUM.STR
                             + "A" + "B" + "C"
+                            | IN(enumerable)
                             | ADD & enumerable
                             | CONCAT("") | OUT;
             
-            Assert.That(result, Is.EqualTo("ABCDEF"));
+            Assert.That(result, Is.EqualTo("ABCDEFDEF"));
         }
         
         [Test]
         public void Test_ADD_Array() {
             string result = ENUM.STR
                             + "A" + "B" + "C"
+                            | IN( new[] {"D", "E", "F"} )
                             | ADD & new[] {"D", "E", "F"}
                             | CONCAT("") | OUT;
             
-            Assert.That(result, Is.EqualTo("ABCDEF"));
+            Assert.That(result, Is.EqualTo("ABCDEFDEF"));
         }
         
         [Test]
@@ -54,10 +57,11 @@ namespace SharpPipe.Tests {
             
             string result = ENUM.STR
                             + "A" + "B" + "C"
+                            | IN(testPipe)
                             | ADD & testPipe
                             | CONCAT("") | OUT;
             
-            Assert.That(result, Is.EqualTo("ABCDEF"));
+            Assert.That(result, Is.EqualTo("ABCDEFDEF"));
         }
     }
 }

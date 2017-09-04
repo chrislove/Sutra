@@ -3,10 +3,10 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         public static DoExecute DO => new DoExecute();
 
         public struct VOID {

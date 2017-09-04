@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Throws an exception if any object in the EnumPipe matches the predicate on the right.
         /// Usage: THROWIF & (o => o == null)

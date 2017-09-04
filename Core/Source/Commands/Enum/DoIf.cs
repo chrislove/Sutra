@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Condition command constraint.
         /// </summary>

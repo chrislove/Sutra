@@ -2,7 +2,7 @@
 
 namespace SharpPipe
 {
-	public static partial class Pipe {
+	public static partial class Commands {
 		/// <summary>
 		/// Signals a pipe to return its value.
 		/// </summary>

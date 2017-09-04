@@ -8,7 +8,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static Pipe<TOut> operator |( Pipe<TIn> lhs, SharpFunc<TIn, TOut> rhs ) => Pipe.FromFunc(lhs.Func + rhs);
+		public static Pipe<TOut> operator |( Pipe<TIn> lhs, SharpFunc<TIn, TOut> rhs ) => PIPE.IN(lhs.Func + rhs);
 
 		
 		

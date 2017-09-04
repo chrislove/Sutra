@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Adds a WITH command constraint.
         /// </summary>

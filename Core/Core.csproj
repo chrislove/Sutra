@@ -62,8 +62,8 @@
     <Compile Include="Source\Commands\Enum\DoToList.cs" />
     <Compile Include="Source\Commands\Enum\DoOfType.cs" />
     <Compile Include="Source\Commands\Enum\DoWith.cs" />
-    <Compile Include="Source\Commands\Enum\PipeCommandException.cs" />
-    <Compile Include="Source\Commands\Enum\PipeUserException.cs" />
+    <Compile Include="Source\Commands\PipeCommandException.cs" />
+    <Compile Include="Source\Commands\PipeUserException.cs" />
     <Compile Include="Source\EnumActPipe.cs" />
     <Compile Include="Source\EnumActPipe{TOut].cs" />
     <Compile Include="Source\EnumFunc[TIn, TOut].cs" />
@@ -72,11 +72,10 @@
     <Compile Include="Source\EnumPipe[TOut].cs" />
     <Compile Include="Source\Operators\EnumPipe[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
-    <Compile Include="Source\Operators\SharpFunc[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
     <Compile Include="Source\ToActPipe.cs" />
     <Compile Include="Source\Util\EmptyPipeException.cs" />
-    <Compile Include="Source\Util\ENUM.cs" />
+    <Compile Include="Source\Util\ENUM.Factory.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Source\Pipe[TOut].cs" />
     <Compile Include="Source\Operators\Pipe[TOut].Pipe.cs" />
@@ -91,6 +90,7 @@
     <Compile Include="Source\SharpAct[TIn].cs" />
     <Compile Include="Source\SharpFunc.cs" />
     <Compile Include="Source\SharpFunc[TIn, TOut].cs" />
+    <Compile Include="Source\Util\PIPE.Factory.cs" />
     <Compile Include="Source\Util\SharpPipeException.cs" />
     <Compile Include="Source\Util\TypeMismatchException.cs" />
     <Compile Include="Source\Util\TypeExtensions.cs" />

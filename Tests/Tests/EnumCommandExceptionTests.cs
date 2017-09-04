@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests {
     [TestFixture]

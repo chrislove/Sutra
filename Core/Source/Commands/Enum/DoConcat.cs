@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         public static DoConcat CONCAT(string separator) => new DoConcat(separator);
     }
 
@@ -19,7 +19,7 @@ namespace SharpPipe {
         public static Pipe<string> operator |( EnumPipe<string> lhs, DoConcat act ) {
             string str = lhs.Get.Aggregate("", ( a, b ) => a + b + act.Separator);
 
-            return IN(str);
+            return PIPE.IN(str);
         }
     }
 }

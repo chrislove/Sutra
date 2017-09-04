@@ -2,18 +2,19 @@
 using System.IO;
 using NUnit.Framework;
 using static SharpPipe.PathUtil;
+using static SharpPipe.Commands;
 using static SharpPipe.Pipe;
 
 namespace SharpPipe.Tests  {
 	[TestFixture]
 	public sealed class Tests : TestBase {
-		private static SharpFunc<DateTime, DateTime> AddDays( int days ) => _<DateTime>(d => d.AddDays(days) );
+		private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
 
 		private static SharpFunc<DateTime, string> GetShortDate => _(( DateTime d ) => d.ToShortDateString());
 
 		private static Pipe<string> YesterdayPipe {
 			get {
-				return IN(DateTime.Now)
+				return PIPE.IN(DateTime.Now)
 				       | AddDays(-1)
 				       | GetShortDate
 				       | _(i => "Yesterday: " + i);
@@ -58,7 +59,7 @@ namespace SharpPipe.Tests  {
 			var add10Func = _<int>(i => i + 10);
 			var mult5Func = _<int>(i => i * 5);
 
-			int pipe = IN(2)
+			int pipe = PIPE.IN(2)
 			           | add10Func + mult5Func
 			           | OUT;
 
@@ -70,7 +71,7 @@ namespace SharpPipe.Tests  {
 			const string projectDirectory = @"C:\Project";
 			const string inPath = @"Library\Assembly.dll";
 
-			string combined = IN(inPath)
+			string combined = PIPE.IN(inPath)
 			                  | CombinePrepend(projectDirectory)
 			                  | GetFullPath
 			                  | OUT;

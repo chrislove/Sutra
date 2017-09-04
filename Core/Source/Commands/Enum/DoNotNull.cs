@@ -1,7 +1,7 @@
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         /// <summary>
         /// Filters null objects out from the EnumPipe{T}
         /// </summary>

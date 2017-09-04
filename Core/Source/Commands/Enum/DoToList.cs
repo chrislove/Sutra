@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         public static DoToList TOLIST => new DoToList();
     }
 
@@ -15,6 +15,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into List{TOut}
         /// </summary>
-        public static Pipe<List<TOut>> operator |( EnumPipe<TOut> lhs, DoToList act ) => IN(lhs.Get.ToList());
+        public static Pipe<List<TOut>> operator |( EnumPipe<TOut> lhs, DoToList act ) => PIPE.IN(lhs.Get.ToList());
     }
 }

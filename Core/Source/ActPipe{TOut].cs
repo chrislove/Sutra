@@ -1,11 +1,10 @@
 using System;
 using JetBrains.Annotations;
-using static SharpPipe.Pipe;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public struct ActPipe<TOut> : IPipe {
+    public struct ActPipe<TOut> {
         private SharpFunc<TOut> Func { get; }
-        SharpFunc<object> IPipe.Func => SharpFunc.FromFunc<object>(Func);
 
         internal ActPipe( [NotNull] ISharpFunc func ) => Func = SharpFunc.FromFunc<TOut>(func);
         internal ActPipe( [NotNull] Func<TOut> func ) => Func = SharpFunc.FromFunc(func);

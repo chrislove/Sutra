@@ -1,4 +1,5 @@
 using System.IO;
+using static SharpPipe.Commands;
 using static SharpPipe.Pipe;
 
 namespace SharpPipe {
@@ -21,12 +22,11 @@ namespace SharpPipe {
         public static SharpFunc<string, bool>   HasExtension		           => _<string, bool>(Path.HasExtension);
         public static SharpFunc<string, bool>   IsPathRooted	               => _<string, bool>(Path.IsPathRooted);
         
+        public static Pipe<string>              GetRandomFileName		       => PIPE.STR | Path.GetRandomFileName();
+        public static Pipe<string>              GetTempFileName		           => PIPE.STR | Path.GetTempFileName();
+        public static Pipe<string>              GetTempPath		               => PIPE.STR | Path.GetTempPath();
         
-        
-        public static Pipe<string>              GetRandomFileName		       => IN(Path.GetRandomFileName());
-        public static Pipe<string>              GetTempFileName		           => IN(Path.GetTempFileName());
-        public static Pipe<string>              GetTempPath		               => IN(Path.GetTempPath());
-        public static Pipe<char[]>              GetInvalidPathChars		       => IN(Path.GetInvalidPathChars());
-        public static Pipe<char[]>              GetInvalidFileNameChars	       => IN(Path.GetInvalidFileNameChars());
+        public static Pipe<char[]>              GetInvalidPathChars		       => PIPE.IN( Path.GetInvalidPathChars() );
+        public static Pipe<char[]>              GetInvalidFileNameChars	       => PIPE.IN( Path.GetInvalidFileNameChars() );
     }
 }

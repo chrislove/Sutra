@@ -20,7 +20,7 @@ namespace SharpPipe
 		/// Returns the value contained within the pipe. An equivalent of: pipe | OUT
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<TOut> operator ~( EnumPipe<TOut> pipe ) => pipe | Pipe.OUT;
+		public static IEnumerable<TOut> operator ~( EnumPipe<TOut> pipe ) => pipe | Commands.OUT;
 
 		/// <summary>
 		/// Returns pipe contents

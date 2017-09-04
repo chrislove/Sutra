@@ -1,7 +1,7 @@
 using System.Linq;
 
 namespace SharpPipe {
-    public static partial class Pipe {
+    public static partial class Commands {
         // ReSharper disable once InconsistentNaming
         public static DoDistinct DISTINCT => new DoDistinct();
     }
