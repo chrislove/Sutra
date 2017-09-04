@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\EnumCommandAddTests.cs" />
+    <Compile Include="Tests\EnumCommandExceptionTests.cs" />
     <Compile Include="Tests\EnumCommandTests.cs" />
     <Compile Include="Tests\EnumPipeTests.cs" />
     <Compile Include="Tests\Tests.cs" />

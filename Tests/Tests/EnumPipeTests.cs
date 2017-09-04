@@ -51,11 +51,15 @@ namespace SharpPipe.Tests {
         }
 
         [Test]
-        public void Test_EnumInFunc() {
-            EnumInFunc<string, string> CONCAT( string separator )
-                => ENUM<string, string>( enumerable => enumerable.Aggregate("", ( a, b ) => a + b + separator) );
+        public void Test_Transform_With_IEnumerableFunction() {
+        //public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, Func<IEnumerable<TOut>, IEnumerable<TOut>> func ) {
 
-            
+        }
+        
+        [Test]
+        public void Test_Transform_With_NormalFunction() {
+        //public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, Func<IEnumerable<TOut>, IEnumerable<TOut>> func ) {
+
         }
     }
 }

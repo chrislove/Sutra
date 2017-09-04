@@ -1,36 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
-// ReSharper disable InconsistentNaming
 
 namespace SharpPipe
 {
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public static partial class Pipe
 	{
-		internal static Pipe<T> FromObject<T>(T obj) => FromFunc(SharpFunc.WithValue(obj));
+		internal static Pipe<T> FromObject<T>(T obj)          => FromFunc(SharpFunc.WithValue(obj));
 		internal static Pipe<T> FromFunc<T>(IOutFunc<T> func) => new Pipe<T>(func);
-		internal static Pipe<T> FromFunc<T>(Func<T> func) => new Pipe<T>(func);
 
 		/// <summary>
 		/// Creates and initializes Pipe{T} with an object.
 		/// </summary>
 		public static Pipe<TOut> IN<TOut>([NotNull] TOut obj) => Pipe.FromObject(obj);
-
-		/// <summary>
-		/// Creates and initializes EnumPipe{T} with objects.
-		/// </summary>
-		public static EnumPipe<TOut> ENUM<TOut>( [NotNull] params TOut[] objs ) => EnumPipe.FromEnumerable(objs);
-
-		/// <summary>
-		/// Creates and initializes EnumPipe{T} with an IEnumerable{T}.
-		/// </summary>
-		public static EnumPipe<TOut> ENUM<TOut>([NotNull] IEnumerable<TOut> obj) => EnumPipe.FromEnumerable(obj);
-
-		/// <summary>
-		/// Creates an empty EnumPipe{T}
-		/// </summary>
-		public static EnumPipe<TOut> ENUM<TOut>() => EnumPipe.FromEnumerable( Enumerable.Empty<TOut>() );
 
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.
@@ -47,8 +32,6 @@ namespace SharpPipe
 		/// </summary>
 		public static SharpFunc<T, T> _<T>([CanBeNull] Func<T, T> func)            => SharpFunc.FromFunc(func);
 		
-		public static EnumInFunc<TIn, TOut> ENUM<TIn, TOut>([CanBeNull] Func<IEnumerable<TIn>, TOut> func) => EnumInFunc.FromFunc(func);
-
 		/// <summary>
 		/// Creates a strongly-typed pipe-compatible function.
 		/// </summary>
@@ -58,8 +41,5 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
-		//[NotNull] public static EnumFunc<TIn, TOut> __<TIn, TOut>([CanBeNull] Func<TIn, IEnumerable<TOut>> func) => EnumFunc.FromFunc(func);
-
-		public static SharpAct<TIn> _<TIn>([CanBeNull] Action<TIn> act) => SharpAct.FromAction<TIn>(i => act(i.To<TIn>()));
 	}
 }

@@ -10,9 +10,9 @@ namespace SharpPipe {
 			if (lhs == null) throw new ArgumentNullException(nameof(lhs));
 
 			Func<object, TIn> lhsFunc = lhs.Func;
-			Func<TIn, TOut> rhsFunc = rhs.Func;
+			Func<TIn, TOut> rhsFunc   = rhs.Func;
 
-			TOut CombinedFunc( TIn i ) => rhsFunc(lhsFunc(i));
+			TOut CombinedFunc( TIn i ) => rhsFunc( lhsFunc(i) );
 
 			return SharpFunc.FromFunc<TIn, TOut>(CombinedFunc);
 		}

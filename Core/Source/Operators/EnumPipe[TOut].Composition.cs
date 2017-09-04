@@ -14,6 +14,11 @@ namespace SharpPipe {
 
 			return lhs + EnumPipe.FromEnumerable(rhs);
 		}
+		
+		/// <summary>
+		/// Pipe composition operator, adds a new value to IEnumerable{T}.
+		/// </summary>
+		public static EnumPipe<TOut> operator +(EnumPipe<TOut> lhs, [CanBeNull] TOut rhs) => lhs + Yield(rhs);
 
 
 		/// <summary>
@@ -24,5 +29,10 @@ namespace SharpPipe {
 
 			return EnumPipe.FromEnumerable(combined);
 		}
+		
+		private static IEnumerable<T> Yield<T>([CanBeNull] T item) {
+			yield return item;
+		}
+
 	}
 }

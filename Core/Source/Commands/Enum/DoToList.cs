@@ -9,26 +9,12 @@ namespace SharpPipe {
         public static DoToList TOLIST => new DoToList();
     }
 
-    public struct DoToList {
-        /// <summary>
-        /// Pipe decomposition operator.
-        /// Returns the value contained within Pipe{List{T}}
-        /// </summary>
-        public static ToValue operator ~( DoToList x ) => new ToValue();
-
-        public struct ToValue {}
-    }
+    public struct DoToList {}
 
     public partial struct EnumPipe<TOut> {
         /// <summary>
         /// Converts pipe contents into List{TOut}
         /// </summary>
         public static Pipe<List<TOut>> operator |( EnumPipe<TOut> lhs, DoToList act ) => IN(lhs.Get.ToList());
-        
-        /// <summary>
-        /// Converts pipe contents into List{TOut}
-        /// </summary>
-        [NotNull]
-        public static List<TOut> operator |( EnumPipe<TOut> lhs, DoToList.ToValue act ) => lhs | TOLIST | OUT;
     }
 }

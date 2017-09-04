@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -25,6 +26,16 @@ namespace SharpPipe {
 		[UsedImplicitly]
 		public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, Func<TOut, TOut> func ) {
 			var enumerable = lhs.Get.Select(func);
+
+			return EnumPipe.FromEnumerable(enumerable);
+		}
+		
+		/// <summary>
+		/// Forward pipe operator. Transforms an EnumerablePipe.
+		/// </summary>
+		[UsedImplicitly]
+		public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, Func<IEnumerable<TOut>, IEnumerable<TOut>> func ) {
+			var enumerable = func( lhs.Get );
 
 			return EnumPipe.FromEnumerable(enumerable);
 		}
