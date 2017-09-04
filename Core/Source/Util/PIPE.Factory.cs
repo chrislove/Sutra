@@ -9,9 +9,10 @@ namespace SharpPipe {
         /// <summary>
         /// Creates and initializes Pipe{T} with an object.
         /// </summary>
-        public static Pipe<T> IN<T>([CanBeNull] T obj) => IN(SharpFunc.WithValue(obj));
+        public static Pipe<TOut> IN<TOut>([CanBeNull] TOut obj) => IN(SharpFunc.WithValue(obj));
         
-        public static Pipe<T> IN<T>([NotNull] IOutFunc<T> func) => new Pipe<T>(func);
+        public static Pipe<TOut> IN<TOut>(SharpFunc<TOut> func) => new Pipe<TOut>(func);
+        public static Pipe<TOut> IN<TIn, TOut>(SharpFunc<TIn, TOut> func) => new Pipe<TOut>( SharpFunc.FromFunc(i => func.Func(i.To<TIn>()) ) );
 
         /// <summary>
         /// Creates an empty Pipe{T}

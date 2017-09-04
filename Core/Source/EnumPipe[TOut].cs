@@ -7,10 +7,8 @@ namespace SharpPipe
 	public partial struct EnumPipe<TOut> {
 		internal EnumPipe([CanBeNull] IEnumerable<TOut> obj) : this(SharpFunc.WithValue(obj) ) { }
 
-		internal EnumPipe( [NotNull] IOutFunc<IEnumerable<TOut>> func ) {
-			Func = (func ?? throw new ArgumentNullException(nameof(func))).ToOut<IEnumerable<TOut>>();
-		}
-		
+		internal EnumPipe( SharpFunc<IEnumerable<TOut>> func ) => Func = func;
+
 		internal SharpFunc<IEnumerable<TOut>> Func { get; }
 
 		[CanBeNull] internal IEnumerable<TOut> Get => Func.Func(default(IEnumerable<TOut>));

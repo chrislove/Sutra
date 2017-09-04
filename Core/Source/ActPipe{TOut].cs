@@ -6,7 +6,7 @@ namespace SharpPipe {
     public struct ActPipe<TOut> {
         private SharpFunc<TOut> Func { get; }
 
-        internal ActPipe( [NotNull] ISharpFunc func ) => Func = SharpFunc.FromFunc<TOut>(func);
+        internal ActPipe( SharpFunc<TOut> func ) => Func = SharpFunc.FromFunc<TOut>(func);
         internal ActPipe( [NotNull] Func<TOut> func ) => Func = SharpFunc.FromFunc(func);
 
         [CanBeNull] private TOut Get => Func.Func(null);

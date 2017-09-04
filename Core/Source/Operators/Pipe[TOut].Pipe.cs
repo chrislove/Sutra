@@ -12,16 +12,14 @@ namespace SharpPipe {
 			return SharpAct.FromAction(combined);
 		}
 		
-		public static Pipe<TOut>    operator |( Pipe<TOut> lhs, Func<TOut, TOut> rhs ) => PIPE.IN(lhs.Func + SharpFunc.FromFunc(rhs) );
+		public static Pipe<TOut>    operator |( Pipe<TOut> lhs, Func<TOut, TOut> rhs ) => PIPE.IN( lhs.Func + SharpFunc.FromFunc(rhs) );
 		
 		public static ActPipe<TOut> operator |( Pipe<TOut> lhs, ToActPipe rhs )        => ActPipe.FromPipe(lhs);
 
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static Pipe<TOut> operator |( Pipe<TOut> lhs, [NotNull] IOutFunc<TOut> rhs ) {
-			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-			
+		public static Pipe<TOut> operator |( Pipe<TOut> lhs, SharpFunc<TOut> rhs ) {
 			return PIPE.IN(lhs.Func + rhs);
 		}
 		

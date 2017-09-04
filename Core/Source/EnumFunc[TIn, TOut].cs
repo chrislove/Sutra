@@ -6,7 +6,7 @@ namespace SharpPipe {
 	/// <summary>
 	/// Transforms IEnumerable{TIn} into {TOut}
 	/// </summary>
-	public struct EnumInFunc<TIn, TOut> : IOutFunc<TOut> {
+	public struct EnumInFunc<TIn, TOut> {
 		[NotNull] private Func<IEnumerable<TIn>, TOut> Func { get; }
 
 		internal EnumInFunc( [NotNull] Func<IEnumerable<TIn>, TOut> func ) {
@@ -18,20 +18,6 @@ namespace SharpPipe {
 		/// </summary>
 		public static Pipe<TOut> operator |( EnumPipe<TIn> lhs, EnumInFunc<TIn, TOut> rhs ) {
 			return PIPE.IN( rhs.Func(lhs.Get) );
-		}
-
-		Func<object, object> ISharpFunc.Func {
-			get {
-				var @this = this;
-				return i => @this.Func(i.To<IEnumerable<TIn>>());
-			}
-		}
-
-		Func<object, TOut> IOutFunc<TOut>.Func {
-			get {
-				var @this = this;
-				return i => @this.Func(i.To<IEnumerable<TIn>>());
-			}
 		}
 	}
 

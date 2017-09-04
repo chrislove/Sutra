@@ -6,26 +6,23 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static IOutFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] ISharpFunc rhs )
+		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] SharpFunc rhs )
 												=> lhs + (i => rhs.Func(i));
 		
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static IOutFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] IOutFunc<TOut> rhs )
+		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, SharpFunc<TOut> rhs )
 												=> lhs + (i => rhs.Func(i));
 		
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		[NotNull]
-		public static IOutFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] Func<object, object> rhs ) {
+		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] Func<object, object> rhs ) {
 			if (rhs == null) throw new ArgumentNullException(nameof(lhs));
 
 			return SharpFunc.FromFunc(
-			                        i => rhs(lhs.Func(i))
+			                        i => rhs(lhs.Func(i)).To<TOut>()
 			                       );
 		}
 

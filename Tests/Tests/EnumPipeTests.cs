@@ -12,7 +12,7 @@ using static SharpPipe.Pipe;
 namespace SharpPipe.Tests {
     [TestFixture]
     public sealed class EnumPipeTests : TestBase {
-        [NotNull] private static SharpFunc<int, string> ConvertToString => _(( int i ) => i.ToString());
+        private static SharpFunc<int, string> ConvertToString => _(( int i ) => i.ToString());
 
         [Test]
         public void Test_Pipe_Action() {

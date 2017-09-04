@@ -3,7 +3,7 @@ using System;
 
 namespace SharpPipe
 {
-	public abstract partial class SharpFunc : ISharpFunc {
+	public abstract partial class SharpFunc {
 		public Func<object, object> Func { get; }
 
 		protected SharpFunc([NotNull] Func<object, object> func) {
@@ -15,13 +15,13 @@ namespace SharpPipe
 
 		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] Func<object, TOut> func) => new SharpFunc<TOut>(func);
 		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] Func<TOut> func) => new SharpFunc<TOut>( func );
-		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] ISharpFunc sharpFunc)
+		internal static SharpFunc<TOut> FromFunc<TOut>(SharpFunc<TOut> sharpFunc)
 													=> new SharpFunc<TOut>(i => sharpFunc.Func(i).To<TOut>());
 
 		/// <summary>
 		/// Creates a SharpFunc that contains the input value.
 		/// </summary>
 		/// <param name="obj">Value to wrap</param>
-		public static IOutFunc<TOut> WithValue<TOut>(TOut obj) => SharpFunc.FromFunc(i => obj);
+		public static SharpFunc<TOut> WithValue<TOut>(TOut obj) => SharpFunc.FromFunc(i => obj);
 	}
 }
