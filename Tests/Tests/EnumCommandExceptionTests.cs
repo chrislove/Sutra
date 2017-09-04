@@ -8,30 +8,36 @@ namespace SharpPipe.Tests {
         [TestCase("DONT", false)]
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ENUM<string>()
+                var pipe = ENUM.STR
                            + "A" + "B" + "C"
                            | THROW & IF(ifInput);
             }
             
-            if (shouldThrow)
-                Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
-            else
-                Assert.That(TestDelegate, Throws.Nothing);
+            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
         }
         
         [TestCase("B", true)]
         [TestCase("DONT", false)]
         public void Test_ThrowExceptionIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ENUM<string>()
+                var pipe = ENUM.STR
                            + "A" + "B" + "C"
                            | THROW & EXC("throws") & IF(ifInput);
             }
             
-            if (shouldThrow)
-                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("throws"));
-            else
-                Assert.That(TestDelegate, Throws.Nothing);
+            ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
+        }
+        
+        [TestCase("B", true)]
+        [TestCase("DONT", false)]
+        public void Test_ThrowIfException(string ifInput, bool shouldThrow) {
+            void TestDelegate() {
+                var pipe = ENUM.STR
+                           + "A" + "B" + "C"
+                           | THROWIF(i => i == ifInput) & EXC("throws");
+            }
+            
+            ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
         }
     }
 }

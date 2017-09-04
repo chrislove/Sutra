@@ -1,8 +1,8 @@
 using System.Linq;
-using static SharpPipe.Pipe;
 
 namespace SharpPipe {
     public static partial class Pipe {
+        // ReSharper disable once InconsistentNaming
         public static DoDistinct DISTINCT => new DoDistinct();
     }
     
@@ -10,8 +10,8 @@ namespace SharpPipe {
     
     public partial struct EnumPipe<TOut> {
         /// <summary>
-        /// Converts pipe contents into TOut[]
+        /// Pipe forward operator.
         /// </summary>
-        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoDistinct act ) => ENUM(lhs.Get.Distinct());
+        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoDistinct act ) => ENUM.IN(lhs.Get.Distinct());
     }
 }

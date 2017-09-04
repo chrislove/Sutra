@@ -8,7 +8,7 @@ namespace SharpPipe.Tests {
     public sealed class EnumCommandTests : TestBase {
         [Test]
         public void Test_Distinct() {
-            string pipeStr = ENUM<string>()
+            string pipeStr = ENUM.STR
                              + Enumerable.Repeat("A", 5)
                              + Enumerable.Repeat("B", 10)
                              + Enumerable.Repeat("C", 12)
@@ -23,7 +23,7 @@ namespace SharpPipe.Tests {
         public void Test_Conversion() {
             var enumerable = Enumerable.Repeat("A", 3);
 
-            var pipe = ENUM<string>()
+            var pipe = ENUM.STR
                        + enumerable;
 
             string str        = pipe | CONCAT("") | OUT;
@@ -33,6 +33,39 @@ namespace SharpPipe.Tests {
             Assert.That(str,   Is.EqualTo("AAA"));
             Assert.That(list,  Is.EqualTo(enumerable.ToList()));
             Assert.That(array, Is.EqualTo(enumerable.ToArray()));
+        }
+        
+        [Test]
+        public void Test_Null_Throws() {
+            void TestDelegate() {
+                var pipe = ENUM.STR
+                           + "A" + "B" + "C" + (string) null
+                           | THROW & IFNULL;
+            }
+
+            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+        }
+        
+        [Test]
+        public void Test_Null_Filtered_DoesntThrow() {
+            void TestDelegate() {
+                var pipe = ENUM.STR
+                           + "A" + "B" + "C" + (string) null
+                           | NOTNULL
+                           | THROW & IFNULL;
+            }
+
+            Assert.That(TestDelegate, Throws.Nothing);
+        }
+        
+        [Test]
+        public void Test_Filter() {
+            string result = ENUM.STR
+                         + "A" + "B" + "C"
+                         | FILTER(i => i != "B")
+                         | CONCAT("") | OUT;
+            
+            Assert.That(result, Is.EqualTo("AC"));
         }
     }
 }

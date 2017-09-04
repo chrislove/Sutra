@@ -15,7 +15,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Pipe_Action() {
             var pipe =
-                ENUM<int>()
+                ENUM.INT
                 + Enumerable.Range(0, 3)
                 | ConvertToString
                 | CONCAT("")
@@ -30,7 +30,7 @@ namespace SharpPipe.Tests {
             IEnumerable<string> GetEnumFuncA( string i ) => Enumerable.Repeat(i, 2);
             IEnumerable<string> GetEnumFuncB( string i ) => Enumerable.Repeat(i, 3);
 
-            string enumPipeStr = ENUM<string>()
+            string enumPipeStr = ENUM.STR
                                  + GetEnumFuncA("A")
                                  + GetEnumFuncB("B")
                                  | CONCAT("")
@@ -41,7 +41,7 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_IEnumerableComposition() {
-            string enumPipeStr = ENUM<string>()
+            string enumPipeStr = ENUM.STR
                                  + Enumerable.Repeat("A", 2)
                                  + Enumerable.Repeat("B", 3)
                                  | CONCAT("")

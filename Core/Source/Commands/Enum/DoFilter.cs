@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace SharpPipe {
     public static partial class Pipe {
         public static DoFilter FILTER<T>(Func<T, bool> predicate) => FILTER(i => predicate(i.To<T>()));
-        public static DoFilter FILTER(Func<object, bool> predicate) => new DoFilter(predicate);
+        public static DoFilter FILTER(Func<dynamic, bool> predicate) => new DoFilter(predicate);
     }
     
     public struct DoFilter {
@@ -22,7 +22,7 @@ namespace SharpPipe {
         public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoFilter filter ) {
             var filtered = lhs.Get.Where(i => filter.Predicate(i));
 
-            return Pipe.ENUM(filtered);
+            return ENUM.IN(filtered);
         }
     }
 }

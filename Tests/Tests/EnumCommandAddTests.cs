@@ -8,7 +8,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_ADD_WithIncompatibleType_Throws() {
             void TestDelegate() {
-                var pipe = ENUM<string>()
+                var pipe = ENUM.STR
                            | ADD & 0;
             }
             
@@ -18,7 +18,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_ADD_WithCompatibleType_DoesntThrow() {
             void TestDelegate() {
-                var pipe = ENUM<string>()
+                var pipe = ENUM.STR
                            | ADD & "test";
             }
             
@@ -29,7 +29,7 @@ namespace SharpPipe.Tests {
         public void Test_ADD_IEnumerable() {
             var enumerable = new[] {"D", "E", "F"}.Select(i => i);
 
-            string result = ENUM<string>()
+            string result = ENUM.STR
                             + "A" + "B" + "C"
                             | ADD & enumerable
                             | CONCAT("") | OUT;
@@ -39,7 +39,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_ADD_Array() {
-            string result = ENUM<string>()
+            string result = ENUM.STR
                             + "A" + "B" + "C"
                             | ADD & new[] {"D", "E", "F"}
                             | CONCAT("") | OUT;
@@ -49,10 +49,10 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_ADD_EnumPipe() {
-            var testPipe = ENUM<string>()
+            var testPipe = ENUM.STR
                            + new[] {"D", "E", "F"};
             
-            string result = ENUM<string>()
+            string result = ENUM.STR
                             + "A" + "B" + "C"
                             | ADD & testPipe
                             | CONCAT("") | OUT;

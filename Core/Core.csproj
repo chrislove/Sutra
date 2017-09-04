@@ -76,6 +76,7 @@
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
     <Compile Include="Source\ToActPipe.cs" />
     <Compile Include="Source\Util\EmptyPipeException.cs" />
+    <Compile Include="Source\Util\ENUM.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Source\Pipe[TOut].cs" />
     <Compile Include="Source\Operators\Pipe[TOut].Pipe.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="Source\SharpAct[TIn].cs" />
     <Compile Include="Source\SharpFunc.cs" />
     <Compile Include="Source\SharpFunc[TIn, TOut].cs" />
-    <Compile Include="Source\Util\Pipe.Enum.cs" />
     <Compile Include="Source\Util\SharpPipeException.cs" />
     <Compile Include="Source\Util\TypeMismatchException.cs" />
     <Compile Include="Source\Util\TypeExtensions.cs" />
