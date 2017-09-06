@@ -16,7 +16,7 @@ namespace SharpPipe
 		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] Func<object, TOut> func) => new SharpFunc<TOut>(func);
 		internal static SharpFunc<TOut> FromFunc<TOut>([NotNull] Func<TOut> func) => new SharpFunc<TOut>( func );
 		internal static SharpFunc<TOut> FromFunc<TOut>(SharpFunc<TOut> sharpFunc)
-													=> new SharpFunc<TOut>(i => sharpFunc.Func(i).To<TOut>());
+													=> new SharpFunc<TOut>(i => sharpFunc.Func(i).To<TOut>(nameof(SharpFunc.FromFunc)));
 
 		/// <summary>
 		/// Creates a SharpFunc that contains the input value.

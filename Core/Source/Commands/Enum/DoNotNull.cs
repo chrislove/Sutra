@@ -1,4 +1,5 @@
 using static SharpPipe.Commands;
+// ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Commands {
@@ -14,6 +15,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoNotNull act ) => lhs - WHERE(i => i != null);
+        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoNotNull act ) => lhs | WHERE | (i => i != null);
     }
 }

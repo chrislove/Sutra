@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
     public static partial class Commands {
-        public static DoFirst FIRST<T>(Func<T, bool> predicate) => new DoFirst(i => predicate(i.To<T>()));
+        public static DoFirst FIRST<T>(Func<T, bool> predicate) => new DoFirst(i => predicate(i.To<T>(nameof(FIRST))));
     }
     
     public struct DoFirst {
@@ -19,6 +19,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static Pipe<TOut> operator -( EnumPipe<TOut> lhs, DoFirst act ) => PIPE.IN( lhs.Get.First( i => act.Predicate(i) ) );
+        public static Pipe<TOut> operator |( EnumPipe<TOut> lhs, DoFirst act ) => PIPE.IN( lhs.Get.First( i => act.Predicate(i) ) );
     }
 }

@@ -10,13 +10,7 @@ namespace SharpPipe {
         internal ActPipe( [NotNull] Func<TOut> func ) => Func = SharpFunc.FromFunc(func);
 
         [CanBeNull] private TOut Get => Func.Func(null);
-
-		
-        public static SharpAct operator -( ActPipe<TOut> lhs, SharpAct<object> rhs ) => lhs - (p => rhs.Action(p));
-        public static SharpAct operator -( ActPipe<TOut> lhs, SharpAct<TOut> rhs )   => lhs - (p => rhs.Action(p));
         
-        public static SharpAct operator -( ActPipe<TOut> lhs, Action<TOut> rhs ) {
-            return SharpAct.FromAction( () => rhs( lhs.Get ) );
-        }
+        public static VOID operator |( ActPipe<TOut> lhs, [NotNull] Action<TOut> rhs ) => VOID.VoidAction( () => rhs(lhs.Get) );
     }
 }

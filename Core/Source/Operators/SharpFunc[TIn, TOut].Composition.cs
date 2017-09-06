@@ -38,6 +38,7 @@ namespace SharpPipe {
 			return SharpFunc.FromFunc(CombinedFunc);
 		}
 
+		/*
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
@@ -47,6 +48,6 @@ namespace SharpPipe {
 			void Combined( TIn obj ) => rhs(lhs.Func(obj));
 
 			return SharpAct.FromAction<TIn>(Combined);
-		}
+		}*/
 	}
 }

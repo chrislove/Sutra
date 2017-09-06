@@ -1,29 +1,22 @@
-using System;
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
 	public partial struct EnumPipe<TOut> {
 		internal EnumPipe([CanBeNull] IEnumerable<TOut> obj) : this(SharpFunc.WithValue(obj) ) { }
 
-		internal EnumPipe( SharpFunc<IEnumerable<TOut>> func ) => Func = func;
+		private EnumPipe( SharpFunc<IEnumerable<TOut>> func ) => Func = func;
 
-		internal SharpFunc<IEnumerable<TOut>> Func { get; }
+		private SharpFunc<IEnumerable<TOut>> Func { get; }
 
-		[CanBeNull] internal IEnumerable<TOut> Get => Func.Func(default(IEnumerable<TOut>));
+		[NotNull] internal IEnumerable<TOut> Get => Func.NotNullFunc(default(IEnumerable<TOut>)).NotNull(typeof(EnumPipe<TOut>));
 
-		/// <summary>
-		/// Pipe decomposition operator.
-		/// Returns the value contained within the pipe. An equivalent of: pipe | OUT
-		/// </summary>
-		[NotNull]
-		public static IEnumerable<TOut> operator ~( EnumPipe<TOut> pipe ) => pipe - Commands.OUT;
+		private EnumPipe<T> TryCastTo<T>() {
+			var convertedObj = Get.To<T>($"TryConvertTo : {this.T()}");
 
-		/// <summary>
-		/// Returns pipe contents
-		/// </summary>
-		[NotNull]
-		public static IEnumerable<TOut> operator -(EnumPipe<TOut> lhs, DoEnd act) => lhs.Get;
+			return ENUM<T>.NEW | ADD | convertedObj;
+		}
 	}
 }

@@ -8,36 +8,38 @@ namespace SharpPipe.Tests {
         [TestCase("DONT", false)]
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ENUM.STR
-                           + "A" + "B" + "C"
-                           - THROW * IF(ifInput);
+                var pipe = ABCPipe
+                           | THROW | IF | (i => i == ifInput);
             }
             
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
         }
         
+        
         [TestCase("B", true)]
         [TestCase("DONT", false)]
         public void Test_ThrowExceptionIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ENUM.STR
-                           + "A" + "B" + "C"
-                           - THROW * EXC("throws") * IF(ifInput);
+                var pipe = ABCPipe
+                           //| THROW * EXC("throws") * IF(ifInput);
+                           | THROW | IF | (i => i == ifInput);
             }
             
-            ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
+            //ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
+            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
         }
         
         [TestCase("B", true)]
         [TestCase("DONT", false)]
         public void Test_ThrowIfException(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ENUM.STR
-                           + "A" + "B" + "C"
-                           - THROWIF(i => i == ifInput) * EXC("throws");
+                var pipe = ABCPipe
+                           //| THROW | IF(i => i == ifInput) * EXC("throws");
+                           | THROW | IF | (i => i == ifInput);
             }
             
-            ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
+            //ThrowAssert<PipeUserException>(TestDelegate, shouldThrow, "throws");
+            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
         }
     }
 }

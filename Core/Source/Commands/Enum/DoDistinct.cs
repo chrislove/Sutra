@@ -12,6 +12,6 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator.
         /// </summary>
-        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoDistinct act ) => ENUM.IN(lhs.Get.Distinct());
+        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoDistinct act ) => ENUM.IN(lhs.Get.Distinct());
     }
 }

@@ -1,32 +1,60 @@
 using System;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
+
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Commands {
-        public static DoWhere WHERE<T>(Func<T, bool> predicate) => WHERE(i => predicate(i.To<T>()));
-        public static DoWhere WHERE(Func<dynamic, bool> predicate) => new DoWhere(predicate);
+        //public static DoWhere WHERE<T>(Func<T, bool> predicate) => WHERE(i => predicate(i.To<T>()));
+        //public static DoWhere WHERE(Func<dynamic, bool> predicate) => new DoWhere(predicate);
+        public static DoWhere WHERE => new DoWhere();
     }
-    
-    public struct DoWhere {
-        internal readonly Func<object, bool> Predicate;
 
-        internal DoWhere( [NotNull] Func<object, bool> predicate ) => Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+    public struct DoWhere { }
 
+    public partial struct EnumPipe<TOut> {
         /// <summary>
-        /// A condition when the filter will be applied
+        /// Converts pipe contents into TOut[]
         /// </summary>
-        public static DoWhereIf operator *( DoWhere @where, DoIf doIf ) => new DoWhereIf(@where, doIf);
-
+        public static DoWhere<TOut> operator |( EnumPipe<TOut> pipe, DoWhere @where ) => new DoWhere<TOut>(pipe);
     }
     
+    
+    
+
+    public struct DoWhere<T> {
+        internal readonly EnumPipe<T> Pipe;
+
+        internal DoWhere( EnumPipe<T> pipe ) => Pipe = pipe;
+
+        public static EnumPipe<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => ENUM<T>.NEW | ADD | where.Pipe.Get.Where(predicate);
+        //public static DoWhereConcrete<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => new DoWhereConcrete<T>(@where, predicate);
+        
+        public static DoWhereIf<T> operator |( DoWhere<T> @where, DoIf doIf ) => new DoWhereIf<T>(@where);
+    }
+
+    public struct DoWhereIf<T> {
+        private readonly DoWhere<T> _doWhere;
+
+        internal DoWhereIf( DoWhere<T> doWhere ) => _doWhere = doWhere;
+
+        public static EnumPipe<T> operator |( DoWhereIf<T> doWhereIf, [NotNull] Func<T, bool> predicate ) {
+            var pipe = doWhereIf._doWhere.Pipe;
+            var filtered = pipe.Get.Where(predicate);
+
+            return ENUM.IN(filtered);
+        }
+    }
+    
+    /*
     public struct DoWhereIf {
-        private readonly DoWhere _where;
+        private readonly DoWhere _doWhere;
         private readonly DoIf _doIf;
 
-        public DoWhereIf( DoWhere @where, DoIf doIf ) {
-            _where = @where;
+        public DoWhereIf( DoWhere<T> doWhere, DoIf doIf ) {
+            _doWhere = doWhere;
             _doIf   = doIf;
         }
 
@@ -35,19 +63,20 @@ namespace SharpPipe {
                 var @this = this;
                 return i => {
                            if (@this._doIf.Predicate(i))
-                               return @this._where.Predicate(i);
+                               return @this._doWhere.Predicate(i);
 
                            return true;
                        };
             }
         }
-    }
+    }*/
     
+    /*
     public partial struct EnumPipe<TOut> {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoWhere @where ) {
+        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoWhere<TOut> @where ) {
             var filtered = lhs.Get.Where(i => @where.Predicate(i));
 
             return ENUM.IN(filtered);
@@ -56,10 +85,10 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoWhereIf @where ) {
+        public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, DoWhereIf @where ) {
             var filtered = lhs.Get.Where(i => @where.Predicate(i));
 
             return ENUM.IN(filtered);
         }
-    }
+    }*/
 }

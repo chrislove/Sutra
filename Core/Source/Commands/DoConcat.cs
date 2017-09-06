@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
@@ -8,7 +8,7 @@ namespace SharpPipe {
         public static DoConcat CONCAT(string separator) => new DoConcat(separator);
     }
 
-    public partial struct DoConcat {
+    public struct DoConcat {
         [CanBeNull] private readonly string Separator;
 
         internal DoConcat( [CanBeNull] string separator ) => Separator = separator;
@@ -16,7 +16,7 @@ namespace SharpPipe {
         /// <summary>
         /// Concatenates pipe contents into a string
         /// </summary>
-        public static Pipe<string> operator -( EnumPipe<string> lhs, DoConcat act ) {
+        public static Pipe<string> operator |( EnumPipe<string> lhs, DoConcat act ) {
             string str = lhs.Get.Aggregate("", ( a, b ) => a + b + act.Separator);
 
             return PIPE.IN(str);

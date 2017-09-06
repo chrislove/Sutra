@@ -22,10 +22,11 @@ namespace SharpPipe {
 			if (rhs == null) throw new ArgumentNullException(nameof(lhs));
 
 			return SharpFunc.FromFunc(
-			                        i => rhs(lhs.Func(i)).To<TOut>()
+			                        i => rhs(lhs.Func(i)).To<TOut>($"{lhs.T()} + {rhs.T()}")
 			                       );
 		}
 
+		/*
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
@@ -35,11 +36,12 @@ namespace SharpPipe {
 			return SharpAct.FromAction<TOut>(
 			                                 i => rhs(lhs.Func(i))
 			                                );
-		}
+		}*/
 
+		/*
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		public static SharpAct<TOut> operator +( SharpFunc<TOut> lhs, SharpAct<TOut> rhs ) => lhs + rhs.Action;
+		public static SharpAct<TOut> operator +( SharpFunc<TOut> lhs, SharpAct<TOut> rhs ) => lhs + rhs.Action;*/
 	}
 }

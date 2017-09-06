@@ -45,37 +45,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\ActPipe.cs" />
     <Compile Include="Source\ActPipe{TOut].cs" />
-    <Compile Include="Source\Commands\DoExecute.cs" />
+    <Compile Include="Source\Commands\DoConcat.cs" />
+    <Compile Include="Source\Commands\DoException.cs" />
+    <Compile Include="Source\Commands\DoForEach.cs" />
     <Compile Include="Source\Commands\DoEnd.cs" />
+    <Compile Include="Source\Commands\DoToPipe.cs" />
+    <Compile Include="Source\Commands\DoIf.cs" />
+    <Compile Include="Source\Commands\DoOfType.cs" />
+    <Compile Include="Source\Commands\DoThrow.cs" />
+    <Compile Include="Source\Commands\DoConvertToEnum.cs" />
+    <Compile Include="Source\Commands\DoWith.cs" />
     <Compile Include="Source\Commands\Enum\DoAdd.cs" />
-    <Compile Include="Source\Commands\Enum\DoConcat.cs" />
     <Compile Include="Source\Commands\Enum\DoDistinct.cs" />
-    <Compile Include="Source\Commands\Enum\DoException.cs" />
     <Compile Include="Source\Commands\Enum\DoSelect.cs" />
     <Compile Include="Source\Commands\Enum\DoWhere.cs" />
     <Compile Include="Source\Commands\Enum\DoFirst.cs" />
-    <Compile Include="Source\Commands\Enum\DoIf.cs" />
     <Compile Include="Source\Commands\Enum\DoNotNull.cs" />
-    <Compile Include="Source\Commands\Enum\DoThrow.cs" />
     <Compile Include="Source\Commands\Enum\DoToArray.cs" />
     <Compile Include="Source\Commands\Enum\DoToList.cs" />
-    <Compile Include="Source\Commands\Enum\DoOfType.cs" />
-    <Compile Include="Source\Commands\Enum\DoWith.cs" />
-    <Compile Include="Source\Commands\PipeCommandException.cs" />
-    <Compile Include="Source\Commands\PipeUserException.cs" />
-    <Compile Include="Source\EnumActPipe.cs" />
-    <Compile Include="Source\EnumActPipe{TOut].cs" />
     <Compile Include="Source\EnumFunc[TIn, TOut].cs" />
-    <Compile Include="Source\Operators\EnumPipe[TOut].Composition.cs" />
+    <Compile Include="Source\Exceptions\PipeNullException.cs" />
+    <Compile Include="Source\Exceptions\PipeCommandException.cs" />
+    <Compile Include="Source\Exceptions\PipeUserException.cs" />
+    <Compile Include="Source\Exceptions\SharpPipeException.cs" />
+    <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
     <Compile Include="Source\EnumPipe.cs" />
     <Compile Include="Source\EnumPipe[TOut].cs" />
     <Compile Include="Source\Operators\EnumPipe[TOut].Pipe.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
     <Compile Include="Source\ToActPipe.cs" />
-    <Compile Include="Source\Util\EmptyPipeException.cs" />
     <Compile Include="Source\Util\ENUM.Factory.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Source\Pipe[TOut].cs" />
@@ -86,14 +86,11 @@
     <Compile Include="Source\Util\PathUtil.cs" />
     <Compile Include="Source\Util\Pipe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\SharpAct.cs" />
-    <Compile Include="Source\SharpAct[TIn].cs" />
     <Compile Include="Source\SharpFunc.cs" />
     <Compile Include="Source\SharpFunc[TIn, TOut].cs" />
     <Compile Include="Source\Util\PIPE.Factory.cs" />
-    <Compile Include="Source\Util\SharpPipeException.cs" />
-    <Compile Include="Source\Util\TypeMismatchException.cs" />
     <Compile Include="Source\Util\TypeExtensions.cs" />
+    <Compile Include="Source\VOID.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

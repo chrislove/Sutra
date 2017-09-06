@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using NUnit.Framework;
 using static SharpPipe.Commands;
 using static SharpPipe.Pipe;
@@ -18,25 +16,25 @@ namespace SharpPipe.Tests {
         public void Test_Pipe_Action() {
             var pipe =
                 ENUM.INT
-                + Enumerable.Range(0, 3)
-                - ConvertToString
-                - CONCAT("")
-                - ~WriteLine;
+                | ADD | Enumerable.Range(0, 3)
+                | ConvertToString
+                | CONCAT("")
+                | ACT | Write;
 
             const string expectedOutput = "012";
-            Assert.That(WriteLineOutput, Is.EqualTo(expectedOutput));
+            Assert.That(WriteOutput, Is.EqualTo(expectedOutput));
         }
 
         [Test]
         public void Test_FuncComposition() {
-            IEnumerable<string> GetEnumFuncA( string i ) => Enumerable.Repeat(i, 2);
-            IEnumerable<string> GetEnumFuncB( string i ) => Enumerable.Repeat(i, 3);
+            IEnumerable<string> GetEnumA( string i ) => Enumerable.Repeat(i, 2);
+            IEnumerable<string> GetEnumB( string i ) => Enumerable.Repeat(i, 3);
 
             string enumPipeStr = ENUM.STR
-                                 + GetEnumFuncA("A")
-                                 + GetEnumFuncB("B")
-                                 - CONCAT("")
-                                 - OUT;
+                                 | ADD | GetEnumA("A")
+                                 | ADD | GetEnumB("B")
+                                 | CONCAT("")
+                                 | OUT;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }
@@ -44,24 +42,20 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IEnumerableComposition() {
             string enumPipeStr = ENUM.STR
-                                 + Enumerable.Repeat("A", 2)
-                                 + Enumerable.Repeat("B", 3)
-                                 - CONCAT("")
-                                 - OUT;
+                                 | ADD | Enumerable.Repeat("A", 2)
+                                 | ADD | Enumerable.Repeat("B", 3)
+                                 | CONCAT("")
+                                 | OUT;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }
-
+        
         [Test]
-        public void Test_PipeConversion() {
-            IEnumerable<string> ToEnumerable( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
+        public void Test_Foreach() {
+            var pipe = ABCPipe
+                       | FOREACH | Write;
 
-            string result = (PIPE.IN("IN")
-                             ^ ToEnumerable)
-                            - CONCAT(";") - OUT;
-            
-            Assert.That(result, Is.EqualTo("IN0;IN1;IN2;"));
-
+            Assert.That(WriteOutput, Is.EqualTo("ABC"));
         }
 
         [Test]

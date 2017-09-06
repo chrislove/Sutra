@@ -16,7 +16,7 @@ namespace SharpPipe {
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static Pipe<TOut> operator -( EnumPipe<TIn> lhs, EnumInFunc<TIn, TOut> rhs ) {
+		public static Pipe<TOut> operator |( EnumPipe<TIn> lhs, EnumInFunc<TIn, TOut> rhs ) {
 			return PIPE.IN( rhs.Func(lhs.Get) );
 		}
 	}

@@ -55,7 +55,8 @@
     <Compile Include="Tests\EnumCommandExceptionTests.cs" />
     <Compile Include="Tests\EnumCommandTests.cs" />
     <Compile Include="Tests\EnumPipeTests.cs" />
-    <Compile Include="Tests\Tests.cs" />
+    <Compile Include="Tests\ConversionTests.cs" />
+    <Compile Include="Tests\PipeTests.cs" />
     <Compile Include="Util\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>

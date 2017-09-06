@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
@@ -10,12 +11,12 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Distinct() {
             string pipeStr = ENUM.STR
-                             + Enumerable.Repeat("A", 5)
-                             + Enumerable.Repeat("B", 10)
-                             + Enumerable.Repeat("C", 12)
-                             - DISTINCT
-                             - CONCAT("")
-                             - OUT;
+                             | ADD | Enumerable.Repeat("A", 5)
+                             | ADD | Enumerable.Repeat("B", 10)
+                             | ADD | Enumerable.Repeat("C", 12)
+                             | DISTINCT
+                             | CONCAT("")
+                             | OUT;
 
             Assert.That(pipeStr, Is.EqualTo("ABC"));
         }
@@ -25,11 +26,11 @@ namespace SharpPipe.Tests {
             var enumerable = Enumerable.Repeat("A", 3);
 
             var pipe = ENUM.STR
-                       + enumerable;
+                       | ADD | enumerable;
 
-            string str        = pipe - CONCAT("") - OUT;
-            List<string> list = pipe - TOLIST     - OUT;
-            string[] array    = pipe - TOARRAY    - OUT;
+            string str        = pipe | CONCAT("") | OUT;
+            List<string> list = pipe | TOLIST     | OUT;
+            string[] array    = pipe | TOARRAY    | OUT;
 
             Assert.That(str,   Is.EqualTo("AAA"));
             Assert.That(list,  Is.EqualTo(enumerable.ToList()));
@@ -39,9 +40,10 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Null_Throws() {
             void TestDelegate() {
-                var pipe = ENUM.STR
-                           + "A" + "B" + "C" + (string) null
-                           - THROW * IFNULL;
+                var pipe = ABCPipe
+                           | ADD
+                           | (string) null
+                           | THROW | IF | (i => i == null);
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
@@ -50,10 +52,10 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Null_Filtered_DoesntThrow() {
             void TestDelegate() {
-                var pipe = ENUM.STR
-                           + "A" + "B" + "C" + (string) null
-                           - NOTNULL
-                           - THROW * IFNULL;
+                var pipe = ABCPipe
+                           | ADD | (string) null
+                           | NOTNULL
+                           | THROW | IF | (i => i == null);
             }
 
             Assert.That(TestDelegate, Throws.Nothing);
@@ -61,34 +63,20 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Filter() {
-            string result = ENUM.STR
-                         + "A" + "B" + "C"
-                         - WHERE(i => i != "B")
-                         - CONCAT("") - OUT;
+            string result = ABCPipe
+                         | WHERE | (i => i != "B")
+                         | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("AC"));
         }
         
         [Test]
-        public void Test_Filter_If() {
-            bool IsLower( string str ) => str.ToCharArray().All(char.IsLower);
-            
-            string result = ENUM.STR
-                         + "A" + "B" + "C"
-                         - WHERE(i => i != "B") * IF(i => IsLower(i))
-                         - CONCAT("") - OUT;
-            
-            Assert.That(result, Is.EqualTo("ABC"));
-        }
-        
-        [Test]
         public void Test_Select() {
-            bool IsLower( string str ) => str.ToCharArray().All(char.IsLower);
+            string Bracify( string i ) => $"[{i}]";
             
-            string result = ENUM.STR
-                         + "A" + "B" + "C"
-                         - SELECT( (string i) => $"[{i}]")
-                         - CONCAT("") - OUT;
+            string result = ABCPipe
+                         | SELECT | Bracify
+                         | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("[A][B][C]"));
         }

@@ -30,5 +30,6 @@ namespace SharpPipe
 		/// </code>
 		/// </example>
 		public static SharpFunc<TIn, TOut> _<TIn, TOut>([CanBeNull] Func<TIn, TOut> func) => SharpFunc.FromFunc(func);
+
 	}
 }

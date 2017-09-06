@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe
@@ -11,12 +12,20 @@ namespace SharpPipe
 	}
 	
 	public struct DoEnd {}
+	
+	partial struct EnumPipe<TOut> {
+		/// <summary>
+		/// Forward pipe operator. Returns pipe contents.
+		/// </summary>
+		[NotNull]
+		public static IEnumerable<TOut> operator |(EnumPipe<TOut> lhs, DoEnd act) => lhs.Get;
+	}
 
 	public partial struct Pipe<TOut> {
 		/// <summary>
-		/// Forward pipe operator.
+		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static TOut operator -( Pipe<TOut> lhs, DoEnd doEnd ) => lhs.Get;
+		public static TOut operator |( Pipe<TOut> lhs, DoEnd doEnd ) => lhs.Get;
 	}
 }

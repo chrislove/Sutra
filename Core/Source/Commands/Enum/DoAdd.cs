@@ -1,41 +1,47 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Commands {
-        /// <summary>
-        /// Appends a value to EnumPipe{T}.
-        /// </summary>
-        public static DoStartAdd ADD => new DoStartAdd();
-        public static DoAdd IN([CanBeNull] object obj) => new DoAdd(obj);
-    }
-
-    public struct DoStartAdd {
-        public static DoAdd operator *( DoStartAdd lhs, [CanBeNull] object obj ) => new DoAdd(obj);
-    }
-
-    public struct DoAdd {
-        internal readonly object Obj;
-
-        internal DoAdd( [CanBeNull] object obj ) => Obj = obj;
+        public static DoAdd ADD => new DoAdd();
     }
     
+    public struct DoAdd { }
+
     public partial struct EnumPipe<TOut> {
+        public static DoAdd<TOut> operator |( EnumPipe<TOut> lhs, DoAdd doAdd ) => new DoAdd<TOut>( lhs );
+    }
+
+    public struct DoAdd<T> {
+        private readonly EnumPipe<T> _pipe;
+
+        public DoAdd( EnumPipe<T> lhs ) => _pipe = lhs;
+        
         /// <summary>
-        /// Converts pipe contents into TOut[]
+        /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}
         /// </summary>
-        public static EnumPipe<TOut> operator -( EnumPipe<TOut> lhs, DoAdd act ) {           
-            if (act.Obj is TOut[])
-                return lhs + act.Obj.To<TOut[]>();
-            
-            if (act.Obj is IEnumerable<TOut>)
-                return lhs + act.Obj.To<IEnumerable<TOut>>();
-            
-            if (act.Obj is EnumPipe<TOut>)
-                return lhs + act.Obj.To<EnumPipe<TOut>>();
-            
-            return lhs + act.Obj.To<TOut>();
+        public static EnumPipe<T> operator |(DoAdd<T> lhs, [NotNull] IEnumerable<T> rhs) {
+            if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+
+            return lhs._pipe.Get.Concat(rhs) | Commands.TO<T>.ENUM;
+        }
+		
+        /// <summary>
+        /// Pipe forward operator, adds a new value to IEnumerable{T}.
+        /// </summary>
+        public static EnumPipe<T> operator |(DoAdd<T> lhs, [CanBeNull] T rhs) => lhs | Yield(rhs);
+
+
+        /// <summary>
+        /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}
+        /// </summary>
+        public static EnumPipe<T> operator |( DoAdd<T> lhs, EnumPipe<T> rhs ) => lhs | rhs.Get;
+
+        private static IEnumerable<T> Yield([CanBeNull] T item) {
+            yield return item;
         }
     }
 }

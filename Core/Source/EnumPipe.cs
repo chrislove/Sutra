@@ -5,12 +5,11 @@ using System.Collections.Generic;
 namespace SharpPipe
 {
 	public static class EnumPipe {
-		internal static EnumPipe<T> FromEnumerable<T>([NotNull] IEnumerable<T> enumerable) => new EnumPipe<T>(enumerable);
-
-		internal static EnumPipe<T> FromFunc<T>(SharpFunc<IEnumerable<T>> func) => new EnumPipe<T>(func);
-		
 		[NotNull]
-		internal static Action ForEachAction<T>( [NotNull] this IEnumerable<T> enumerable, Action<T> act ) {
+		internal static Action ForEachAction<T>( [NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> act ) {
+			if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+			if (act == null) throw new ArgumentNullException(nameof(act));
+			
 			return () => {
 				       if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
