@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
+
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
@@ -26,7 +28,7 @@ namespace SharpPipe {
         public static EnumPipe<T> operator |(DoAdd<T> lhs, [NotNull] IEnumerable<T> rhs) {
             if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-            return lhs._pipe.Get.Concat(rhs) | Commands.TO<T>.ENUM;
+            return lhs._pipe.Get.Concat(rhs) | TO<T>();
         }
 		
         /// <summary>

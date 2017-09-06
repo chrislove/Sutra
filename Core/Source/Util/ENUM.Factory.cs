@@ -17,7 +17,7 @@ namespace SharpPipe {
     /// <summary>
     /// EnumPipe{T} factory
     /// </summary>
-    public static class ENUM {
+    public static partial class ENUM {
         /// <summary>
         /// Creates and initializes EnumPipe{T} with an IEnumerable{T}.
         /// </summary>

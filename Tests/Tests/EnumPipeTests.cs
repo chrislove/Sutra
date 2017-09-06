@@ -57,17 +57,5 @@ namespace SharpPipe.Tests {
 
             Assert.That(WriteOutput, Is.EqualTo("ABC"));
         }
-
-        [Test]
-        public void Test_Transform_With_IEnumerableFunction() {
-        //public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, Func<IEnumerable<TOut>, IEnumerable<TOut>> func ) {
-
-        }
-        
-        [Test]
-        public void Test_Transform_With_NormalFunction() {
-        //public static EnumPipe<TOut> operator |( EnumPipe<TOut> lhs, Func<IEnumerable<TOut>, IEnumerable<TOut>> func ) {
-
-        }
     }
 }

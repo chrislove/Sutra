@@ -25,7 +25,7 @@ namespace SharpPipe.Tests {
             IEnumerable<string> Converter( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
 
             string result = "IN" | TOSTR
-                            | TO.ENUM | Converter
+                            | ENUM.TO | Converter
                             | CONCAT(";") | OUT;
             
             Assert.That(result, Is.EqualTo("IN0;IN1;IN2;"));

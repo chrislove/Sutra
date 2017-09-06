@@ -9,19 +9,15 @@ namespace SharpPipe {
         /// </summary>
         public static DoToPipe<string> TOSTR => new DoToPipe<string>();
 
+        /*
         public static class TO<T> {
             /// <summary>
             /// Converts a value on the left to Pipe{T}
             /// </summary>
             public static DoToPipe<T> PIPE => new DoToPipe<T>();
-            
-            /// <summary>
-            /// Converts a IEnumerable{T} into EnumPipe{T}; or converts a Pipe{T} to EnumPipe{T} using a function on the right.
-            /// Usage:  array | TO.ENUM{string}
-            ///         pipe  | TO.ENUM{string} * convertToEnum
-            /// </summary>
-            public static DoToPipe<T> ENUM => new DoToPipe<T>();
-        }
+        }*/
+        
+        public static DoToPipe<T> TO<T>() => new DoToPipe<T>();
     }
 
     public struct DoToPipe<T> {

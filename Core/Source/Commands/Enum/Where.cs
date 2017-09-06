@@ -20,16 +20,13 @@ namespace SharpPipe {
         public static DoWhere<TOut> operator |( EnumPipe<TOut> pipe, DoWhere @where ) => new DoWhere<TOut>(pipe);
     }
     
-    
-    
 
     public struct DoWhere<T> {
         internal readonly EnumPipe<T> Pipe;
 
         internal DoWhere( EnumPipe<T> pipe ) => Pipe = pipe;
 
-        public static EnumPipe<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => ENUM<T>.NEW | ADD | where.Pipe.Get.Where(predicate);
-        //public static DoWhereConcrete<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => new DoWhereConcrete<T>(@where, predicate);
+        public static EnumPipe<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => where.Pipe.Get.Where(predicate) | TO<T>();
         
         public static DoWhereIf<T> operator |( DoWhere<T> @where, DoIf doIf ) => new DoWhereIf<T>(@where);
     }

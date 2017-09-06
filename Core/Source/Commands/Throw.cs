@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
 
 // ReSharper disable InconsistentNaming
 

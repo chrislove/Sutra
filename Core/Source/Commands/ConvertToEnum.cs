@@ -6,13 +6,11 @@ using static SharpPipe.Commands;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class Commands {
-        public static class TO {
-            /// <summary>
-            /// Converts Pipe{T} to EnumPipe{T} using a converter function.
-            /// </summary>
-            public static DoConvertToEnum ENUM => new DoConvertToEnum();
-        }
+    public static partial class ENUM {
+        /// <summary>
+        /// Converts Pipe{T} to EnumPipe{T} using a converter function.
+        /// </summary>
+        public static DoConvertToEnum TO => new DoConvertToEnum();
     }
     
     public struct DoConvertToEnum { }

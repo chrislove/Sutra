@@ -45,13 +45,22 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Select() {
-            string Bracify( string i ) => $"[{i}]";
-            
             string result = ABCPipe
-                         | SELECT | Bracify
+                         | SELECT | (i => $"[{i}]")
                          | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("[A][B][C]"));
+        }
+        
+        [Test]
+        public void Test_SelectMany() {
+            IEnumerable<string> SelectManyFunc( string str ) => Enumerable.Repeat(str, 3);
+            
+            string result = ABCPipe
+                         | SELECTMANY | SelectManyFunc
+                         | CONCAT("") | OUT;
+            
+            Assert.That(result, Is.EqualTo("AAABBBCCC"));
         }
         
         [Test]
@@ -61,6 +70,18 @@ namespace SharpPipe.Tests {
                          | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("ABCDEF"));
+        }
+        
+        [Test]
+        public void Test_Transform() {
+            IEnumerable<string> TransformFunc( IEnumerable<string> enumerable )
+                => enumerable.Select(i => i + ";");
+            
+            string result = ABCPipe
+                            | TRANSFORM | TransformFunc
+                            | CONCAT("") | OUT;
+            
+            Assert.That(result, Is.EqualTo("A;B;C;"));
         }
     }
 }
