@@ -57,6 +57,7 @@
     <Compile Include="Tests\EnumPipeTests.cs" />
     <Compile Include="Tests\ConversionTests.cs" />
     <Compile Include="Tests\PipeTests.cs" />
+    <Compile Include="Tests\ThrowTests.cs" />
     <Compile Include="Util\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>

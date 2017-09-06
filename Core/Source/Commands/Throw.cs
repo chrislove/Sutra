@@ -27,16 +27,32 @@ namespace SharpPipe {
     
     public struct DoThrow<T> {
         internal readonly EnumPipe<T> Pipe;
+        internal readonly Exception Exception;
 
-        internal DoThrow( EnumPipe<T> pipe ) => Pipe = pipe;
+
+        internal DoThrow( EnumPipe<T> pipe ) {
+            Pipe = pipe;
+            Exception = new PipeCommandException("THROW");
+        }
+        
+        internal DoThrow( EnumPipe<T> pipe, [NotNull] Exception exception ) {
+            Pipe = pipe;
+            Exception = exception ?? throw new ArgumentNullException(nameof(exception));
+        }
+
+
+        internal DoThrow( EnumPipe<T> pipe, [CanBeNull] string message ) {
+            Pipe = pipe;
+            Exception = new PipeUserException(message);
+        }
         
         // PIPE | THROW '|' IF
         public static DoThrowIf<T> operator |( DoThrow<T> doThrow, DoIf @if ) => new DoThrowIf<T>(doThrow);
+        
+        public static DoThrow<T> operator |( DoThrow<T> doThrow, [NotNull] string message )       => new DoThrow<T>(doThrow.Pipe, message);
+        public static DoThrow<T> operator |( DoThrow<T> doThrow, [NotNull] Exception exception )  => new DoThrow<T>(doThrow.Pipe, exception);
     }
 
-    
-    
-    
     public struct DoThrowIf<T> {
         private readonly DoThrow<T> _doThrow;
 
@@ -46,7 +62,7 @@ namespace SharpPipe {
             var pipe = doThrowIf._doThrow.Pipe;
             
             if ( pipe.Get.Any(predicate) )
-                throw new PipeCommandException("THROW");
+                throw doThrowIf._doThrow.Exception;
 
             return pipe;
         }
