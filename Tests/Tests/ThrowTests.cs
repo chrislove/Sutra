@@ -10,7 +10,7 @@ namespace SharpPipe.Tests {
                 var pipe = ABCPipe
                            | ADD
                            | (string) null
-                           | THROW | IF | (i => i == null);
+                           | THROW | IF | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
@@ -20,9 +20,9 @@ namespace SharpPipe.Tests {
         public void Test_Null_Filtered_DoesntThrow() {
             void TestDelegate() {
                 var pipe = ABCPipe
-                           | ADD | (string) null
-                           | WHERE | (i => i != null)
-                           | THROW | IF | (i => i == null);
+                           | ADD   | (string) null
+                           | WHERE | NOTNULL
+                           | THROW | IF | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.Nothing);
@@ -32,8 +32,8 @@ namespace SharpPipe.Tests {
         public void Test_Throw_With_Message() {
             void TestDelegate() {
                 var pipe = ABCPipe
-                           | ADD | (string) null
-                           | THROW | "TEST" | IF | (i => i == null);
+                           | ADD   | (string) null
+                           | THROW | "TEST" | IF | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
@@ -43,8 +43,8 @@ namespace SharpPipe.Tests {
         public void Test_Throw_With_Exception() {
             void TestDelegate() {
                 var pipe = ABCPipe
-                           | ADD | (string) null
-                           | THROW | new PipeUserException("TEST") | IF | (i => i == null);
+                           | ADD   | (string) null
+                           | THROW | new PipeUserException("TEST") | IF | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));

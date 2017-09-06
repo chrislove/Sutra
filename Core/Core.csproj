@@ -51,7 +51,7 @@
     <Compile Include="Source\Commands\ConvertToEnum.cs" />
     <Compile Include="Source\Commands\Enum\Append.cs" />
     <Compile Include="Source\Commands\Enum\ForEach.cs" />
-    <Compile Include="Source\Commands\Is.cs" />
+    <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\ToPipe.cs" />
     <Compile Include="Source\Commands\If.cs" />
     <Compile Include="Source\Commands\Throw.cs" />

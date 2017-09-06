@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
 
 namespace SharpPipe {
     public struct ActPipe<TOut> {

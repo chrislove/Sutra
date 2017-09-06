@@ -1,9 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 
 using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
 
 namespace SharpPipe {
     public static partial class Commands {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.Pipe;
 
 namespace SharpPipe.Tests {
     public sealed class EnumCommandTests : TestBase {
@@ -39,7 +37,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Filter() {
             string result = ABCPipe
-                         | WHERE | (i => i != "B")
+                         | WHERE | ISNOT("B")
                          | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("AC"));

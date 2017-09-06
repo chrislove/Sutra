@@ -1,7 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
-
-namespace SharpPipe {
+﻿namespace SharpPipe {
 	public abstract partial class SharpFunc {
 		/*
 		/// <summary>
