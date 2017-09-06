@@ -8,17 +8,17 @@ namespace SharpPipe
 		/// <summary>
 		/// Signals a pipe to return its value.
 		/// </summary>
-		public static DoEnd OUT => new DoEnd();
+		public static DoOut OUT => new DoOut();
 	}
 	
-	public struct DoEnd {}
+	public struct DoOut {}
 	
 	partial struct EnumPipe<TOut> {
 		/// <summary>
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<TOut> operator |(EnumPipe<TOut> lhs, DoEnd act) => lhs.Get;
+		public static IEnumerable<TOut> operator |(EnumPipe<TOut> lhs, DoOut act) => lhs.Get;
 	}
 
 	public partial struct Pipe<TOut> {
@@ -26,6 +26,6 @@ namespace SharpPipe
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static TOut operator |( Pipe<TOut> lhs, DoEnd doEnd ) => lhs.Get;
+		public static TOut operator |( Pipe<TOut> lhs, DoOut doOut ) => lhs.Get;
 	}
 }

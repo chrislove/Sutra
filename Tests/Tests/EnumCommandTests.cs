@@ -80,5 +80,14 @@ namespace SharpPipe.Tests {
             
             Assert.That(result, Is.EqualTo("[A][B][C]"));
         }
+        
+        [Test]
+        public void Test_Append() {
+            string result = ABCPipe
+                         | APPEND | "D" | "E" | "F" | I
+                         | CONCAT("") | OUT;
+            
+            Assert.That(result, Is.EqualTo("ABCDEF"));
+        }
     }
 }

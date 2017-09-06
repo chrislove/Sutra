@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using static SharpPipe.Commands;
 // ReSharper disable InconsistentNaming
 

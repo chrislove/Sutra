@@ -18,7 +18,7 @@ namespace SharpPipe {
     public struct DoAdd<T> {
         private readonly EnumPipe<T> _pipe;
 
-        public DoAdd( EnumPipe<T> lhs ) => _pipe = lhs;
+        internal DoAdd( EnumPipe<T> lhs ) => _pipe = lhs;
         
         /// <summary>
         /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}

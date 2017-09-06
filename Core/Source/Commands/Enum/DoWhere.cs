@@ -8,7 +8,6 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         //public static DoWhere WHERE<T>(Func<T, bool> predicate) => WHERE(i => predicate(i.To<T>()));
-        //public static DoWhere WHERE(Func<dynamic, bool> predicate) => new DoWhere(predicate);
         public static DoWhere WHERE => new DoWhere();
     }
 
