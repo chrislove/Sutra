@@ -52,6 +52,7 @@
     <Compile Include="Source\Commands\Enum\Append.cs" />
     <Compile Include="Source\Commands\Enum\ForEach.cs" />
     <Compile Include="Source\Commands\Enum\SelectMany.cs" />
+    <Compile Include="Source\Commands\Enum\Single.cs" />
     <Compile Include="Source\Commands\Enum\Transform.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\ToPipe.cs" />

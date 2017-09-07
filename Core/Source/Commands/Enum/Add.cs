@@ -14,7 +14,7 @@ namespace SharpPipe {
     public struct DoAdd { }
 
     public partial struct EnumPipe<TOut> {
-        public static DoAdd<TOut> operator |( EnumPipe<TOut> lhs, DoAdd doAdd ) => new DoAdd<TOut>( lhs );
+        public static DoAdd<TOut> operator |( EnumPipe<TOut> pipe, DoAdd doAdd ) => new DoAdd<TOut>( pipe );
     }
 
     public struct DoAdd<T> {

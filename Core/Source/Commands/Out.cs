@@ -18,7 +18,7 @@ namespace SharpPipe
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<TOut> operator |(EnumPipe<TOut> lhs, DoOut act) => lhs.Get;
+		public static IEnumerable<TOut> operator |(EnumPipe<TOut> pipe, DoOut act) => pipe.Get;
 	}
 
 	public partial struct Pipe<TOut> {

@@ -9,7 +9,7 @@ namespace SharpPipe.Tests {
                 var pipe = ABCPipe
                            | ADD
                            | (string) null
-                           | THROW | IF | ISNULL;
+                           | THROW | IFANY | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
@@ -21,7 +21,7 @@ namespace SharpPipe.Tests {
                 var pipe = ABCPipe
                            | ADD   | (string) null
                            | WHERE | NOTNULL
-                           | THROW | IF | ISNULL;
+                           | THROW | IFANY | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.Nothing);
@@ -32,7 +32,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ABCPipe
                            | ADD   | (string) null
-                           | THROW | "TEST" | IF | ISNULL;
+                           | THROW | "TEST" | IFANY | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
@@ -43,10 +43,46 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ABCPipe
                            | ADD   | (string) null
-                           | THROW | new PipeUserException("TEST") | IF | ISNULL;
+                           | THROW | new PipeUserException("TEST") | IFANY | ISNULL;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
+        }
+        
+        [Test]
+        public void Test_Throw_NextException() {
+            void TestDelegate() {
+                PIPE.NextException = new PipeUserException("TEST");
+                
+                var pipe = ABCPipe
+                           | ADD   | (string) null
+                           | THROW | IFANY | ISNULL;
+            }
+
+            Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
+        }
+        
+        [TestCase("B", true)]
+        [TestCase("DONT", false)]
+        public void Test_ThrowIf(string ifInput, bool shouldThrow) {
+            void TestDelegate() {
+                var pipe = ABCPipe
+                           | THROW | IFANY | IS(ifInput);
+            }
+            
+            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
+        }
+        
+        
+        [TestCase("B", true)]
+        [TestCase("DONT", false)]
+        public void Test_ThrowExceptionIf(string ifInput, bool shouldThrow) {
+            void TestDelegate() {
+                var pipe = ABCPipe
+                           | THROW | IFANY | IS(ifInput);
+            }
+            
+            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
         }
     }
 }

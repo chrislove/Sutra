@@ -8,14 +8,14 @@ namespace SharpPipe.Tests {
     public sealed class ConversionTests : TestBase {
         [Test]
         public void Test_Value_ToPipe() {
-            string result = "IN" | TOSTR | OUT;
+            string result = "IN" | TO<string>() | OUT;
             
             Assert.That(result, Is.EqualTo("IN"));
         }
         
         [Test]
         public void Test_List_ToPipe() {
-            string result = ABCArray.ToList() | TOSTR | CONCAT("") | OUT;
+            string result = ABCArray.ToList() | TO<string>() | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("ABC"));
         }
@@ -24,7 +24,7 @@ namespace SharpPipe.Tests {
         public void Test_Pipe_ToEnum() {
             IEnumerable<string> Converter( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
 
-            string result = "IN" | TOSTR
+            string result = "IN" | TO<string>()
                             | ENUM.TO | Converter
                             | CONCAT(";") | OUT;
             
@@ -33,7 +33,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Array_ToEnum() {
-            string result = ABCArray | TOSTR
+            string result = ABCArray | TO<string>()
                             | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("ABC"));

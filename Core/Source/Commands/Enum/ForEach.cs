@@ -14,8 +14,8 @@ namespace SharpPipe {
     public struct DoForEachStart { }
 
     public partial struct EnumPipe<TOut> {
-        public static DoForEachEnd<TOut> operator |( EnumPipe<TOut> lhs, DoForEachStart doConvertToEnumStart )
-                            => new DoForEachEnd<TOut>( lhs );
+        public static DoForEachEnd<TOut> operator |( EnumPipe<TOut> pipe, DoForEachStart doConvertToEnumStart )
+                            => new DoForEachEnd<TOut>( pipe );
     }
 
     public struct DoForEachEnd<T> {

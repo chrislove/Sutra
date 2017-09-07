@@ -35,7 +35,7 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_Filter() {
+        public void Test_Where() {
             string result = ABCPipe
                          | WHERE | ISNOT("B")
                          | CONCAT("") | OUT;
@@ -50,6 +50,24 @@ namespace SharpPipe.Tests {
                          | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("[A][B][C]"));
+        }
+        
+        [Test]
+        public void Test_Single() {
+            string result = ABCPipe
+                            | WHERE | IS("B")
+                            | SINGLE | OUT;
+            
+            Assert.That(result, Is.EqualTo("B"));
+        }
+        
+        [Test]
+        public void Test_First() {
+            string result = ABCPipe | ADD | ABCPipe
+                            | WHERE | IS("B")
+                            | FIRST | OUT;
+            
+            Assert.That(result, Is.EqualTo("B"));
         }
         
         [Test]
@@ -82,6 +100,28 @@ namespace SharpPipe.Tests {
                             | CONCAT("") | OUT;
             
             Assert.That(result, Is.EqualTo("A;B;C;"));
+        }
+        
+        [Test]
+        public void Test_IfEmpty_Throws() {
+            void TestDelegate() {
+                var pipe = ENUM<string>.NEW
+                           | THROW | IF | ISEMPTY;
+            }
+
+            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+        }
+        
+        [TestCase(true, new string[0])]
+        [TestCase(true, new []{"A", "B", "C"})]
+        [TestCase(false, new []{"A"})]
+        public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
+            void TestDelegate() {
+                var emptyPipe = ENUM<string>.NEW | ADD | testStrings
+                                | THROW | IF | ISNOTSINGLE;
+            }
+
+            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
         }
     }
 }

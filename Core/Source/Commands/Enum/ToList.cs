@@ -14,6 +14,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into List{TOut}
         /// </summary>
-        public static Pipe<List<TOut>> operator |( EnumPipe<TOut> lhs, DoToList act ) => PIPE.IN(lhs.Get.ToList());
+        public static Pipe<List<TOut>> operator |( EnumPipe<TOut> pipe, DoToList act ) => PIPE.IN(pipe.Get.ToList());
     }
 }

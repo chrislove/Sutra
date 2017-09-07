@@ -1,24 +1,16 @@
-using System;
 using System.Linq;
-using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Commands {
-        public static DoFirst FIRST<T>(Func<T, bool> predicate) => new DoFirst(i => predicate(i.To<T>(nameof(FIRST))));
+        public static DoFirst FIRST => new DoFirst();
     }
     
-    public struct DoFirst {
-        internal readonly Func<object, bool> Predicate;
-
-        internal DoFirst( [NotNull] Func<object, bool> predicate ) => Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
-    }
+    public struct DoFirst {}
     
     public partial struct EnumPipe<TOut> {
-        /// <summary>
-        /// Converts pipe contents into TOut[]
-        /// </summary>
-        public static Pipe<TOut> operator |( EnumPipe<TOut> lhs, DoFirst act ) => PIPE.IN( lhs.Get.First( i => act.Predicate(i) ) );
+        public static Pipe<TOut> operator |( EnumPipe<TOut> pipe, DoFirst @do ) => pipe.Get.First() | TO<TOut>();
     }
 }

@@ -11,7 +11,7 @@ namespace SharpPipe.Tests {
     public abstract class TestBase {
         [NotNull] protected readonly string[] ABCArray = {"A", "B", "C"};
         [NotNull] protected List<string>      ABCList => ABCArray.ToList();
-        [NotNull] protected EnumPipe<string>  ABCPipe => ABCArray | TOSTR;
+        [NotNull] protected EnumPipe<string>  ABCPipe => ABCArray | TO<string>();
         
         protected string WriteOutput;
 

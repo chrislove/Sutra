@@ -1,4 +1,3 @@
-
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
@@ -6,8 +5,14 @@ namespace SharpPipe {
         /// <summary>
         /// Condition command constraint.
         /// </summary>
+        public static DoIfAny IFANY => new DoIfAny();
+        
+        /// <summary>
+        /// Condition command constraint.
+        /// </summary>
         public static DoIf IF => new DoIf();
     }
 
+    public struct DoIfAny {}
     public struct DoIf {}
 }
