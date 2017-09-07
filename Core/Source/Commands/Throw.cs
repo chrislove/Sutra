@@ -26,21 +26,15 @@ namespace SharpPipe {
                     _nextException = null;
                 }
             }
-            set { _nextException = value; }
+            set => _nextException = value;
         }
     }
     
+    
     public class DoThrow {}
     
-    public partial struct EnumPipe<TOut> {
-        // PIPE '|' THROW
-        [NotNull] public static DoThrow<TOut> operator |( EnumPipe<TOut> pipe, DoThrow @do ) => new DoThrow<TOut>(pipe);
-    }
-    
-    
-    
     public class DoThrow<T> : DoThrow {
-        internal readonly EnumPipe<T> Pipe;
+        internal readonly IPipe<T> Pipe;
         internal readonly Exception Exception;
 
         protected DoThrow( DoThrow<T> copyFrom ) {
@@ -48,53 +42,20 @@ namespace SharpPipe {
             Exception = copyFrom.Exception;
         }
         
-        internal DoThrow( EnumPipe<T> pipe ) {
+        internal DoThrow( IPipe<T> pipe ) {
             Pipe      = pipe;
             Exception = PIPE.NextException ?? new PipeCommandException("THROW");
         }
 
-        private DoThrow( EnumPipe<T> pipe, [NotNull] Exception exception ) {
+        protected DoThrow( IPipe<T> pipe, [NotNull] Exception exception ) {
             Pipe      = pipe;
             Exception = exception ?? throw new ArgumentNullException(nameof(exception));
         }
 
 
-        private DoThrow( EnumPipe<T> pipe, [CanBeNull] string message ) {
+        protected DoThrow( IPipe<T> pipe, [CanBeNull] string message ) {
             Pipe      = pipe;
             Exception = new PipeUserException(message);
-        }
-        
-        // PIPE | THROW '|' IF
-        [NotNull] public static DoThrowIf<T> operator |( DoThrow<T> doThrow, DoIf @if ) => new DoThrowIf<T>(doThrow);
-        [NotNull] public static DoThrowIfAny<T> operator |( DoThrow<T> doThrow, DoIfAny @if ) => new DoThrowIfAny<T>(doThrow);
-        
-        [NotNull] public static DoThrow<T> operator |( DoThrow<T> doThrow, [NotNull] string message )       => new DoThrow<T>(doThrow.Pipe, message);
-        [NotNull] public static DoThrow<T> operator |( DoThrow<T> doThrow, [NotNull] Exception exception )  => new DoThrow<T>(doThrow.Pipe, exception);
-    }
-
-    public class DoThrowIf<T> : DoThrow<T> {
-        internal DoThrowIf(DoThrow<T> doThrow) : base(doThrow) { }
-        
-        public static EnumPipe<T> operator |( DoThrowIf<T> doThrowIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
-            var pipe = doThrowIf.Pipe;
-            
-            if ( predicate(pipe.Get) )
-                throw doThrowIf.Exception;
-
-            return pipe;
-        }
-    }
-    
-    public sealed class DoThrowIfAny<T> : DoThrowIf<T> {
-        internal DoThrowIfAny(DoThrow<T> doThrow) : base(doThrow) { }
-        
-        public static EnumPipe<T> operator |( DoThrowIfAny<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
-            var pipe = doThrowIf.Pipe;
-            
-            if ( pipe.Get.Any(predicate) )
-                throw doThrowIf.Exception;
-
-            return pipe;
         }
     }
 }

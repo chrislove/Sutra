@@ -4,7 +4,18 @@ using static SharpPipe.Commands;
 namespace SharpPipe.Tests {
     public sealed class ThrowTests : TestBase {
         [Test]
-        public void Test_Null_Throws() {
+        public void Test_Pipe_Null_Throws() {
+            void TestDelegate() {
+                var pipe = PIPE<string>.NEW
+                           | (string) null
+                           | THROW | IF | ISNULL;
+            }
+
+            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+        }
+        
+        [Test]
+        public void Test_Enum_Null_Throws() {
             void TestDelegate() {
                 var pipe = ABCPipe
                            | ADD
@@ -31,8 +42,9 @@ namespace SharpPipe.Tests {
         public void Test_Throw_With_Message() {
             void TestDelegate() {
                 var pipe = ABCPipe
-                           | ADD   | (string) null
+                           | ADD | (string) null
                            | THROW | "TEST" | IFANY | ISNULL;
+                ;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
@@ -65,18 +77,6 @@ namespace SharpPipe.Tests {
         [TestCase("B", true)]
         [TestCase("DONT", false)]
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {
-            void TestDelegate() {
-                var pipe = ABCPipe
-                           | THROW | IFANY | IS(ifInput);
-            }
-            
-            ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
-        }
-        
-        
-        [TestCase("B", true)]
-        [TestCase("DONT", false)]
-        public void Test_ThrowExceptionIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
                 var pipe = ABCPipe
                            | THROW | IFANY | IS(ifInput);

@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public partial struct Pipe<TOut>
+	public partial struct Pipe<TOut> : IPipe<TOut>
 	{
 		internal SharpFunc<TOut> Func { get; }
 		[CanBeNull] internal TOut Get => Func.Func(null);

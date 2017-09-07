@@ -5,7 +5,7 @@ using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
-	public partial struct EnumPipe<TOut> {
+	public partial struct EnumPipe<TOut> : IPipe<TOut> {
 		internal EnumPipe([CanBeNull] IEnumerable<TOut> obj) : this(SharpFunc.WithValue(obj) ) { }
 
 		private EnumPipe( SharpFunc<IEnumerable<TOut>> func ) => Func = func;

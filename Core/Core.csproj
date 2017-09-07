@@ -53,8 +53,10 @@
     <Compile Include="Source\Commands\Enum\ForEach.cs" />
     <Compile Include="Source\Commands\Enum\SelectMany.cs" />
     <Compile Include="Source\Commands\Enum\Single.cs" />
+    <Compile Include="Source\Commands\Enum\ThrowEnum.cs" />
     <Compile Include="Source\Commands\Enum\Transform.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
+    <Compile Include="Source\Commands\ThrowPipe.cs" />
     <Compile Include="Source\Commands\ToPipe.cs" />
     <Compile Include="Source\Commands\If.cs" />
     <Compile Include="Source\Commands\Throw.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
     <Compile Include="Source\EnumPipe.cs" />
     <Compile Include="Source\EnumPipe[TOut].cs" />
+    <Compile Include="Source\IPipe.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
     <Compile Include="Source\Operators\SharpFunc.Composition.cs" />
     <Compile Include="Source\ToActPipe.cs" />
