@@ -43,7 +43,7 @@ namespace SharpPipe.Tests  {
 			const string inPath = @"Library\Assembly.dll";
 
 			string combined = PIPE.IN(inPath)
-			                  | CombinePrepend(projectDirectory)
+			                  | PathPrepend(projectDirectory)
 			                  | GetFullPath
 			                  | OUT;
 			

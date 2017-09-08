@@ -62,6 +62,26 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
+        public void Test_Pipe_Throw_NonConditional() {
+            void TestDelegate() {
+                var pipe = PIPE<string>.NEW
+                           | THROW | IF | (() => true);
+            }
+
+            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+        }
+        
+        [Test]
+        public void Test_Enum_Throw_NonConditional() {
+            void TestDelegate() {
+                var pipe = ABCPipe
+                           | THROW | IF | (() => true);
+            }
+
+            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+        }
+        
+        [Test]
         public void Test_Throw_NextException() {
             void TestDelegate() {
                 PIPE.NextException = new PipeUserException("TEST");

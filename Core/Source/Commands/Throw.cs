@@ -33,29 +33,24 @@ namespace SharpPipe {
     
     public class DoThrow {}
     
-    public class DoThrow<T> : DoThrow {
-        internal readonly IPipe<T> Pipe;
-        internal readonly Exception Exception;
+    public class DoThrow<T> : Command<T> {
+        internal Exception Exception = PIPE.NextException ?? new PipeCommandException("THROW");
 
-        protected DoThrow( DoThrow<T> copyFrom ) {
-            Pipe      = copyFrom.Pipe;
-            Exception = copyFrom.Exception;
-        }
-        
-        internal DoThrow( IPipe<T> pipe ) {
-            Pipe      = pipe;
-            Exception = PIPE.NextException ?? new PipeCommandException("THROW");
-        }
+        protected DoThrow( IPipe<T> pipe ) : base(pipe) {}
+        protected DoThrow( DoThrow<T> command ) : base(command) {}
 
-        protected DoThrow( IPipe<T> pipe, [NotNull] Exception exception ) {
-            Pipe      = pipe;
+        [NotNull]
+        internal DoThrow<T> WithException( [NotNull] Exception exception ) {
             Exception = exception ?? throw new ArgumentNullException(nameof(exception));
+
+            return this;
         }
 
-
-        protected DoThrow( IPipe<T> pipe, [CanBeNull] string message ) {
-            Pipe      = pipe;
+        [NotNull]
+        internal DoThrow<T> WithMessage( [CanBeNull] string message ) {
             Exception = new PipeUserException(message);
+
+            return this;
         }
     }
 }
