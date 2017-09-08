@@ -26,6 +26,6 @@ namespace SharpPipe
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static TOut operator |( Pipe<TOut> lhs, DoOut doOut ) => lhs.Get;
+		public static TOut operator |( Pipe<TOut> pipe, DoOut doOut ) => pipe.Get;
 	}
 }

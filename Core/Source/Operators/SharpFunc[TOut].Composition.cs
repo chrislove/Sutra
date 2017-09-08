@@ -6,12 +6,6 @@ namespace SharpPipe {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] SharpFunc rhs )
-												=> lhs + (i => rhs.Func(i));
-		
-		/// <summary>
-		/// Function composition operator
-		/// </summary>
 		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, SharpFunc<TOut> rhs )
 												=> lhs + (i => rhs.Func(i));
 		

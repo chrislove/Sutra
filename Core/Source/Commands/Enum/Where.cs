@@ -40,7 +40,7 @@ namespace SharpPipe {
             var pipe = doWhereIf._doWhere.Pipe;
             var filtered = pipe.Get.Where(predicate);
 
-            return ENUM.IN(filtered);
+            return PIPE<T>.NEW | filtered;
         }
     }
     

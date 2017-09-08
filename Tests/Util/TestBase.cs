@@ -10,8 +10,12 @@ namespace SharpPipe.Tests {
     [TestFixture]
     public abstract class TestBase {
         [NotNull] protected readonly string[] ABCArray = {"A", "B", "C"};
-        [NotNull] protected List<string>      ABCList => ABCArray.ToList();
-        [NotNull] protected EnumPipe<string>  ABCPipe => ABCArray | TO<string>();
+        [NotNull] protected List<string>      ABCList  => ABCArray.ToList();
+        
+        [NotNull] protected EnumPipe<string>  ABCPipe  => STRING.PIPE | ABCArray;
+        [NotNull] protected Pipe<string>      TestPipe => STRING.PIPE | "TEST";
+        
+        
         
         protected string WriteOutput;
 

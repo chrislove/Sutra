@@ -15,7 +15,7 @@ namespace SharpPipe {
     }
 
 
-    public static partial class PIPE {
+    internal static partial class PIPE {
         [CanBeNull] private static Exception _nextException;
 
         [CanBeNull] public static Exception NextException {

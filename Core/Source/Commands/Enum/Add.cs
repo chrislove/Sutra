@@ -17,6 +17,14 @@ namespace SharpPipe {
         public static DoAdd<TOut> operator |( EnumPipe<TOut> pipe, DoAdd doAdd ) => new DoAdd<TOut>( pipe );
     }
 
+    public partial struct DoStartPipe<T> {
+        /// <summary>
+        /// Starts a enumerable pipe
+        /// </summary>
+        public static DoAdd<T> operator |( DoStartPipe<T> pipe, DoAdd doAdd ) => new DoAdd<T>( EnumPipe<T>.Empty );
+    }
+
+
     public struct DoAdd<T> {
         private readonly EnumPipe<T> _pipe;
 

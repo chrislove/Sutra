@@ -6,7 +6,7 @@ using static SharpPipe.Commands;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public static partial class ENUM {
+    public static class ENUM {
         /// <summary>
         /// Converts Pipe{T} to EnumPipe{T} using a converter function.
         /// </summary>
@@ -16,8 +16,8 @@ namespace SharpPipe {
     public struct DoConvertToEnum { }
 
     public partial struct Pipe<TOut> {
-        public static DoConvertToEnum<TOut> operator |( Pipe<TOut> lhs, DoConvertToEnum doConvertToEnum )
-            => new DoConvertToEnum<TOut>( lhs );
+        public static DoConvertToEnum<TOut> operator |( Pipe<TOut> pipe, DoConvertToEnum doConvertToEnum )
+            => new DoConvertToEnum<TOut>( pipe );
     }
     
 
@@ -30,7 +30,7 @@ namespace SharpPipe {
         /// Attaches a EnumPipe converter function to DoToPipe{T}.
         /// </summary>
         public static EnumPipe<T> operator |( DoConvertToEnum<T> lhs, [NotNull] Func<T, IEnumerable<T>> func )
-                                => ENUM<T>.NEW
+                                => PIPE<T>.NEW
                                    | ADD | func(lhs._pipe.Get);
 
     }

@@ -3,13 +3,7 @@ using System;
 
 namespace SharpPipe
 {
-	public abstract partial class SharpFunc {
-		public Func<object, object> Func { get; }
-
-		protected SharpFunc([NotNull] Func<object, object> func) {
-			Func = func ?? throw new ArgumentNullException(nameof(func));
-		}
-
+	internal static class SharpFunc {
 		internal static SharpFunc<TIn, TOut> FromFunc<TIn, TOut>( [NotNull] Func<TIn, TOut> func )
 																		=> new SharpFunc<TIn, TOut>(func);
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
+
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
@@ -14,11 +15,11 @@ namespace SharpPipe {
         /// <summary>
         /// Converts object to Pipe{T}
         /// </summary>
-        public static Pipe<T>     operator |( [NotNull] T obj, DoToPipe<T> rhs ) => PIPE.IN(obj);
+        public static Pipe<T> operator |( [NotNull] T obj, DoToPipe<T> rhs ) => new Pipe<T>(obj);
         
         /// <summary>
         /// Converts IEnumerable{T} to EnumPipe{T}
         /// </summary>
-        public static EnumPipe<T> operator |( [NotNull] IEnumerable<T> enumerable, DoToPipe<T> rhs ) => ENUM.IN(enumerable);
+        public static EnumPipe<T> operator |( [NotNull] IEnumerable<T> enumerable, DoToPipe<T> rhs ) => new EnumPipe<T>(enumerable);
     }
 }

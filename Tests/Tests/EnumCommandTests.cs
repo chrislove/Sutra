@@ -7,7 +7,7 @@ namespace SharpPipe.Tests {
     public sealed class EnumCommandTests : TestBase {
         [Test]
         public void Test_Distinct() {
-            string pipeStr = ENUM.STR
+            string pipeStr = STRING.PIPE
                              | ADD | Enumerable.Repeat("A", 5)
                              | ADD | Enumerable.Repeat("B", 10)
                              | ADD | Enumerable.Repeat("C", 12)
@@ -22,7 +22,7 @@ namespace SharpPipe.Tests {
         public void Test_Conversion() {
             var enumerable = Enumerable.Repeat("A", 3);
 
-            var pipe = ENUM.STR
+            var pipe = STRING.PIPE
                        | ADD | enumerable;
 
             string str        = pipe | CONCAT("") | OUT;
@@ -105,7 +105,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                var pipe = ENUM<string>.NEW
+                var pipe = STRING.PIPE
+                           | ADD   | ""
+                           | WHERE | (s => s != "")
                            | THROW | IF | ISEMPTY;
             }
 
@@ -117,7 +119,8 @@ namespace SharpPipe.Tests {
         [TestCase(false, new []{"A"})]
         public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
             void TestDelegate() {
-                var emptyPipe = ENUM<string>.NEW | ADD | testStrings
+                var emptyPipe = STRING.PIPE
+                                | ADD | testStrings
                                 | THROW | IF | ISNOTSINGLE;
             }
 

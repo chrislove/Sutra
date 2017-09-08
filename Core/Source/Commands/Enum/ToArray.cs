@@ -13,6 +13,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static Pipe<TOut[]> operator |( EnumPipe<TOut> pipe, DoToArray act ) => PIPE.IN( pipe.Get.ToArray() );
+        public static Pipe<TOut[]> operator |( EnumPipe<TOut> pipe, DoToArray act ) => PIPE<TOut[]>.NEW | pipe.Get.ToArray();
     }
 }
