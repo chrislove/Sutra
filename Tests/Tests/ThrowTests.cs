@@ -6,7 +6,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Pipe_Null_Throws() {
             void TestDelegate() {
-                var pipe = STRING.PIPE
+                var pipe = NEW.STRING.PIPE
                            | (string) null
                            | THROW | IF | ISNULL;
             }

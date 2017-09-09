@@ -8,7 +8,7 @@ namespace SharpPipe.Tests {
     public sealed class ConversionTests : TestBase {
         [Test]
         public void Test_Value_ToPipe() {
-            string result = STRING.PIPE | "IN" | OUT;
+            string result = NEW.STRING.PIPE | "IN" | OUT;
             
             Assert.That(result, Is.EqualTo("IN"));
         }
@@ -24,7 +24,7 @@ namespace SharpPipe.Tests {
         public void Test_Pipe_ToEnum() {
             IEnumerable<string> Converter( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
 
-            string result = STRING.PIPE | "IN"
+            string result = NEW.STRING.PIPE | "IN"
                             | ENUM.TO | Converter
                             | CONCAT(";") | OUT;
             

@@ -6,14 +6,11 @@ using System.ComponentModel;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public static class PIPE<T> {
-        /// <summary>
-        /// Creates an empty Pipe{T}
-        /// </summary>
-        public static DoStartPipe<T> NEW => new DoStartPipe<T>();
+    public static class NEW<T> {
+        public static DoStartPipe<T> PIPE => new DoStartPipe<T>();
     }
-    
-    public static partial class Commands {
+
+    public static class NEW {
         /// <summary>
         /// Starts a {string} pipe.
         /// </summary>
@@ -42,7 +39,7 @@ namespace SharpPipe {
 
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial struct DoStart<T> {
+    public struct DoStart<T> {
         public DoStartPipe<T> PIPE => new DoStartPipe<T>();
     }
     
@@ -51,7 +48,7 @@ namespace SharpPipe {
     public partial struct DoStartPipe<T> {
         public static Pipe<T> operator |( DoStartPipe<T> doStartPipe, T obj ) => new Pipe<T>(obj);
         
-        public static EnumPipe<T> operator |( DoStartPipe<T> doStartPipe, IEnumerable<T> enumerable ) => PIPE<T>.NEW | ADD | enumerable;
+        public static EnumPipe<T> operator |( DoStartPipe<T> doStartPipe, IEnumerable<T> enumerable ) => NEW<T>.PIPE | ADD | enumerable;
     
     }
 }

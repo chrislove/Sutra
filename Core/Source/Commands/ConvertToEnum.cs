@@ -30,7 +30,7 @@ namespace SharpPipe {
         /// Attaches a EnumPipe converter function to DoToPipe{T}.
         /// </summary>
         public static EnumPipe<T> operator |( DoConvertToEnum<T> lhs, [NotNull] Func<T, IEnumerable<T>> func )
-                                => PIPE<T>.NEW
+                                => NEW<T>.PIPE
                                    | ADD | func(lhs._pipe.Get);
 
     }

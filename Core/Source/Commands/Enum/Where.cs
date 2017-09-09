@@ -40,7 +40,7 @@ namespace SharpPipe {
             var pipe = doWhereIf._doWhere.Pipe;
             var filtered = pipe.Get.Where(predicate);
 
-            return PIPE<T>.NEW | filtered;
+            return NEW<T>.PIPE | filtered;
         }
     }
     

@@ -15,7 +15,7 @@ namespace SharpPipe.Tests  {
 		private static SharpFunc<DateTime, string> GetShortDate => _(( DateTime d ) => d.ToShortDateString());
 
 		
-		private static Pipe<string> YesterdayPipe => DATETIME.PIPE | DateTime.Now
+		private static Pipe<string> YesterdayPipe => NEW.DATETIME.PIPE | DateTime.Now
 		                                             | AddDays(-1)
 		                                             | GetShortDate
 		                                             | (i => "Yesterday: " + i);
@@ -42,7 +42,7 @@ namespace SharpPipe.Tests  {
 			const string projectDirectory = @"C:\Project";
 			const string inPath = @"Library\Assembly.dll";
 
-			string combined = STRING.PIPE | inPath
+			string combined = NEW.STRING.PIPE | inPath
 			                  | PathPrepend(projectDirectory)
 			                  | GetFullPath
 			                  | OUT;
