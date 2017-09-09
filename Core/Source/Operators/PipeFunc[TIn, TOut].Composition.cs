@@ -37,17 +37,5 @@ namespace SharpPipe {
 
 			return PipeFunc.FromFunc(CombinedFunc);
 		}
-
-		/*
-		/// <summary>
-		/// Function composition operator
-		/// </summary>
-		public static SharpAct<TIn> operator +( SharpFunc<TIn, TOut> lhs, [NotNull] Action<TOut> rhs ) {
-			if (rhs == null) throw new ArgumentNullException(nameof(rhs));
-
-			void Combined( TIn obj ) => rhs(lhs.Func(obj));
-
-			return SharpAct.FromAction<TIn>(Combined);
-		}*/
 	}
 }
