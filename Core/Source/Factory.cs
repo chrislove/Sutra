@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
@@ -14,35 +15,39 @@ namespace SharpPipe {
         /// <summary>
         /// Starts a {string} pipe.
         /// </summary>
-        public static DoStart<string> STRING => new DoStart<string>();
-        
-        /// <summary>
-        /// Starts an {int} pipe
-        /// </summary>
-        public static DoStart<int> INT => new DoStart<int>();
-        
-        /// <summary>
-        /// Starts a {float} pipe
-        /// </summary>
-        public static DoStart<float> FLOAT => new DoStart<float>();
-        
-        /// <summary>
-        /// Starts a {double} pipe
-        /// </summary>
-        public static DoStart<double> DOUBLE => new DoStart<double>();
-        
-        /// <summary>
-        /// Starts a {DateTime} pipe
-        /// </summary>
-        public static DoStart<DateTime> DATETIME => new DoStart<DateTime>();
-    }
+        public static class STRING {
+            public static DoStartPipe<string> PIPE => NEW<string>.PIPE;
 
+        }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoStart<T> {
-        public DoStartPipe<T> PIPE => new DoStartPipe<T>();
+        /// <summary>
+        /// Starts a {int} pipe.
+        /// </summary>
+        public static class INT {
+            public static DoStartPipe<int> PIPE => NEW<int>.PIPE;
+        }
+        
+        /// <summary>
+        /// Starts a {float} pipe.
+        /// </summary>
+        public static class FLOAT {
+            public static DoStartPipe<float> PIPE => NEW<float>.PIPE;
+        }
+        
+        /// <summary>
+        /// Starts a {double} pipe.
+        /// </summary>
+        public static class DOUBLE {
+            public static DoStartPipe<double> PIPE => NEW<double>.PIPE;
+        }
+        
+        /// <summary>
+        /// Starts a {double} pipe.
+        /// </summary>
+        public static class DATETIME {
+            public static DoStartPipe<DateTime> PIPE => NEW<DateTime>.PIPE;
+        }
     }
-    
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct DoStartPipe<T> {
