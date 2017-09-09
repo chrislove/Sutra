@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 // ReSharper disable InconsistentNaming
 
@@ -14,27 +15,10 @@ namespace SharpPipe {
         [NotNull] public static DoThrow   THROW     => new DoThrow();
     }
 
-
-    internal static partial class PIPE {
-        [CanBeNull] private static Exception _nextException;
-
-        [CanBeNull] public static Exception NextException {
-            get {
-                try {
-                    return _nextException;
-                } finally {
-                    _nextException = null;
-                }
-            }
-            set => _nextException = value;
-        }
-    }
-    
-    
-    public class DoThrow {}
+    public struct DoThrow {}
     
     public class DoThrow<T> : Command<T> {
-        internal Exception Exception = PIPE.NextException ?? new PipeCommandException("THROW");
+        internal Exception Exception = PIPE.NEXTEXCEPTION ?? new PipeCommandException("THROW");
 
         protected DoThrow( IPipe<T> pipe ) : base(pipe) {}
         protected DoThrow( DoThrow<T> command ) : base(command) {}

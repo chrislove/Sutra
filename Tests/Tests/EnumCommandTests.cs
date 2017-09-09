@@ -82,8 +82,8 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_Append() {
-            string result = ABCPipe
+        public void Test_Append_NewPipe() {
+            string result = STRING.PIPE | ABCArray
                          | APPEND | "D" | "E" | "F" | I
                          | CONCAT("") | OUT;
             

@@ -15,25 +15,30 @@ namespace SharpPipe {
     }
     
     public struct DoAppend { }
+    
+    public partial struct DoStartPipe<T> {
+        /// <summary>
+        /// Starts a enumerable pipe
+        /// </summary>
+        public static DoAppend<T> operator |( DoStartPipe<T> pipe, DoAppend doAdd ) => new DoAppend<T>( EnumPipe<T>.Empty );
+    }
 
     public partial struct EnumPipe<TOut> {
-        public static DoAppend<TOut> operator |( EnumPipe<TOut> pipe, DoAppend DoAppend ) => DoAppend<TOut>.WithPipe(pipe);
+        public static DoAppend<TOut> operator |( EnumPipe<TOut> pipe, DoAppend DoAppend ) => new DoAppend<TOut>(pipe);
     }
 
     public struct DoAppend<T> {
         private readonly EnumPipe<T> _pipe;
 
-        private DoAppend( EnumPipe<T> pipe ) => _pipe = pipe;
+        internal DoAppend( EnumPipe<T> pipe ) => _pipe = pipe;
 
-        internal static DoAppend<T> WithPipe(EnumPipe<T> pipe) => new DoAppend<T>(pipe);
-        
         /// <summary>
         /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe{T}
         /// </summary>
         public static DoAppend<T> operator |(DoAppend<T> doAppend, [NotNull] IEnumerable<T> rhs) {
             if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-            return WithPipe(doAppend._pipe | ADD | rhs);
+            return new DoAppend<T>(doAppend._pipe | ADD | rhs);
         }
 		
         /// <summary>

@@ -93,6 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\SharpFunc.cs" />
     <Compile Include="Source\SharpFunc[TIn, TOut].cs" />
+    <Compile Include="Source\Util\PipeSettings.cs" />
     <Compile Include="Source\Util\TypeExtensions.cs" />
     <Compile Include="Source\VOID.cs" />
   </ItemGroup>
