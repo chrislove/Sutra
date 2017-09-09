@@ -23,9 +23,5 @@ namespace SharpPipe {
 		/// </summary>
 		[NotNull]
 		public static Type T<U>(this U obj) => typeof(U);
-
-		internal static bool IsArrayOf<T>( this Type type ) => type.IsArray && typeof(T).IsAssignableFrom(type.GetElementType());
-		internal static bool IsEnumerable<T>(this Type type) => type.IsAssignableFrom(typeof(IEnumerable<T>));
-		internal static bool IsEnumPipe<T>(this Type type)   => type.IsAssignableFrom(typeof(EnumPipe<T>));
 	}
 }

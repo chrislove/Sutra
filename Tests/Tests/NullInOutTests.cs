@@ -10,7 +10,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 PIPE.AllowNullInput = nullInAllowed;
                 
-                var pipe = NEW.STRING.PIPE
+                var pipe = START.STRING.PIPE
                            | (string) null;
             }
 
@@ -20,7 +20,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Enum_NullIn_Throws() {
             void TestDelegate() {
-                var pipe = NEW.STRING.PIPE
+                var pipe = START.STRING.PIPE
                            | (IEnumerable<string>) null;
             }
 
@@ -32,7 +32,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 PIPE.AllowNullInput = true;
 
-                var pipe = ABCEnumPipe
+                var pipe = ABCEnumerablePipe
                            | TRANSFORM | (i => (IEnumerable<string>) null);
             }
 

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public partial struct EnumPipe<T> {
+    public partial struct EnumerablePipe<T> {
         // PIPE '|' THROW
         [NotNull]
-        public static DoThrowEnum<T> operator |( EnumPipe<T> pipe, DoThrow @do ) => new DoThrowEnum<T>(pipe);
+        public static DoThrowEnum<T> operator |( EnumerablePipe<T> pipe, DoThrow @do ) => new DoThrowEnum<T>(pipe);
     }
     
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoThrowEnum<T> : DoThrow<T> {
-        public DoThrowEnum( EnumPipe<T> pipe ) : base(pipe) {}
+        public DoThrowEnum( EnumerablePipe<T> pipe ) : base(pipe) {}
         public DoThrowEnum( DoThrowEnum<T> command ) : base(command) {}
 
         // PIPE | THROW '|' IF
@@ -30,12 +32,12 @@ namespace SharpPipe {
             => (DoThrowEnum<T>) new DoThrowEnum<T>(doThrow).WithException(exception);
     }
     
-    
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoThrowIfEnum<T> : DoThrowEnum<T> {
         public DoThrowIfEnum( DoThrowEnum<T> doThrow ) : base(doThrow) { }
 
-        public static EnumPipe<T> operator |( DoThrowIfEnum<T> doThrowIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
-            var pipe = (EnumPipe<T>)doThrowIf.Pipe;
+        public static EnumerablePipe<T> operator |( DoThrowIfEnum<T> doThrowIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
+            var pipe = (EnumerablePipe<T>)doThrowIf.Pipe;
             
             if ( predicate(pipe.Get) )
                 throw doThrowIf.Exception;
@@ -43,8 +45,8 @@ namespace SharpPipe {
             return pipe;
         }
         
-        public static EnumPipe<T> operator |( DoThrowIfEnum<T> doThrowIf, [NotNull] Func<bool> predicate ) {
-            var pipe = (EnumPipe<T>)doThrowIf.Pipe;
+        public static EnumerablePipe<T> operator |( DoThrowIfEnum<T> doThrowIf, [NotNull] Func<bool> predicate ) {
+            var pipe = (EnumerablePipe<T>)doThrowIf.Pipe;
             
             if ( predicate() )
                 throw doThrowIf.Exception;
@@ -53,11 +55,12 @@ namespace SharpPipe {
         }
     }
     
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DoThrowIfAnyEnum<T> : DoThrowIfEnum<T> {
         public DoThrowIfAnyEnum( DoThrowEnum<T> doThrow ) : base(doThrow) {}
 
-        public static EnumPipe<T> operator |( DoThrowIfAnyEnum<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
-            var pipe = (EnumPipe<T>)doThrowIf.Pipe;
+        public static EnumerablePipe<T> operator |( DoThrowIfAnyEnum<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
+            var pipe = (EnumerablePipe<T>)doThrowIf.Pipe;
             
             if ( pipe.Get.Any(predicate) )
                 throw doThrowIf.Exception;

@@ -3,17 +3,18 @@ using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
 using static SharpPipe.Commands;
+using static SharpPipe.Curry.STRING;
 
 namespace SharpPipe.Tests {
     public sealed class EnumCommandTests : TestBase {
         [Test]
         public void Test_Distinct() {
-            string pipeStr = NEW.STRING.PIPE
+            string pipeStr = START.STRING.PIPE
                              | ADD | Enumerable.Repeat("A", 5)
                              | ADD | Enumerable.Repeat("B", 10)
                              | ADD | Enumerable.Repeat("C", 12)
                              | DISTINCT
-                             | CONCAT("")
+                             | Concat
                              | OUT;
 
             Assert.That(pipeStr, Is.EqualTo("ABC"));
@@ -23,10 +24,10 @@ namespace SharpPipe.Tests {
         public void Test_Conversion() {
             var enumerable = Enumerable.Repeat("A", 3);
 
-            var pipe = NEW.STRING.PIPE
+            var pipe = START.STRING.PIPE
                        | ADD | enumerable;
 
-            string str        = pipe | CONCAT("") | OUT;
+            string str        = pipe | Concat     | OUT;
             List<string> list = pipe | TOLIST     | OUT;
             string[] array    = pipe | TOARRAY    | OUT;
 
@@ -37,25 +38,25 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Where() {
-            string result = ABCEnumPipe
+            string result = ABCEnumerablePipe
                          | WHERE | ISNOT("B")
-                         | CONCAT("") | OUT;
+                         | Concat | OUT;
             
             Assert.That(result, Is.EqualTo("AC"));
         }
         
         [Test]
         public void Test_Select() {
-            string result = ABCEnumPipe
+            string result = ABCEnumerablePipe
                          | SELECT | (i => $"[{i}]")
-                         | CONCAT("") | OUT;
+                         | Concat | OUT;
             
             Assert.That(result, Is.EqualTo("[A][B][C]"));
         }
         
         [Test]
         public void Test_Single() {
-            string result = ABCEnumPipe
+            string result = ABCEnumerablePipe
                             | WHERE | IS("B")
                             | SINGLE | OUT;
             
@@ -64,7 +65,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_First() {
-            string result = ABCEnumPipe | ADD | ABCEnumPipe
+            string result = ABCEnumerablePipe | ADD | ABCEnumerablePipe
                             | WHERE | IS("B")
                             | FIRST | OUT;
             
@@ -75,18 +76,18 @@ namespace SharpPipe.Tests {
         public void Test_SelectMany() {
             IEnumerable<string> SelectManyFunc( string str ) => Enumerable.Repeat(str, 3);
             
-            string result = ABCEnumPipe
+            string result = ABCEnumerablePipe
                          | SELECTMANY | SelectManyFunc
-                         | CONCAT("") | OUT;
+                         | Concat | OUT;
             
             Assert.That(result, Is.EqualTo("AAABBBCCC"));
         }
         
         [Test]
         public void Test_Append_NewPipe() {
-            string result = NEW.STRING.PIPE | ABCArray
-                         | APPEND | "D" | "E" | "F" | I
-                         | CONCAT("") | OUT;
+            string result = START.STRING.PIPE | ABCArray
+                         | APPEND | "D" | "E" | "F" | END
+                         | Concat | OUT;
             
             Assert.That(result, Is.EqualTo("ABCDEF"));
         }
@@ -96,9 +97,9 @@ namespace SharpPipe.Tests {
             IEnumerable<string> TransformFunc( IEnumerable<string> enumerable )
                 => enumerable.Select(i => i + ";");
             
-            string result = ABCEnumPipe
+            string result = ABCEnumerablePipe
                             | TRANSFORM | TransformFunc
-                            | CONCAT("") | OUT;
+                            | Concat | OUT;
             
             Assert.That(result, Is.EqualTo("A;B;C;"));
         }
@@ -106,9 +107,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                var pipe = NEW.STRING.PIPE
+                var pipe = START.STRING.PIPE
                            | ADD   | ""
-                           | WHERE | (s => s != "")
+                           | WHERE | ISNOT("")
                            | THROW | IF | ISEMPTY;
             }
 
@@ -120,7 +121,7 @@ namespace SharpPipe.Tests {
         [TestCase(false, new []{"A"})]
         public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
             void TestDelegate() {
-                var emptyPipe = NEW.STRING.PIPE
+                var emptyPipe = START.STRING.PIPE
                                 | ADD | testStrings
                                 | THROW | IF | ISNOTSINGLE;
             }
@@ -132,7 +133,7 @@ namespace SharpPipe.Tests {
         [TestCase(false, false)]
         public void Test_NotEmpty(bool isEmpty, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ABCEnumPipe
+                var pipe = ABCEnumerablePipe
                            | WHERE | (i => !isEmpty)
                            | NOTEMPTY;
             }

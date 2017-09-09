@@ -3,13 +3,13 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
     public struct ActPipe<TOut> {
-        private SharpFunc<TOut> Func { get; }
+        private PipeFunc<TOut> Func { get; }
 
-        internal ActPipe( SharpFunc<TOut> func ) => Func = SharpFunc.FromFunc(func);
-        internal ActPipe( [NotNull] Func<TOut> func ) => Func = SharpFunc.FromFunc(func);
+        internal ActPipe( PipeFunc<TOut> func ) => Func = PipeFunc.FromFunc(func);
+        internal ActPipe( [NotNull] Func<TOut> func ) => Func = PipeFunc.FromFunc(func);
 
         [CanBeNull] private TOut Get => Func.Func(null);
         
-        public static VOID operator |( ActPipe<TOut> lhs, [NotNull] Action<TOut> rhs ) => VOID.VoidAction( () => rhs(lhs.Get) );
+        public static Unit operator |( ActPipe<TOut> lhs, [NotNull] Action<TOut> rhs ) => Unit.UnitAction( () => rhs(lhs.Get) );
     }
 }

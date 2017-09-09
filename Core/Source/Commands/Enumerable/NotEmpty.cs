@@ -8,7 +8,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Equivalent to THROW | IF | ISEMPTY
+        /// Throws an exception if the underlying EnumerablePipe collection is empty
         /// </summary>
         public static DoNotEmpty NOTEMPTY => new DoNotEmpty();
     }
@@ -16,9 +16,9 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoNotEmpty {}
 
-    public partial struct EnumPipe<T> {
-        public static EnumPipe<T> operator |( EnumPipe<T> pipe, DoNotEmpty notEmpty ) {
-            var exception = EmptyPipeException.For<EnumPipe<T>>();
+    public partial struct EnumerablePipe<T> {
+        public static EnumerablePipe<T> operator |( EnumerablePipe<T> pipe, DoNotEmpty notEmpty ) {
+            var exception = EmptyPipeException.For<EnumerablePipe<T>>();
             return pipe | THROW | exception | IF | (Func<IEnumerable<T>, bool>) ISEMPTY;
         }
     }

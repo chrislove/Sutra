@@ -12,8 +12,8 @@ namespace SharpPipe.Tests {
         [NotNull] protected readonly string[] ABCArray = {"A", "B", "C"};
         [NotNull] protected List<string>      ABCList  => ABCArray.ToList();
         
-        protected EnumPipe<string>  ABCEnumPipe  => NEW.STRING.PIPE | ABCArray;
-        protected Pipe<string>      TestPipe     => NEW.STRING.PIPE | "TEST";
+        protected EnumerablePipe<string>      ABCEnumerablePipe  => START.STRING.PIPE | ABCArray;
+        protected Pipe<string>                TestPipe           => START.STRING.PIPE | "TEST";
         
         
         

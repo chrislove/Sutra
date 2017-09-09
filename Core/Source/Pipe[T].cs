@@ -3,6 +3,9 @@ using System.ComponentModel;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
+    /// <summary>
+    /// A pipe containing a single object.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
         [NotNull] private Func<T> Func { get; }
@@ -25,12 +28,12 @@ namespace SharpPipe {
             }
         }
 
-        public bool AllowNullOutput { get; private set; }
+        private bool AllowNullOutput { get; set; }
         
         public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> rhs ) => new Pipe<T>( rhs(pipe.Get) );
 
         /// <summary>
-        /// Replaces pipe contents with object
+        /// Replaces pipe contents with an object
         /// </summary>
         public static Pipe<T> operator |( Pipe<T> pipe, T rhs ) => new Pipe<T>(rhs);
     }

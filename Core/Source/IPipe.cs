@@ -1,5 +1,3 @@
 namespace SharpPipe {
-    internal interface IPipe<T> {
-        bool AllowNullOutput { get; }
-    }
+    internal interface IPipe<T> {}
 }

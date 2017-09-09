@@ -1,12 +1,13 @@
 using System.ComponentModel;
 using System.Linq;
+using static SharpPipe.Commands;
 
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Converts the contents of EnumerablePipe{T} into T[]
+        /// Converts the contents of EnumerablePipe into T[]
         /// </summary>
         public static DoToArray TOARRAY => new DoToArray();
     }
@@ -14,10 +15,10 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoToArray {}
 
-    public partial struct EnumPipe<T> {
+    public partial struct EnumerablePipe<T> {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static Pipe<T[]> operator |( EnumPipe<T> pipe, DoToArray act ) => NEW<T[]>.PIPE | pipe.Get.ToArray();
+        public static Pipe<T[]> operator |( EnumerablePipe<T> pipe, DoToArray act ) => START<T[]>.PIPE | pipe.Get.ToArray();
     }
 }

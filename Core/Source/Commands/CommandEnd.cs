@@ -5,7 +5,7 @@ namespace SharpPipe {
         /// <summary>
         /// Signals a command to end.
         /// </summary>
-        public static CommandEnd I => new CommandEnd();
+        public static CommandEnd END => new CommandEnd();
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]

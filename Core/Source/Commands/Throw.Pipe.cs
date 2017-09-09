@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
@@ -8,6 +9,7 @@ namespace SharpPipe {
         public static DoThrowPipe<T> operator |( Pipe<T> pipe, DoThrow @do ) => new DoThrowPipe<T>(pipe);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoThrowPipe<T> : DoThrow<T>{
         internal DoThrowPipe( Pipe<T> pipe ) : base(pipe) {}
         internal DoThrowPipe( DoThrowPipe<T> pipe ) : base(pipe) {}
@@ -26,6 +28,7 @@ namespace SharpPipe {
             => (DoThrowPipe<T>) new DoThrowPipe<T>(doThrow).WithException(exception);
     }
     
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DoThrowIfPipe<T> : DoThrowPipe<T> {
         internal DoThrowIfPipe( DoThrowPipe<T> doThrow ) : base(doThrow) {}
 

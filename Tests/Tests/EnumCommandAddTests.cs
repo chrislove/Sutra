@@ -1,6 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
+using static SharpPipe.Curry.STRING;
 
 namespace SharpPipe.Tests {
     [TestFixture]
@@ -11,11 +12,11 @@ namespace SharpPipe.Tests {
             var xyzPipe       = new[] {"X", "Y", "Z"} | TO.STRING.PIPE;
 
 
-            var result = ABCEnumPipe
+            var result = ABCEnumerablePipe
                          | ADD | defEnumerable
                          | ADD | new[] {"G", "H", "I"}
                          | ADD | xyzPipe
-                         | CONCAT("") | OUT;
+                         | Concat | OUT;
             
             Assert.That(result, Is.EqualTo("ABCDEFGHIXYZ"));
         }

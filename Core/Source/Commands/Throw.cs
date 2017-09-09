@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
@@ -9,14 +10,20 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Throws an exception if any object in the EnumPipe matches the predicate on the right.
-        /// Usage: THROW & IF(null)
+        /// Throws an exception if any object in the EnumerablePipe matches the predicate on the right.
         /// </summary>
+        /// <example><code>
+        /// pipe | THROW | IFANY | IS(1);
+        /// pipe | THROW | "Invalid Value" | IFANY | IS(1);
+        /// pipe | THROW | new InvalidOperationException("Invalid Value") | IFANY | IS(1);
+        /// </code></example>
         public static DoThrow   THROW     => new DoThrow();
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoThrow {}
     
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoThrow<T> : Command<T> {
         internal Exception Exception = PIPE.NextException ?? new PipeCommandException("THROW");
 

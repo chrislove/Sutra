@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
@@ -9,6 +10,7 @@ namespace SharpPipe {
         public static DoIfPipe<T> operator |( Pipe<T> pipe, DoIf doIf ) => new DoIfPipe<T>(pipe);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoIfPipe<T> : Command<T> {
         public DoIfPipe( Pipe<T> pipe ) : base(pipe) { }
         
@@ -21,21 +23,20 @@ namespace SharpPipe {
             => new DoIfPipeWithPredicate<T>(doIf, predicate);
     }
     
-    public partial class DoIfPipeWithPredicate<T> : DoIfEnum<T> {
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class DoIfPipeWithPredicate<T> : DoIfEnum<T> {
         internal readonly Func<T, bool> Predicate;
 
         internal DoIfPipeWithPredicate( DoIfPipe<T> doIf, Func<T, bool> predicate ) : base(doIf) => Predicate = predicate;
         internal DoIfPipeWithPredicate( DoIfPipe<T> doIf, Func<bool> predicate )    : base(doIf) => Predicate = _ => predicate();
         internal DoIfPipeWithPredicate( DoIfPipeWithPredicate<T> doIf )             : base(doIf) => Predicate = doIf.Predicate;
-    }
     
-    public partial class DoIfPipeWithPredicate<T>{
         [NotNull]
         public static DoIfPipeWithPredicateSelect<T> operator |( [CanBeNull] DoIfPipeWithPredicate<T> doIf, DoSelect doSelect )
             => new DoIfPipeWithPredicateSelect<T>(doIf);
     }
     
-    
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoIfPipeWithPredicateSelect<T> : DoIfPipeWithPredicate<T> {
         internal DoIfPipeWithPredicateSelect( DoIfPipeWithPredicate<T> doIf ) : base(doIf) {}
         

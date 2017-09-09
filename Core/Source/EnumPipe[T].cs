@@ -5,16 +5,19 @@ using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
+    /// <summary>
+    /// A pipe containing a set of objects.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial struct EnumPipe<T> : IPipe<T> {
-        internal static EnumPipe<T> Empty => new EnumPipe<T>(Enumerable.Empty<T>());
+    public partial struct EnumerablePipe<T> : IPipe<T> {
+        internal static EnumerablePipe<T> Empty => new EnumerablePipe<T>(Enumerable.Empty<T>());
 
-        internal EnumPipe( [CanBeNull] IEnumerable<T> obj ) : this( () => obj) {
+        internal EnumerablePipe( [CanBeNull] IEnumerable<T> obj ) : this( () => obj) {
             if (obj == null)
                 throw new NullPipeException($"Null IEnumerable is not a valid input to {this.T()}");
         }
 
-        private EnumPipe( [NotNull] Func<IEnumerable<T>> func ) : this() => Func = func ?? throw new ArgumentNullException(nameof(func));
+        private EnumerablePipe( [NotNull] Func<IEnumerable<T>> func ) : this() => Func = func ?? throw new ArgumentNullException(nameof(func));
 
         [NotNull] private Func<IEnumerable<T>> Func { get; }
 
@@ -30,6 +33,6 @@ namespace SharpPipe {
             }
         }
 
-        public bool AllowNullOutput { get; private set; }
+        private bool AllowNullOutput { get; set; }
     }
 }

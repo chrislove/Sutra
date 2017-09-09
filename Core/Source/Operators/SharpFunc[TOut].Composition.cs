@@ -2,20 +2,20 @@ using System;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-	public partial struct SharpFunc<TOut> {
+	public partial struct PipeFunc<TOut> {
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, SharpFunc<TOut> rhs )
+		public static PipeFunc<TOut> operator +( PipeFunc<TOut> lhs, PipeFunc<TOut> rhs )
 												=> lhs + (i => rhs.Func(i));
 		
 		/// <summary>
 		/// Function composition operator
 		/// </summary>
-		public static SharpFunc<TOut> operator +( SharpFunc<TOut> lhs, [NotNull] Func<object, object> rhs ) {
+		public static PipeFunc<TOut> operator +( PipeFunc<TOut> lhs, [NotNull] Func<object, object> rhs ) {
 			if (rhs == null) throw new ArgumentNullException(nameof(lhs));
 
-			return SharpFunc.FromFunc(
+			return PipeFunc.FromFunc(
 			                        i => rhs(lhs.Func(i)).To<TOut>($"{lhs.T()} + {rhs.T()}")
 			                       );
 		}
