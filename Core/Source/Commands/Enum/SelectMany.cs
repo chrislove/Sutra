@@ -23,11 +23,11 @@ namespace SharpPipe {
         internal DoSelectMany( EnumPipe<T> pipe ) => Pipe = pipe;
 
         public static EnumPipe<T> operator |( DoSelectMany<T> doSelect, [NotNull] Func<T, IEnumerable<T>> func )
-            => doSelect.Pipe.Get.SelectMany(func) | TO<T>();
+            => doSelect.Pipe.Get.SelectMany(func) | TO<T>.PIPE;
     }
 
     public partial struct SharpFunc<TIn, TOut> {
         public static EnumPipe<TOut> operator |( DoSelectMany<TIn> doSelect, SharpFunc<TIn, TOut> func )
-            => doSelect.Pipe.Get.Select(func.Func) | TO<TOut>();
+            => doSelect.Pipe.Get.Select(func.Func) | TO<TOut>.PIPE;
     }
 }

@@ -17,7 +17,7 @@ namespace SharpPipe {
         internal DoSelectEnum( EnumPipe<T> pipe ) => Pipe = pipe;
 
         public static EnumPipe<T> operator |( DoSelectEnum<T> doSelect, [NotNull] Func<T, T> func )
-            => doSelect.Pipe.Get.Select(func) | TO<T>();
+            => doSelect.Pipe.Get.Select(func) | TO<T>.PIPE;
     }
 
 }

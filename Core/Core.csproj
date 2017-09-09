@@ -58,6 +58,7 @@
     <Compile Include="Source\Commands\Enum\Transform.cs" />
     <Compile Include="Source\Commands\If.Enum.cs" />
     <Compile Include="Source\Commands\If.Pipe.cs" />
+    <Compile Include="Source\Commands\Not.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\Select.cs" />
     <Compile Include="Source\Commands\ThrowPipe.cs" />

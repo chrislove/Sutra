@@ -8,9 +8,10 @@ namespace SharpPipe {
     /// Global pipe settings
     /// </summary>
     public static class PIPE {
+        [ThreadStatic]
         [CanBeNull] private static Exception _nextException;
 
-        [CanBeNull] public static Exception NEXTEXCEPTION {
+        [CanBeNull] public static Exception NextException {
             get {
                 try {
                     return _nextException;

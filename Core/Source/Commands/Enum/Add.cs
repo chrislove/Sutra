@@ -36,7 +36,7 @@ namespace SharpPipe {
         public static EnumPipe<T> operator |(DoAdd<T> lhs, [NotNull] IEnumerable<T> rhs) {
             if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-            return lhs._pipe.Get.Concat(rhs) | TO<T>();
+            return lhs._pipe.Get.Concat(rhs) | TO<T>.PIPE;
         }
 		
         /// <summary>

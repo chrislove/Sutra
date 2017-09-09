@@ -22,6 +22,6 @@ namespace SharpPipe {
         internal DoTransform( EnumPipe<T> pipe ) => _pipe = pipe;
 
         public static EnumPipe<T> operator |( DoTransform<T> @do, [NotNull] Func<IEnumerable<T>, IEnumerable<T>> func )
-            => func(@do._pipe.Get) | TO<T>();
+            => func(@do._pipe.Get) | TO<T>.PIPE;
     }
 }

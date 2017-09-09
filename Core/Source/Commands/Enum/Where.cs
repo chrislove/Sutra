@@ -26,7 +26,7 @@ namespace SharpPipe {
 
         internal DoWhere( EnumPipe<T> pipe ) => Pipe = pipe;
 
-        public static EnumPipe<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => where.Pipe.Get.Where(predicate) | TO<T>();
+        public static EnumPipe<T> operator |( DoWhere<T> @where, Func<T, bool> predicate ) => where.Pipe.Get.Where(predicate) | TO<T>.PIPE;
         
         public static DoWhereIf<T> operator |( DoWhere<T> @where, DoIf doIf ) => new DoWhereIf<T>(@where);
     }

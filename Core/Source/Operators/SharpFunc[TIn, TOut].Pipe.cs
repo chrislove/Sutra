@@ -17,7 +17,7 @@ namespace SharpPipe
 		public static EnumPipe<TOut> operator |( EnumPipe<TIn> pipe, SharpFunc<TIn, TOut> func ) {
 			var enumerable = pipe.Get.Select(i => func.Func(i).To<TOut>($"{pipe.T()} | {func.T()}"));
 
-			return enumerable | TO<TOut>();
+			return enumerable | TO<TOut>.PIPE;
 		}
 	}
 }

@@ -84,7 +84,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Throw_NextException() {
             void TestDelegate() {
-                PIPE.NEXTEXCEPTION = new PipeUserException("TEST");
+                PIPE.NextException = new PipeUserException("TEST");
                 
                 var pipe = ABCPipe
                            | ADD   | (string) null

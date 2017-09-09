@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using JetBrains.Annotations;
 
 // ReSharper disable InconsistentNaming
@@ -8,6 +9,7 @@ namespace SharpPipe {
         public static DoConcat CONCAT(string separator) => new DoConcat(separator);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoConcat {
         [CanBeNull] private readonly string Separator;
 

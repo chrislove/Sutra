@@ -23,12 +23,12 @@ namespace SharpPipe {
 
         internal DoSelectPipe( Pipe<T> pipe ) => Pipe = pipe;
 
-        public static Pipe<T> operator |( DoSelectPipe<T> doSelectPipe, [NotNull] Func<T, T> func ) => func(doSelectPipe.Pipe.Get) | TO<T>();
+        public static Pipe<T> operator |( DoSelectPipe<T> doSelectPipe, [NotNull] Func<T, T> func ) => func(doSelectPipe.Pipe.Get) | TO<T>.PIPE;
     }
     
 
     public partial struct SharpFunc<TIn, TOut> {
         public static EnumPipe<TOut> operator |( DoSelectEnum<TIn> doSelect, SharpFunc<TIn, TOut> func )
-            => doSelect.Pipe.Get.Select(func.Func) | TO<TOut>();
+            => doSelect.Pipe.Get.Select(func.Func) | TO<TOut>.PIPE;
     }
 }

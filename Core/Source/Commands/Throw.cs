@@ -18,7 +18,7 @@ namespace SharpPipe {
     public struct DoThrow {}
     
     public class DoThrow<T> : Command<T> {
-        internal Exception Exception = PIPE.NEXTEXCEPTION ?? new PipeCommandException("THROW");
+        internal Exception Exception = PIPE.NextException ?? new PipeCommandException("THROW");
 
         protected DoThrow( IPipe<T> pipe ) : base(pipe) {}
         protected DoThrow( DoThrow<T> command ) : base(command) {}

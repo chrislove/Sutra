@@ -8,7 +8,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_ADD_IEnumerable() {
             var defEnumerable = new[] {"D", "E", "F"}.Select(i => i);
-            var xyzPipe       = new[] {"X", "Y", "Z"} | TO<string>();
+            var xyzPipe       = new[] {"X", "Y", "Z"} | TO.STRING.PIPE;
 
 
             var result = ABCPipe

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using JetBrains.Annotations;
 
 // ReSharper disable InconsistentNaming
@@ -8,9 +10,35 @@ namespace SharpPipe {
         /// <summary>
         /// Converts T => Pipe{T} or IEnumerable{T} => EnumPipe{T}
         /// </summary>
-        public static DoToPipe<T> TO<T>() => new DoToPipe<T>();
+
+        public static class TO {
+            public static class STRING {
+                public static DoToPipe<string> PIPE => TO<string>.PIPE;
+            }
+            
+            public static class INT {
+                public static DoToPipe<int> PIPE    => TO<int>.PIPE;
+            }
+            
+            public static class FLOAT {
+                public static DoToPipe<float> PIPE  => TO<float>.PIPE;
+            }
+            
+            public static class DOUBLE {
+                public static DoToPipe<double> PIPE => TO<double>.PIPE;
+            }
+            
+            public static class DATETIME {
+                public static DoToPipe<DateTime> PIPE => TO<DateTime>.PIPE;
+            }
+        }
+        
+        public static class TO<T> {
+            public static DoToPipe<T> PIPE => new DoToPipe<T>();
+        }
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoToPipe<T> {
         /// <summary>
         /// Converts object to Pipe{T}
