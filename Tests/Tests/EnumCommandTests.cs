@@ -36,7 +36,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Where() {
-            string result = ABCPipe
+            string result = ABCEnumPipe
                          | WHERE | ISNOT("B")
                          | CONCAT("") | OUT;
             
@@ -45,7 +45,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Select() {
-            string result = ABCPipe
+            string result = ABCEnumPipe
                          | SELECT | (i => $"[{i}]")
                          | CONCAT("") | OUT;
             
@@ -54,7 +54,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Single() {
-            string result = ABCPipe
+            string result = ABCEnumPipe
                             | WHERE | IS("B")
                             | SINGLE | OUT;
             
@@ -63,7 +63,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_First() {
-            string result = ABCPipe | ADD | ABCPipe
+            string result = ABCEnumPipe | ADD | ABCEnumPipe
                             | WHERE | IS("B")
                             | FIRST | OUT;
             
@@ -74,7 +74,7 @@ namespace SharpPipe.Tests {
         public void Test_SelectMany() {
             IEnumerable<string> SelectManyFunc( string str ) => Enumerable.Repeat(str, 3);
             
-            string result = ABCPipe
+            string result = ABCEnumPipe
                          | SELECTMANY | SelectManyFunc
                          | CONCAT("") | OUT;
             
@@ -95,7 +95,7 @@ namespace SharpPipe.Tests {
             IEnumerable<string> TransformFunc( IEnumerable<string> enumerable )
                 => enumerable.Select(i => i + ";");
             
-            string result = ABCPipe
+            string result = ABCEnumPipe
                             | TRANSFORM | TransformFunc
                             | CONCAT("") | OUT;
             

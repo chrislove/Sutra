@@ -6,7 +6,7 @@ namespace SharpPipe
 {
 	public static partial class Commands {
 		/// <summary>
-		/// Signals a pipe to return its value.
+		/// Returns pipe contents.
 		/// </summary>
 		public static DoOut OUT => new DoOut();
 	}
@@ -18,7 +18,7 @@ namespace SharpPipe
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<TOut> operator |(EnumPipe<TOut> pipe, DoOut act) => pipe.Get;
+		public static IEnumerable<TOut> operator |( EnumPipe<TOut> pipe, DoOut act ) => pipe.Get;
 	}
 
 	public partial struct Pipe<TOut> {

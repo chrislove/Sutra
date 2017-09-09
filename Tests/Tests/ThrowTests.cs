@@ -4,20 +4,9 @@ using static SharpPipe.Commands;
 namespace SharpPipe.Tests {
     public sealed class ThrowTests : TestBase {
         [Test]
-        public void Test_Pipe_Null_Throws() {
-            void TestDelegate() {
-                var pipe = NEW.STRING.PIPE
-                           | (string) null
-                           | THROW | IF | ISNULL;
-            }
-
-            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
-        }
-        
-        [Test]
         public void Test_Enum_Null_Throws() {
             void TestDelegate() {
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | ADD
                            | (string) null
                            | THROW | IFANY | ISNULL;
@@ -29,7 +18,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Null_Filtered_DoesntThrow() {
             void TestDelegate() {
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | ADD   | (string) null
                            | WHERE | NOTNULL
                            | THROW | IFANY | ISNULL;
@@ -41,7 +30,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Throw_With_Message() {
             void TestDelegate() {
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | ADD | (string) null
                            | THROW | "TEST" | IFANY | ISNULL;
                 ;
@@ -53,7 +42,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Throw_With_Exception() {
             void TestDelegate() {
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | ADD   | (string) null
                            | THROW | new PipeUserException("TEST") | IFANY | ISNULL;
             }
@@ -74,7 +63,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Enum_Throw_NonConditional() {
             void TestDelegate() {
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | THROW | IF | (() => true);
             }
 
@@ -86,7 +75,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 PIPE.NextException = new PipeUserException("TEST");
                 
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | ADD   | (string) null
                            | THROW | IFANY | ISNULL;
             }
@@ -98,7 +87,7 @@ namespace SharpPipe.Tests {
         [TestCase("DONT", false)]
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ABCPipe
+                var pipe = ABCEnumPipe
                            | THROW | IFANY | IS(ifInput);
             }
             

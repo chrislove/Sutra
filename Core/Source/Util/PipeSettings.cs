@@ -1,6 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 
 using System;
+using System.ComponentModel;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
@@ -8,8 +9,11 @@ namespace SharpPipe {
     /// Global pipe settings
     /// </summary>
     public static class PIPE {
-        [ThreadStatic]
-        [CanBeNull] private static Exception _nextException;
+        [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullInput  { get; set; } = false;
+
+        [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullOutput { get; set; } = false;
+
+        [ThreadStatic] [CanBeNull] private static Exception _nextException;
 
         [CanBeNull] public static Exception NextException {
             get {
@@ -20,6 +24,6 @@ namespace SharpPipe {
                 }
             }
             set => _nextException = value;
-        }    
+        }
     }
 }

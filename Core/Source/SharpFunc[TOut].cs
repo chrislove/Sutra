@@ -5,7 +5,7 @@ namespace SharpPipe {
     public partial struct SharpFunc<TOut> {
         public Func<object, TOut> Func { get; }
 
-        [NotNull] public Func<object, TOut> NotNullFunc => Func ?? throw PipeNullException.ForFunction<SharpFunc<TOut>>();
+        [NotNull] public Func<object, TOut> NotNullFunc => Func ?? throw NullFunctionException.For<SharpFunc<TOut>>();
         
         internal SharpFunc( [NotNull] Func<object, TOut> func ) => Func = func;
         internal SharpFunc( [NotNull] Func<TOut> func )         => Func = i => func();

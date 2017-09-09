@@ -7,6 +7,9 @@ using static SharpPipe.Commands;
 
 namespace SharpPipe {
     public static partial class Commands {
+        /// <summary>
+        /// Transforms the entire EnumPipe{T}.
+        /// </summary>
         public static DoTransform TRANSFORM => new DoTransform();
     }
 

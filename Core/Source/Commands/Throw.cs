@@ -12,7 +12,7 @@ namespace SharpPipe {
         /// Throws an exception if any object in the EnumPipe matches the predicate on the right.
         /// Usage: THROW & IF(null)
         /// </summary>
-        [NotNull] public static DoThrow   THROW     => new DoThrow();
+        public static DoThrow   THROW     => new DoThrow();
     }
 
     public struct DoThrow {}
@@ -20,7 +20,7 @@ namespace SharpPipe {
     public class DoThrow<T> : Command<T> {
         internal Exception Exception = PIPE.NextException ?? new PipeCommandException("THROW");
 
-        protected DoThrow( IPipe<T> pipe ) : base(pipe) {}
+        internal  DoThrow( IPipe<T> pipe ) : base(pipe) {}
         protected DoThrow( DoThrow<T> command ) : base(command) {}
 
         [NotNull]

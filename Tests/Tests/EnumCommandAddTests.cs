@@ -11,7 +11,7 @@ namespace SharpPipe.Tests {
             var xyzPipe       = new[] {"X", "Y", "Z"} | TO.STRING.PIPE;
 
 
-            var result = ABCPipe
+            var result = ABCEnumPipe
                          | ADD | defEnumerable
                          | ADD | new[] {"G", "H", "I"}
                          | ADD | xyzPipe

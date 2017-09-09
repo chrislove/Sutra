@@ -53,7 +53,7 @@ namespace SharpPipe {
     public partial struct DoStartPipe<T> {
         public static Pipe<T> operator |( DoStartPipe<T> doStartPipe, T obj ) => new Pipe<T>(obj);
         
-        public static EnumPipe<T> operator |( DoStartPipe<T> doStartPipe, IEnumerable<T> enumerable ) => NEW<T>.PIPE | ADD | enumerable;
+        public static EnumPipe<T> operator |( DoStartPipe<T> doStartPipe, IEnumerable<T> enumerable ) => new EnumPipe<T>( enumerable );
     
     }
 }

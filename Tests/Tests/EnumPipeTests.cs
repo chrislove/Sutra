@@ -51,7 +51,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Foreach() {
-            var pipe = ABCPipe
+            var pipe = ABCEnumPipe
                        | FOREACH | Write;
 
             Assert.That(WriteOutput, Is.EqualTo("ABC"));

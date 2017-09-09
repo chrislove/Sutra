@@ -1,6 +1,5 @@
-using System.ComponentModel;
-
 namespace SharpPipe {
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IPipe<T> { }
+    internal interface IPipe<T> {
+        bool AllowNullOutput { get; }
+    }
 }

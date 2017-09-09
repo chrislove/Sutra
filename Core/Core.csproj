@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\ActPipe{TOut].cs" />
+    <Compile Include="Source\Commands\AllowNull.cs" />
     <Compile Include="Source\Commands\CommandEnd.cs" />
     <Compile Include="Source\Commands\Concat.cs" />
     <Compile Include="Source\Commands\ConvertToEnum.cs" />
@@ -73,7 +74,8 @@
     <Compile Include="Source\Commands\Enum\ToArray.cs" />
     <Compile Include="Source\Commands\Enum\ToList.cs" />
     <Compile Include="Source\Commands\Out.cs" />
-    <Compile Include="Source\Exceptions\PipeNullException.cs" />
+    <Compile Include="Source\Exceptions\NullFunctionException.cs" />
+    <Compile Include="Source\Exceptions\NullPipeException.cs" />
     <Compile Include="Source\Exceptions\PipeCommandException.cs" />
     <Compile Include="Source\Exceptions\PipeUserException.cs" />
     <Compile Include="Source\Exceptions\SharpPipeException.cs" />

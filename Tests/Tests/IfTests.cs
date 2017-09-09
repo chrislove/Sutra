@@ -8,7 +8,7 @@ namespace SharpPipe.Tests {
         [TestCase("B", "[A][B][C]")]
         [TestCase("D", "ABC")]
         public void Test_Enum_IfSelect(string contains, string expected) {
-            string result = ABCPipe
+            string result = ABCEnumPipe
                             | IF | (e => e.Contains(contains)) | SELECT | (i => $"[{i}]")
                             | IF | ( () => true ) | SELECT | (i => i)
                             | CONCAT("") | OUT;
