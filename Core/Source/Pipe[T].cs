@@ -4,17 +4,17 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial struct Pipe<TOut> : IPipe<TOut> {
-        [NotNull] private Func<TOut> Func { get; }
+    public partial struct Pipe<T> : IPipe<T> {
+        [NotNull] private Func<T> Func { get; }
 
-        internal Pipe( [CanBeNull] TOut obj ) : this(() => obj) {
+        internal Pipe( [CanBeNull] T obj ) : this(() => obj) {
             if (obj == null && !PIPE.AllowNullInput)
                 throw new NullPipeException($"Null object is not a valid input to {this.T()}");
         }
 
-        private Pipe( [NotNull] Func<TOut> func ) : this() => Func = func ?? throw new ArgumentNullException(nameof(func));
+        private Pipe( [NotNull] Func<T> func ) : this() => Func = func ?? throw new ArgumentNullException(nameof(func));
 
-        [NotNull] internal TOut Get {
+        [NotNull] internal T Get {
             get {
                 var result = Func();
 
@@ -26,5 +26,12 @@ namespace SharpPipe {
         }
 
         public bool AllowNullOutput { get; private set; }
+        
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> rhs ) => new Pipe<T>( rhs(pipe.Get) );
+
+        /// <summary>
+        /// Replaces pipe contents with object
+        /// </summary>
+        public static Pipe<T> operator |( Pipe<T> pipe, T rhs ) => new Pipe<T>(rhs);
     }
 }

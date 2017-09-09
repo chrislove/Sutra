@@ -6,20 +6,20 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial struct EnumPipe<TOut> : IPipe<TOut> {
-        internal static EnumPipe<TOut> Empty => new EnumPipe<TOut>(Enumerable.Empty<TOut>());
+    public partial struct EnumPipe<T> : IPipe<T> {
+        internal static EnumPipe<T> Empty => new EnumPipe<T>(Enumerable.Empty<T>());
 
-        internal EnumPipe( [CanBeNull] IEnumerable<TOut> obj ) : this( () => obj) {
+        internal EnumPipe( [CanBeNull] IEnumerable<T> obj ) : this( () => obj) {
             if (obj == null)
                 throw new NullPipeException($"Null IEnumerable is not a valid input to {this.T()}");
         }
 
-        private EnumPipe( [NotNull] Func<IEnumerable<TOut>> func ) : this() => Func = func ?? throw new ArgumentNullException(nameof(func));
+        private EnumPipe( [NotNull] Func<IEnumerable<T>> func ) : this() => Func = func ?? throw new ArgumentNullException(nameof(func));
 
-        [NotNull] private Func<IEnumerable<TOut>> Func { get; }
+        [NotNull] private Func<IEnumerable<T>> Func { get; }
 
         [NotNull]
-        internal IEnumerable<TOut> Get {
+        internal IEnumerable<T> Get {
             get {
                 var result = Func();
 

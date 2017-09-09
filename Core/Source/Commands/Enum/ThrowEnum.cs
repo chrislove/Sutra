@@ -4,10 +4,10 @@ using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public partial struct EnumPipe<TOut> {
+    public partial struct EnumPipe<T> {
         // PIPE '|' THROW
         [NotNull]
-        public static DoThrowEnum<TOut> operator |( EnumPipe<TOut> pipe, DoThrow @do ) => new DoThrowEnum<TOut>(pipe);
+        public static DoThrowEnum<T> operator |( EnumPipe<T> pipe, DoThrow @do ) => new DoThrowEnum<T>(pipe);
     }
     
     public class DoThrowEnum<T> : DoThrow<T> {

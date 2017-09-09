@@ -2,10 +2,10 @@
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public partial struct Pipe<TOut> {
+    public partial struct Pipe<T> {
         // PIPE '|' THROW
         [NotNull]
-        public static DoThrowPipe<TOut> operator |( Pipe<TOut> pipe, DoThrow @do ) => new DoThrowPipe<TOut>(pipe);
+        public static DoThrowPipe<T> operator |( Pipe<T> pipe, DoThrow @do ) => new DoThrowPipe<T>(pipe);
     }
 
     public class DoThrowPipe<T> : DoThrow<T>{

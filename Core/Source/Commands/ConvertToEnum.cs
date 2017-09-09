@@ -15,9 +15,9 @@ namespace SharpPipe {
     
     public struct DoConvertToEnum { }
 
-    public partial struct Pipe<TOut> {
-        public static DoConvertToEnum<TOut> operator |( Pipe<TOut> pipe, DoConvertToEnum doConvertToEnum )
-            => new DoConvertToEnum<TOut>( pipe );
+    public partial struct Pipe<T> {
+        public static DoConvertToEnum<T> operator |( Pipe<T> pipe, DoConvertToEnum doConvertToEnum )
+            => new DoConvertToEnum<T>( pipe );
     }
     
 

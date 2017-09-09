@@ -10,7 +10,7 @@ namespace SharpPipe {
     
     public struct DoFirst {}
     
-    public partial struct EnumPipe<TOut> {
-        public static Pipe<TOut> operator |( EnumPipe<TOut> pipe, DoFirst @do ) => pipe.Get.First() | TO<TOut>.PIPE;
+    public partial struct EnumPipe<T> {
+        public static Pipe<T> operator |( EnumPipe<T> pipe, DoFirst @do ) => pipe.Get.First() | TO<T>.PIPE;
     }
 }

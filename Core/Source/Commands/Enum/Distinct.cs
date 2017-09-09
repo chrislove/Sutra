@@ -8,10 +8,10 @@ namespace SharpPipe {
     
     public struct DoDistinct { }
     
-    public partial struct EnumPipe<TOut> {
+    public partial struct EnumPipe<T> {
         /// <summary>
         /// Pipe forward operator.
         /// </summary>
-        public static EnumPipe<TOut> operator |( EnumPipe<TOut> pipe, DoDistinct act ) => NEW<TOut>.PIPE | pipe.Get.Distinct();
+        public static EnumPipe<T> operator |( EnumPipe<T> pipe, DoDistinct act ) => NEW<T>.PIPE | pipe.Get.Distinct();
     }
 }

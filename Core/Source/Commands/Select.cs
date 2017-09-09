@@ -14,8 +14,8 @@ namespace SharpPipe {
 
     public struct DoSelect { }
     
-    public partial struct Pipe<TOut> {
-        public static DoSelectPipe<TOut> operator |( Pipe<TOut> pipe, DoSelect doSelect ) => new DoSelectPipe<TOut>(pipe);
+    public partial struct Pipe<T> {
+        public static DoSelectPipe<T> operator |( Pipe<T> pipe, DoSelect doSelect ) => new DoSelectPipe<T>(pipe);
     }
     
     public struct DoSelectPipe<T> {

@@ -6,8 +6,8 @@ using static SharpPipe.Commands;
 // ReSharper disable InconsistentNaming
 
 namespace SharpPipe {
-    public partial struct EnumPipe<TOut> {
-        public static DoSelectEnum<TOut> operator |( EnumPipe<TOut> pipe, DoSelect doSelect ) => new DoSelectEnum<TOut>(pipe);
+    public partial struct EnumPipe<T> {
+        public static DoSelectEnum<T> operator |( EnumPipe<T> pipe, DoSelect doSelect ) => new DoSelectEnum<T>(pipe);
     }
     
     

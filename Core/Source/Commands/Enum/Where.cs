@@ -13,11 +13,11 @@ namespace SharpPipe {
 
     public struct DoWhere { }
 
-    public partial struct EnumPipe<TOut> {
+    public partial struct EnumPipe<T> {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static DoWhere<TOut> operator |( EnumPipe<TOut> pipe, DoWhere @where ) => new DoWhere<TOut>(pipe);
+        public static DoWhere<T> operator |( EnumPipe<T> pipe, DoWhere @where ) => new DoWhere<T>(pipe);
     }
     
 

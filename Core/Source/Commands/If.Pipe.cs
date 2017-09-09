@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public partial struct Pipe<TOut> {
+    public partial struct Pipe<T> {
         [NotNull]
-        public static DoIfPipe<TOut> operator |( Pipe<TOut> pipe, DoIf doIf ) => new DoIfPipe<TOut>(pipe);
+        public static DoIfPipe<T> operator |( Pipe<T> pipe, DoIf doIf ) => new DoIfPipe<T>(pipe);
     }
 
     public class DoIfPipe<T> : Command<T> {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using NUnit.Framework;
 using static SharpPipe.Commands;
 
@@ -125,6 +126,18 @@ namespace SharpPipe.Tests {
             }
 
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
+        }
+        
+        [TestCase(true, true)]
+        [TestCase(false, false)]
+        public void Test_NotEmpty(bool isEmpty, bool shouldThrow) {
+            void TestDelegate() {
+                var pipe = ABCEnumPipe
+                           | WHERE | (i => !isEmpty)
+                           | NOTEMPTY;
+            }
+
+            ThrowAssert<EmptyPipeException>(TestDelegate, shouldThrow);
         }
     }
 }

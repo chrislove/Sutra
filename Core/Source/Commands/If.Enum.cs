@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public partial struct EnumPipe<TOut> {
+    public partial struct EnumPipe<T> {
         [NotNull]
-        public static DoIfEnum<TOut> operator |( EnumPipe<TOut> pipe, DoIf doIf ) => new DoIfEnum<TOut>(pipe);
+        public static DoIfEnum<T> operator |( EnumPipe<T> pipe, DoIf doIf ) => new DoIfEnum<T>(pipe);
     }
 
     public class DoIfEnum<T> : Command<T> {

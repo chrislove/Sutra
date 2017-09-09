@@ -13,15 +13,15 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoAllowNull { }
     
-    partial struct EnumPipe<TOut> {
-        public static EnumPipe<TOut> operator |( EnumPipe<TOut> pipe, DoAllowNull doAllowNull ) {
+    partial struct EnumPipe<T> {
+        public static EnumPipe<T> operator |( EnumPipe<T> pipe, DoAllowNull doAllowNull ) {
             pipe.AllowNullOutput = true;
             return pipe;
         }
     }
 
-    public partial struct Pipe<TOut> {
-        public static Pipe<TOut> operator |( Pipe<TOut> pipe, DoAllowNull doAllowNull )  {
+    public partial struct Pipe<T> {
+        public static Pipe<T> operator |( Pipe<T> pipe, DoAllowNull doAllowNull )  {
             pipe.AllowNullOutput = true;
             return pipe;
         }

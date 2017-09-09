@@ -13,7 +13,7 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct ToActPipe {}
 
-    public partial struct Pipe<TOut> {
-        public static ActPipe<TOut> operator |( Pipe<TOut> pipe, ToActPipe rhs )        => new ActPipe<TOut>(pipe.Func);
+    public partial struct Pipe<T> {
+        public static ActPipe<T> operator |( Pipe<T> pipe, ToActPipe rhs )        => new ActPipe<T>(pipe.Func);
     }
 }

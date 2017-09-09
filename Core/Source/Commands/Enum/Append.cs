@@ -23,8 +23,8 @@ namespace SharpPipe {
         public static DoAppend<T> operator |( DoStartPipe<T> pipe, DoAppend doAdd ) => new DoAppend<T>( EnumPipe<T>.Empty );
     }
 
-    public partial struct EnumPipe<TOut> {
-        public static DoAppend<TOut> operator |( EnumPipe<TOut> pipe, DoAppend DoAppend ) => new DoAppend<TOut>(pipe);
+    public partial struct EnumPipe<T> {
+        public static DoAppend<T> operator |( EnumPipe<T> pipe, DoAppend DoAppend ) => new DoAppend<T>(pipe);
     }
 
     public struct DoAppend<T> {

@@ -15,8 +15,8 @@ namespace SharpPipe {
 
     public struct DoTransform { }
     
-    public partial struct EnumPipe<TOut> {
-        public static DoTransform<TOut> operator |( EnumPipe<TOut> pipe, DoTransform @do ) => new DoTransform<TOut>(pipe);
+    public partial struct EnumPipe<T> {
+        public static DoTransform<T> operator |( EnumPipe<T> pipe, DoTransform @do ) => new DoTransform<T>(pipe);
     }
 
     public struct DoTransform<T> {

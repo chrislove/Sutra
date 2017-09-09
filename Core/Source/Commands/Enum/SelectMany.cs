@@ -13,8 +13,8 @@ namespace SharpPipe {
 
     public struct DoSelectMany { }
     
-    public partial struct EnumPipe<TOut> {
-        public static DoSelectMany<TOut> operator |( EnumPipe<TOut> pipe, DoSelectMany doSelect ) => new DoSelectMany<TOut>(pipe);
+    public partial struct EnumPipe<T> {
+        public static DoSelectMany<T> operator |( EnumPipe<T> pipe, DoSelectMany doSelect ) => new DoSelectMany<T>(pipe);
     }
     
     public struct DoSelectMany<T> {

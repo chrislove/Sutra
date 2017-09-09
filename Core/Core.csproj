@@ -52,6 +52,7 @@
     <Compile Include="Source\Commands\ConvertToEnum.cs" />
     <Compile Include="Source\Commands\Command.cs" />
     <Compile Include="Source\Commands\Enum\Append.cs" />
+    <Compile Include="Source\Commands\Enum\DoNotEmpty.cs" />
     <Compile Include="Source\Commands\Enum\ForEach.cs" />
     <Compile Include="Source\Commands\Enum\SelectMany.cs" />
     <Compile Include="Source\Commands\Enum\Single.cs" />
@@ -74,20 +75,20 @@
     <Compile Include="Source\Commands\Enum\ToArray.cs" />
     <Compile Include="Source\Commands\Enum\ToList.cs" />
     <Compile Include="Source\Commands\Out.cs" />
+    <Compile Include="Source\Exceptions\EmptyPipeException.cs" />
     <Compile Include="Source\Exceptions\NullFunctionException.cs" />
     <Compile Include="Source\Exceptions\NullPipeException.cs" />
     <Compile Include="Source\Exceptions\PipeCommandException.cs" />
     <Compile Include="Source\Exceptions\PipeUserException.cs" />
     <Compile Include="Source\Exceptions\SharpPipeException.cs" />
     <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
-    <Compile Include="Source\EnumPipe[TOut].cs" />
+    <Compile Include="Source\EnumPipe[T].cs" />
     <Compile Include="Source\Factory.cs" />
     <Compile Include="Source\IPipe.cs" />
     <Compile Include="Source\Operators\SharpFunc[TOut].Composition.cs" />
     <Compile Include="Source\ToActPipe.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
-    <Compile Include="Source\Pipe[TOut].cs" />
-    <Compile Include="Source\Operators\Pipe[TOut].Pipe.cs" />
+    <Compile Include="Source\Pipe[T].cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Composition.cs" />
     <Compile Include="Source\SharpFunc[TOut].cs" />
     <Compile Include="Source\Operators\SharpFunc[TIn, TOut].Pipe.cs" />
@@ -104,4 +105,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <ItemGroup>
+      <DocFile Include="bin\$(Configuration)\$(TargetFramework)\*.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
+  </Target>
+  <PropertyGroup>
+    <DocumentationFile>$(OutDir)\$(TargetName).xml</DocumentationFile>
+  </PropertyGroup>
 </Project>

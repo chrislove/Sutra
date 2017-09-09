@@ -13,19 +13,19 @@ namespace SharpPipe
 	
 	public struct DoOut {}
 	
-	partial struct EnumPipe<TOut> {
+	partial struct EnumPipe<T> {
 		/// <summary>
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<TOut> operator |( EnumPipe<TOut> pipe, DoOut act ) => pipe.Get;
+		public static IEnumerable<T> operator |( EnumPipe<T> pipe, DoOut act ) => pipe.Get;
 	}
 
-	public partial struct Pipe<TOut> {
+	public partial struct Pipe<T> {
 		/// <summary>
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static TOut operator |( Pipe<TOut> pipe, DoOut doOut ) => pipe.Get;
+		public static T operator |( Pipe<T> pipe, DoOut doOut ) => pipe.Get;
 	}
 }
