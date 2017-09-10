@@ -10,7 +10,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 PIPE.AllowNullInput = nullInAllowed;
                 
-                var pipe = START.STRING.PIPE
+                var pipe = start.str.pipe
                            | (string) null;
             }
 
@@ -18,9 +18,9 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_Enum_NullIn_Throws() {
+        public void Test_Seq_NullIn_Throws() {
             void TestDelegate() {
-                var pipe = START.STRING.PIPE
+                var pipe = start.str.pipe
                            | (IEnumerable<string>) null;
             }
 
@@ -28,12 +28,12 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_Enum_NullTransform_Throws() {
+        public void Test_Seq_NullTransform_Throws() {
             void TestDelegate() {
                 PIPE.AllowNullInput = true;
 
-                var pipe = ABCEnumerablePipe
-                           | TRANSFORM | (i => (IEnumerable<string>) null);
+                var pipe = abcseq
+                           | transform | (i => (IEnumerable<string>) null);
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<NullPipeException>());
@@ -44,9 +44,9 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 PIPE.AllowNullInput = true;
                 
-                var pipe = TestPipe
+                var pipe = testpipe
                            | (i => null)
-                           | OUT;
+                           | ret;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<NullPipeException>());
@@ -57,10 +57,10 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 PIPE.AllowNullInput = true;
                 
-                var pipe = TestPipe
+                var pipe = testpipe
                            | (i => null)
-                           | ALLOWNULL
-                           | OUT;
+                           | allownull
+                           | ret;
             }
 
             Assert.That(TestDelegate, Throws.Nothing);

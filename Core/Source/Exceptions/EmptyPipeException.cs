@@ -1,8 +1,8 @@
 ﻿using JetBrains.Annotations;
 
 namespace SharpPipe {
-    internal class EmptyPipeException : SharpPipeException {
-        public EmptyPipeException( string message ) : base(message) {}
+    internal sealed class EmptyPipeException : SharpPipeException {
+        private EmptyPipeException( string message ) : base(message) {}
         
         [NotNull]
         public static EmptyPipeException For<TPipe>()

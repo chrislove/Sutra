@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.Curry.STRING;
+using static SharpPipe.Curried.str;
 
 namespace SharpPipe.Tests {
-    public sealed class EnumCommandTests : TestBase {
+    public sealed class SeqCommandTests : TestBase {
         [Test]
         public void Test_Distinct() {
-            string pipeStr = START.STRING.PIPE
-                             | ADD | Enumerable.Repeat("A", 5)
-                             | ADD | Enumerable.Repeat("B", 10)
-                             | ADD | Enumerable.Repeat("C", 12)
-                             | DISTINCT
-                             | Concat
-                             | OUT;
+            string pipeStr = start.str.pipe
+                             | add | Enumerable.Repeat("A", 5)
+                             | add | Enumerable.Repeat("B", 10)
+                             | add | Enumerable.Repeat("C", 12)
+                             | distinct
+                             | concat
+                             | ret;
 
             Assert.That(pipeStr, Is.EqualTo("ABC"));
         }
@@ -24,12 +23,12 @@ namespace SharpPipe.Tests {
         public void Test_Conversion() {
             var enumerable = Enumerable.Repeat("A", 3);
 
-            var pipe = START.STRING.PIPE
-                       | ADD | enumerable;
+            var pipe = start.str.pipe
+                       | add | enumerable;
 
-            string str        = pipe | Concat     | OUT;
-            List<string> list = pipe | TOLIST     | OUT;
-            string[] array    = pipe | TOARRAY    | OUT;
+            string str        = pipe | concat     | ret;
+            List<string> list = pipe | retlist;
+            string[] array    = pipe | retarray;
 
             Assert.That(str,   Is.EqualTo("AAA"));
             Assert.That(list,  Is.EqualTo(enumerable.ToList()));
@@ -38,36 +37,36 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Where() {
-            string result = ABCEnumerablePipe
-                         | WHERE | ISNOT("B")
-                         | Concat | OUT;
+            string result = abcseq
+                         | where | notequals("B")
+                         | concat | ret;
             
             Assert.That(result, Is.EqualTo("AC"));
         }
         
         [Test]
         public void Test_Select() {
-            string result = ABCEnumerablePipe
-                         | SELECT | (i => $"[{i}]")
-                         | Concat | OUT;
+            string result = abcseq
+                         | select | (i => $"[{i}]")
+                         | concat | ret;
             
             Assert.That(result, Is.EqualTo("[A][B][C]"));
         }
         
         [Test]
         public void Test_Single() {
-            string result = ABCEnumerablePipe
-                            | WHERE | IS("B")
-                            | SINGLE | OUT;
+            string result = abcseq
+                            | where | equals("B")
+                            | single | ret;
             
             Assert.That(result, Is.EqualTo("B"));
         }
         
         [Test]
         public void Test_First() {
-            string result = ABCEnumerablePipe | ADD | ABCEnumerablePipe
-                            | WHERE | IS("B")
-                            | FIRST | OUT;
+            string result = abcseq | add | abcseq
+                            | where | equals("B")
+                            | first | ret;
             
             Assert.That(result, Is.EqualTo("B"));
         }
@@ -76,18 +75,18 @@ namespace SharpPipe.Tests {
         public void Test_SelectMany() {
             IEnumerable<string> SelectManyFunc( string str ) => Enumerable.Repeat(str, 3);
             
-            string result = ABCEnumerablePipe
-                         | SELECTMANY | SelectManyFunc
-                         | Concat | OUT;
+            string result = abcseq
+                         | selectmany | SelectManyFunc
+                         | concat | ret;
             
             Assert.That(result, Is.EqualTo("AAABBBCCC"));
         }
         
         [Test]
         public void Test_Append_NewPipe() {
-            string result = START.STRING.PIPE | ABCArray
-                         | APPEND | "D" | "E" | "F" | END
-                         | Concat | OUT;
+            string result = start.str.pipe | abcarray
+                         | append | "D" | "E" | "F" | end
+                         | concat | ret;
             
             Assert.That(result, Is.EqualTo("ABCDEF"));
         }
@@ -97,9 +96,9 @@ namespace SharpPipe.Tests {
             IEnumerable<string> TransformFunc( IEnumerable<string> enumerable )
                 => enumerable.Select(i => i + ";");
             
-            string result = ABCEnumerablePipe
-                            | TRANSFORM | TransformFunc
-                            | Concat | OUT;
+            string result = abcseq
+                            | transform | TransformFunc
+                            | concat | ret;
             
             Assert.That(result, Is.EqualTo("A;B;C;"));
         }
@@ -107,10 +106,10 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                var pipe = START.STRING.PIPE
-                           | ADD   | ""
-                           | WHERE | ISNOT("")
-                           | THROW | IF | ISEMPTY;
+                var pipe = start.str.pipe
+                           | add   | ""
+                           | where | notequals("")
+                           | fail  | when | isempty;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
@@ -121,9 +120,9 @@ namespace SharpPipe.Tests {
         [TestCase(false, new []{"A"})]
         public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
             void TestDelegate() {
-                var emptyPipe = START.STRING.PIPE
-                                | ADD | testStrings
-                                | THROW | IF | ISNOTSINGLE;
+                var emptyPipe = start.str.pipe
+                                | add  | testStrings
+                                | fail | when | isnotsingle;
             }
 
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
@@ -133,9 +132,9 @@ namespace SharpPipe.Tests {
         [TestCase(false, false)]
         public void Test_NotEmpty(bool isEmpty, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = ABCEnumerablePipe
-                           | WHERE | (i => !isEmpty)
-                           | NOTEMPTY;
+                var pipe = abcseq
+                           | where | (i => !isEmpty)
+                           | notempty;
             }
 
             ThrowAssert<EmptyPipeException>(TestDelegate, shouldThrow);

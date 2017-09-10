@@ -2,9 +2,8 @@
 using System.IO;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using static SharpPipe.Curried;
 using static SharpPipe.Commands;
-using static SharpPipe.Commands.FUNC<System.DateTime>;
-using static SharpPipe.Curry.PATH;
 
 namespace SharpPipe.Tests  {
 	[TestFixture]
@@ -12,17 +11,17 @@ namespace SharpPipe.Tests  {
 		[NotNull]
 		private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
 
-		private static PipeFunc<DateTime, string> GetShortDate => New(d => d.ToShortDateString());
+		private static func<DateTime, string> GetShortDate => func.takes<DateTime>.from(d => d.ToShortDateString());
 
 		
-		private static Pipe<string> YesterdayPipe => START.DATETIME.PIPE | DateTime.Now
+		private static Pipe<string> YesterdayPipe => start<DateTime>.pipe | DateTime.Now
 		                                             | AddDays(-1)
 		                                             | GetShortDate
 		                                             | (i => "Yesterday: " + i);
 
 		[Test]
 		public void Test_Pipe_OUT() {
-			var yesterday   = YesterdayPipe | OUT;
+			var yesterday   = YesterdayPipe | ret;
 			
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(yesterday, Is.EqualTo(expected));
@@ -32,19 +31,17 @@ namespace SharpPipe.Tests  {
 		public void Test_SharpFunc_Invoke() {
 			var nowDateTime = DateTime.Now;	
 			
-			var pipe = START.DATETIME.PIPE | nowDateTime
-			           | AddDays(-1)
-			           | IF | (i => GetShortDate[i] == nowDateTime.ToShortDateString()) | SELECT | (i => nowDateTime)
-			           | OUT;
+			var pipe = start<DateTime>.pipe | nowDateTime
+			           | when | (i => GetShortDate[i] == nowDateTime.ToShortDateString()) | select | (i => nowDateTime)
+			           | ret;
 			
-			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(pipe, Is.EqualTo(nowDateTime));
 		}
 
 		[Test]
 		public void Test_Act() {
 			var pipe = YesterdayPipe
-			           | ACT | Write;
+			           | act | write;
 			
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(WriteOutput, Is.EqualTo(expected) );
@@ -55,10 +52,10 @@ namespace SharpPipe.Tests  {
 			const string projectDirectory = @"C:\Project";
 			const string inPath = @"Library\Assembly.dll";
 
-			string combined = START.STRING.PIPE | inPath
-			                  | PathPrepend(projectDirectory)
-			                  | GetFullPath
-			                  | OUT;
+			string combined = start.str.pipe | inPath
+			                  | path.prepend(projectDirectory)
+			                  | path.getfullpath
+			                  | ret;
 			
 			Assert.That(combined, Is.EqualTo( Path.Combine(projectDirectory, inPath) ));
 		}

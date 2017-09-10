@@ -2,17 +2,17 @@
 using NUnit.Framework;
 using static System.IO.Path;
 using static SharpPipe.Commands;
-using static SharpPipe.Curry.STRING;
+using static SharpPipe.Curried.str;
 
 namespace SharpPipe.Tests {
     public sealed class IfTests : TestBase {
         [TestCase("B", "[A][B][C]")]
         [TestCase("D", "ABC")]
         public void Test_Enumerable_IfSelect(string contains, string expected) {
-            string result = ABCEnumerablePipe
-                            | IF | (e => e.Contains(contains)) | SELECT | (i => $"[{i}]")
-                            | IF | ( () => true ) | SELECT | (i => i)
-                            | Concat | OUT;
+            string result = abcseq
+                            | when | (e => e.Contains(contains)) | select | (i => $"[{i}]")
+                            | when | ( () => true ) | select | (i => i)
+                            | concat | ret;
             
             Assert.That(result, Is.EqualTo(expected));
         }
@@ -21,11 +21,11 @@ namespace SharpPipe.Tests {
         [TestCase(@"C:\Test", @"C:\Test")]
         public void Test_Pipe_IfSelect(string inPath, string expected) {
             string OneDirectoryUp(string path) => GetDirectoryName( GetFullPath(Combine(path, @"..\") ) );
-            string result = START.STRING.PIPE
+            string result = start.str.pipe
                             | inPath
-                            | IF | EndsWith("Editor") | SELECT | OneDirectoryUp
-                            | IF | ( () => true ) | SELECT | (i => i)
-                            | OUT;
+                            | when | EndsWith("Editor") | select | OneDirectoryUp
+                            | when | ( () => true )     | select | (i => i)
+                            | ret;
             
             Assert.That(result, Is.EqualTo(expected));
         }
