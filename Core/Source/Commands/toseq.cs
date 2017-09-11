@@ -13,7 +13,7 @@ namespace SharpPipe {
         /// </summary>
         public static partial class to {
             /// <summary>
-            /// Converts Pipe to Sequence
+            /// Converts Pipe to sequence
             /// </summary>
             public static DoConvertToSeq seq => new DoConvertToSeq();
         }
@@ -31,14 +31,14 @@ namespace SharpPipe {
     public struct DoConvertToSeq<T> {
         private readonly Pipe<T> _pipe;
 
-        internal DoConvertToSeq( Pipe<T> lhs ) => _pipe = lhs;
+        internal DoConvertToSeq( Pipe<T> pipe ) => _pipe = pipe;
 
         /// <summary>
-        /// Attaches a Sequence converter function to DoToPipe.
+        /// Attaches a sequence converter function to DoToPipe.
         /// </summary>
-        public static Seq<T> operator |( DoConvertToSeq<T> lhs, [NotNull] Func<T, IEnumerable<T>> func )
+        public static Seq<T> operator |( DoConvertToSeq<T> doConvert, [NotNull] Func<T, IEnumerable<T>> func )
                                 => start<T>.pipe
-                                   | add | func(lhs._pipe.Get);
+                                   | add | func(doConvert._pipe.Get);
 
     }
 }

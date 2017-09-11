@@ -7,7 +7,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Returns a single value from Sequence or throws an excepton.
+        /// Returns a single value from sequence or throws an excepton.
         /// </summary>
         public static DoSingle single => new DoSingle();
     }

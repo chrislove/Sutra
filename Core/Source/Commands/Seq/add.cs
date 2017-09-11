@@ -10,7 +10,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Adds a single item to Sequence.
+        /// Adds a single item to sequence.
         /// </summary>
         public static DoAdd add => new DoAdd();
     }
@@ -24,36 +24,36 @@ namespace SharpPipe {
 
     public partial struct DoToPipe<T> {
         /// <summary>
-        /// Starts a enumerable pipe
+        /// Starts a new sequence.
         /// </summary>
-        public static DoAdd<T> operator |( DoToPipe<T> pipe, DoAdd doAdd ) => new DoAdd<T>( Seq<T>.empty );
+        public static DoAdd<T> operator |( DoToPipe<T> pipe, DoAdd doAdd ) => new DoAdd<T>( Seq<T>.Empty );
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoAdd<T> {
         private readonly Seq<T> _pipe;
 
-        internal DoAdd( Seq<T> lhs ) => _pipe = lhs;
+        internal DoAdd( Seq<T> seq ) => _pipe = seq;
         
         /// <summary>
-        /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new Sequence
+        /// Pipe forward operator, concatenates sequence with IEnumerable{T} and returns a new sequence.
         /// </summary>
-        public static Seq<T> operator |(DoAdd<T> lhs, [NotNull] IEnumerable<T> rhs) {
-            if (rhs == null) throw new ArgumentNullException(nameof(rhs));
+        public static Seq<T> operator |(DoAdd<T> doAdd, [NotNull] IEnumerable<T> enumerable) {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
-            return lhs._pipe.Get.Concat(rhs) | to<T>.pipe;
+            return doAdd._pipe.Get.Concat(enumerable) | to<T>.pipe;
         }
 		
         /// <summary>
-        /// Pipe forward operator, adds a new value to IEnumerable{T}.
+        /// Pipe forward operator, adds a new value to a sequence.
         /// </summary>
-        public static Seq<T> operator |(DoAdd<T> lhs, [CanBeNull] T rhs) => lhs | Yield(rhs);
+        public static Seq<T> operator |(DoAdd<T> doAdd, [CanBeNull] T obj) => doAdd | Yield(obj);
 
 
         /// <summary>
-        /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new Sequence
+        /// Pipe forward operator, concatenates two sequences and returns a new sequence.
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> lhs, Seq<T> rhs ) => lhs | rhs.Get;
+        public static Seq<T> operator |( DoAdd<T> doAdd, Seq<T> seq ) => doAdd | seq.Get;
 
         private static IEnumerable<T> Yield([CanBeNull] T item) {
             yield return item;

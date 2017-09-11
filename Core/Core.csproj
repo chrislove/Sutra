@@ -85,11 +85,12 @@
     <Compile Include="Source\Exceptions\PipeUserException.cs" />
     <Compile Include="Source\Exceptions\SharpPipeException.cs" />
     <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
-    <Compile Include="Source\Types\Funcs\aliases.cs" />
-    <Compile Include="Source\Types\Funcs\fromseqfunc.cs" />
+    <Compile Include="Source\Types\Funcs\Aliases.cs" />
+    <Compile Include="Source\Types\Funcs\FromSeqFunc.cs" />
     <Compile Include="Source\Types\Funcs\PipeFunc.cs" />
-    <Compile Include="Source\Types\Funcs\seqfunc.cs" />
-    <Compile Include="Source\Types\Funcs\toseqfunc.cs" />
+    <Compile Include="Source\Types\Funcs\SeqFunc.cs" />
+    <Compile Include="Source\Types\Funcs\ToSeqFunc.cs" />
+    <Compile Include="Source\Types\Pipes\Factory.cs" />
     <Compile Include="Source\Types\Pipes\IPipe.cs" />
     <Compile Include="Source\Types\Pipes\Pipe.cs" />
     <Compile Include="Source\Types\Pipes\Seq.cs" />

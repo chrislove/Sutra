@@ -7,7 +7,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Returns the first item of Sequence.
+        /// Returns the first item of sequence.
         /// </summary>
         public static DoFirst first => new DoFirst();
     }

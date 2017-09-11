@@ -6,7 +6,8 @@ namespace SharpPipe {
     /// <summary>
     /// Global pipe settings
     /// </summary>
-    public static class Pipe {
+    [PublicAPI]
+    public static partial class Pipe {
         [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullInput  { get; set; } = false;
 
         [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullOutput { get; set; } = false;

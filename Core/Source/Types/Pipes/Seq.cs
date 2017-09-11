@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     /// <summary>
@@ -10,13 +10,13 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Seq<T> : IPipe<T> {
-        internal static Seq<T> empty => new Seq<T>(Enumerable.Empty<T>());
+        [NotNull] private readonly IEnumerable<T> _contents;
+
+        internal static Seq<T> Empty => start<T>.pipe | Enumerable.Empty<T>();
 
         internal Seq( [NotNull] IEnumerable<T> sequence ) : this() {
             _contents = sequence ?? throw new NullPipeException($"Null IEnumerable is not a valid input to {nameof(Seq<T>)}");
         }
-
-        [NotNull] private readonly IEnumerable<T> _contents;
 
         [NotNull]
         internal IEnumerable<T> Get {

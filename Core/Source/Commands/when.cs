@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Evaluates to true if any of the Sequence elements match the predicate on the right.
+        /// Evaluates to true if any of the sequence elements match the predicate on the right.
         /// </summary>
         /// <example><code>
         /// pipe | fail | IFANY | ISNULL;

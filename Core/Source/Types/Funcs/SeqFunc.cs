@@ -30,7 +30,7 @@ namespace SharpPipe {
         public static implicit operator SeqFunc<TIn, TOut>( [NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func ) => seqfunc.takes<TIn>.from(func);
 		
         /// <summary>
-        /// Forward pipe operator. Transforms an Sequence.
+        /// Forward pipe operator. Transforms an sequence.
         /// </summary>
         [UsedImplicitly]
         public static Seq<TOut> operator |( Seq<TIn> pipe, SeqFunc<TIn, TOut> func )

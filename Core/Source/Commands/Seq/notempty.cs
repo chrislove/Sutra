@@ -8,7 +8,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Throws an exception if the underlying Sequence collection is empty
+        /// Throws an exception if the underlying sequence collection is empty
         /// </summary>
         public static DoNotEmpty notempty => new DoNotEmpty();
     }

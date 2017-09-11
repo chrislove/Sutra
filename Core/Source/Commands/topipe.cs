@@ -41,21 +41,21 @@ namespace SharpPipe {
         /// <summary>
         /// Converts object to Pipe{T}
         /// </summary>
-        public static Pipe<T> operator |( [NotNull] T obj, DoToPipe<T> doToPipe ) => new Pipe<T>(obj);
-        
+        public static Pipe<T> operator |( [NotNull] T obj, DoToPipe<T> doToPipe ) => Pipe.From(obj);
+
         /// <summary>
         /// Initializes Pipe{T} with object on the right
         /// </summary>
-        public static Pipe<T> operator |( DoToPipe<T> doToPipe, [NotNull] T obj ) => new Pipe<T>(obj);
+        public static Pipe<T> operator |( DoToPipe<T> doToPipe, [NotNull] T obj ) => obj | doToPipe;
         
         /// <summary>
-        /// Converts IEnumerable{T} to Sequence
+        /// Converts IEnumerable{T} to sequence
         /// </summary>
-        public static Seq<T> operator |( [NotNull] IEnumerable<T> enumerable, DoToPipe<T> doToPipe ) => new Seq<T>(enumerable);
-        
+        public static Seq<T> operator |( [NotNull] IEnumerable<T> enumerable, DoToPipe<T> doToPipe ) => Pipe.From(enumerable);
+
         /// <summary>
-        /// Initializes Sequence with object on the right
+        /// Initializes sequence with object on the right
         /// </summary>
-        public static Seq<T> operator |( DoToPipe<T> doToPipe, [NotNull] IEnumerable<T> enumerable ) => new Seq<T>(enumerable);
+        public static Seq<T> operator |( DoToPipe<T> doToPipe, [NotNull] IEnumerable<T> enumerable ) => enumerable | doToPipe;
     }
 }

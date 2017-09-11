@@ -8,7 +8,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Converts the contents of Sequence into List{T} and returns.
+        /// Converts the contents of sequence into List{T} and returns.
         /// </summary>
         public static DoToList retlist => new DoToList();
     }

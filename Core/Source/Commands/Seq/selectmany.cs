@@ -10,11 +10,11 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Projects each element of a Sequence and flattens the resulting sequences into one sequence.
+        /// Projects each element of a sequence and flattens the resulting sequences into one sequence.
         /// </summary>
         /// <example>
         /// <code>
-        /// PIPE | selectmany | (i => Enumerable.Repeat(i, 3))
+        /// pipe | selectmany | (i => Enumerable.Repeat(i, 3))
         /// </code>
         /// </example>
         public static DoSelectMany selectmany => new DoSelectMany();

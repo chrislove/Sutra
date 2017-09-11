@@ -34,10 +34,10 @@ namespace SharpPipe
 		/// <summary>
 		/// Forward pipe operator
 		/// </summary>
-		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) => new Pipe<TOut>(func[pipe.Get]);
+		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) => start<TOut>.pipe | func[pipe.Get];
 		
 		/// <summary>
-		/// Forward pipe operator. Transforms an Sequence.
+		/// Forward pipe operator. Transforms an sequence.
 		/// </summary>
 		[UsedImplicitly]
 		public static Seq<TOut> operator |( Seq<TIn> pipe, PipeFunc<TIn, TOut> func ) {

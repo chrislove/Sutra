@@ -7,7 +7,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Converts the contents of Sequence into T[] and returns.
+        /// Converts the contents of sequence into T[] and returns.
         /// </summary>
         public static DoToArray retarray => new DoToArray();
     }

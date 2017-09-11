@@ -17,7 +17,7 @@ namespace SharpPipe {
     public struct DoAct {}
 
     public partial struct Pipe<T> {
-        public static DoAct<T> operator |( Pipe<T> pipe, DoAct rhs ) => new DoAct<T>(pipe);
+        public static DoAct<T> operator |( Pipe<T> pipe, DoAct doAct ) => new DoAct<T>(pipe);
     }
 
     public struct DoAct<T> {
@@ -25,7 +25,7 @@ namespace SharpPipe {
 
         public DoAct( Pipe<T> pipe ) => _pipe = pipe;
 
-        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> rhs ) => ( () => rhs(doAct._pipe.Get) ) | unit;
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) => ( () => act(doAct._pipe.Get) ) | unit;
 
     }
 }

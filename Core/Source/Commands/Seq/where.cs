@@ -9,7 +9,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Filters contents of Sequence
+        /// Filters contents of sequence
         /// </summary>
         public static DoWhere where => new DoWhere();
     }

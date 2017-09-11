@@ -7,7 +7,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Filters Sequence to return distinct values
+        /// Filters sequence to return distinct values
         /// </summary>
         public static DoDistinct distinct => new DoDistinct();
     }

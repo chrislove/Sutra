@@ -9,7 +9,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Transforms the entire Sequence using a function on the right.
+        /// Transforms the entire sequence using a function on the right.
         /// </summary>
         /// <example><code>
         /// pipe | TRANSFORM | (e => e.Select(i => i + 1) )

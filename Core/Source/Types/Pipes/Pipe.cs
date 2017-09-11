@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     /// <summary>
@@ -8,13 +9,13 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
+        [NotNull] private readonly T _contents;
+
         internal Pipe( [NotNull] T value ) : this() {
             if (value == null && !Pipe.AllowNullInput) throw new NullPipeException($"Null object is not a valid input to {nameof(Pipe<T>)}");
             _contents = value;
         }
         
-        [NotNull] private readonly T _contents;
-
         [NotNull] internal T Get {
             get {
                 if (_contents == null && !Pipe.AllowNullOutput && !AllowNullOutput)
@@ -26,11 +27,14 @@ namespace SharpPipe {
 
         private bool AllowNullOutput { get; set; }
         
-        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => new Pipe<T>( func(pipe.Get) );
+        /// <summary>
+        /// Transforms pipe contents using a function on the right.
+        /// </summary>
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => start<T>.pipe | func(pipe.Get);
 
         /// <summary>
-        /// Replaces pipe contents with an object
+        /// Replaces pipe contents with object on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, T obj ) => new Pipe<T>(obj);
+        public static Pipe<T> operator |( Pipe<T> pipe, T obj ) => start<T>.pipe | obj;
     }
 }

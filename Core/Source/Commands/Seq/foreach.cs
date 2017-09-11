@@ -11,9 +11,9 @@ namespace SharpPipe {
     public struct DoForEach<T> {
         private readonly Seq<T> _pipe;
 
-        public DoForEach( Seq<T> lhs ) => _pipe = lhs;
+        public DoForEach( Seq<T> seq ) => _pipe = seq;
 
-        public static Unit operator |( DoForEach<T> lhs, [NotNull] Action<T> action )
-            => ( () => lhs._pipe.Get.ForEach(action) ) | unit;
+        public static Unit operator |( DoForEach<T> doForEach, [NotNull] Action<T> action )
+            => ( () => doForEach._pipe.Get.ForEach(action) ) | unit;
     }
 }
