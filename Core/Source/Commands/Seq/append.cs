@@ -53,7 +53,7 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new EnumerablePipe
         /// </summary>
-        public static DoAppend<T> operator |( DoAppend<T> doAppend, Seq<T> rhs ) => doAppend | rhs.get;
+        public static DoAppend<T> operator |( DoAppend<T> doAppend, Seq<T> rhs ) => doAppend | rhs.Get;
 
 
         public static Seq<T> operator |( DoAppend<T> doAppend, CommandEnd end )

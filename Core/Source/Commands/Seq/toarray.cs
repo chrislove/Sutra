@@ -19,6 +19,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[] and returns.
         /// </summary>
-        public static T[] operator |( Seq<T> pipe, DoToArray act ) => start<T[]>.pipe | pipe.get.ToArray() | Commands.ret;
+        public static T[] operator |( Seq<T> pipe, DoToArray act ) => start<T[]>.pipe | pipe.Get.ToArray() | Commands.ret;
     }
 }

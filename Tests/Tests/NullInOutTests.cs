@@ -8,7 +8,7 @@ namespace SharpPipe.Tests {
         [TestCase(false, true)]
         public void Test_Pipe_NullIn_Throws(bool nullInAllowed, bool shouldThrow) {
             void TestDelegate() {
-                PIPE.AllowNullInput = nullInAllowed;
+                SharpPipe.Pipe.AllowNullInput = nullInAllowed;
                 
                 var pipe = start.str.pipe
                            | (string) null;
@@ -30,9 +30,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Seq_NullTransform_Throws() {
             void TestDelegate() {
-                PIPE.AllowNullInput = true;
+                SharpPipe.Pipe.AllowNullInput = true;
 
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | transform | (i => (IEnumerable<string>) null);
             }
 
@@ -42,9 +42,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Pipe_NullOut_Throws() {
             void TestDelegate() {
-                PIPE.AllowNullInput = true;
+                SharpPipe.Pipe.AllowNullInput = true;
                 
-                var pipe = testpipe
+                var pipe = TestPipe
                            | (i => null)
                            | ret;
             }
@@ -55,9 +55,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Pipe_AllowNullOut_DoesntThrow() {
             void TestDelegate() {
-                PIPE.AllowNullInput = true;
+                SharpPipe.Pipe.AllowNullInput = true;
                 
-                var pipe = testpipe
+                var pipe = TestPipe
                            | (i => null)
                            | allownull
                            | ret;

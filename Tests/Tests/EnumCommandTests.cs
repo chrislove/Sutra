@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.Curried.str;
+using static SharpPipe.CurryLib.str;
 
 namespace SharpPipe.Tests {
     public sealed class SeqCommandTests : TestBase {
@@ -37,7 +37,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Where() {
-            string result = abcseq
+            string result = ABCSeq
                          | where | notequals("B")
                          | concat | ret;
             
@@ -46,7 +46,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Select() {
-            string result = abcseq
+            string result = ABCSeq
                          | select | (i => $"[{i}]")
                          | concat | ret;
             
@@ -55,7 +55,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Single() {
-            string result = abcseq
+            string result = ABCSeq
                             | where | equals("B")
                             | single | ret;
             
@@ -64,7 +64,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_First() {
-            string result = abcseq | add | abcseq
+            string result = ABCSeq | add | ABCSeq
                             | where | equals("B")
                             | first | ret;
             
@@ -75,7 +75,7 @@ namespace SharpPipe.Tests {
         public void Test_SelectMany() {
             IEnumerable<string> SelectManyFunc( string str ) => Enumerable.Repeat(str, 3);
             
-            string result = abcseq
+            string result = ABCSeq
                          | selectmany | SelectManyFunc
                          | concat | ret;
             
@@ -84,7 +84,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Append_NewPipe() {
-            string result = start.str.pipe | abcarray
+            string result = start.str.pipe | ABCArray
                          | append | "D" | "E" | "F" | end
                          | concat | ret;
             
@@ -96,7 +96,7 @@ namespace SharpPipe.Tests {
             IEnumerable<string> TransformFunc( IEnumerable<string> enumerable )
                 => enumerable.Select(i => i + ";");
             
-            string result = abcseq
+            string result = ABCSeq
                             | transform | TransformFunc
                             | concat | ret;
             
@@ -132,7 +132,7 @@ namespace SharpPipe.Tests {
         [TestCase(false, false)]
         public void Test_NotEmpty(bool isEmpty, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | where | (i => !isEmpty)
                            | notempty;
             }

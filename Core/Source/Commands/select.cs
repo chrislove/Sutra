@@ -1,9 +1,5 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
@@ -12,9 +8,9 @@ namespace SharpPipe {
         /// Transforms pipe contents using a function on the right.
         /// </summary>
         /// <example><code>
-        /// pipe | SELECT | (i => i + 1)
+        /// pipe | select | (i => i + 1)
         /// </code></example>
-        public static DoSelect SELECT => new DoSelect();
+        public static DoSelect select => new DoSelect();
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -36,7 +32,7 @@ namespace SharpPipe {
     
 
     public partial struct PipeFunc<TIn, TOut> {
-        public static EnumerablePipe<TOut> operator |( DoSelectEnum<TIn> doSelect, PipeFunc<TIn, TOut> func )
-            => doSelect.Pipe.Get.Select(func.Func) | TO<TOut>.PIPE;
+        public static Seq<TOut> operator |( DoSelectSeq<TIn> doSelect, PipeFunc<TIn, TOut> func )
+            => doSelect.Pipe.Get.Select(func.Func) | to<TOut>.pipe;
     }
 }

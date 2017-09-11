@@ -12,24 +12,19 @@ namespace SharpPipe {
     public partial struct Seq<T> : IPipe<T> {
         internal static Seq<T> empty => new Seq<T>(Enumerable.Empty<T>());
 
-        internal Seq( [CanBeNull] IEnumerable<T> obj ) : this( () => obj) {
-            if (obj == null)
-                throw new NullPipeException($"Null IEnumerable is not a valid input to {this.T()}");
+        internal Seq( [NotNull] IEnumerable<T> sequence ) : this() {
+            _contents = sequence ?? throw new NullPipeException($"Null IEnumerable is not a valid input to {nameof(Seq<T>)}");
         }
 
-        private Seq( [NotNull] Func<IEnumerable<T>> func ) : this() => this.func = func ?? throw new ArgumentNullException(nameof(func));
-
-        [NotNull] private Func<IEnumerable<T>> func { get; }
+        [NotNull] private readonly IEnumerable<T> _contents;
 
         [NotNull]
-        internal IEnumerable<T> get {
+        internal IEnumerable<T> Get {
             get {
-                var result = func();
-
-                if (result == null && !PIPE.AllowNullOutput && !AllowNullOutput)
+                if (_contents == null && !Pipe.AllowNullOutput && !AllowNullOutput)
                     throw new NullPipeException($"'{this.T()}.Get' returned a null IEnumerable");
 
-                return result;
+                return _contents;
             }
         }
 

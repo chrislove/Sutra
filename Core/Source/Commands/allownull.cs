@@ -1,20 +1,20 @@
 ﻿using System.ComponentModel;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
         /// Allows a pipe to return null value.
         /// </summary>
-        public static DoAllowNull ALLOWNULL => new DoAllowNull();
+        public static DoAllowNull allownull => new DoAllowNull();
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoAllowNull { }
     
-    partial struct EnumerablePipe<T> {
-        public static EnumerablePipe<T> operator |( EnumerablePipe<T> pipe, DoAllowNull doAllowNull ) {
+    partial struct Seq<T> {
+        public static Seq<T> operator |( Seq<T> pipe, DoAllowNull doAllowNull ) {
             pipe.AllowNullOutput = true;
             return pipe;
         }

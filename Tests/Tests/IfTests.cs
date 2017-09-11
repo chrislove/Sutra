@@ -2,14 +2,14 @@
 using NUnit.Framework;
 using static System.IO.Path;
 using static SharpPipe.Commands;
-using static SharpPipe.Curried.str;
+using static SharpPipe.CurryLib.str;
 
 namespace SharpPipe.Tests {
     public sealed class IfTests : TestBase {
         [TestCase("B", "[A][B][C]")]
         [TestCase("D", "ABC")]
         public void Test_Enumerable_IfSelect(string contains, string expected) {
-            string result = abcseq
+            string result = ABCSeq
                             | when | (e => e.Contains(contains)) | select | (i => $"[{i}]")
                             | when | ( () => true ) | select | (i => i)
                             | concat | ret;

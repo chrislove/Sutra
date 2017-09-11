@@ -31,7 +31,7 @@ namespace SharpPipe {
 
         internal DoWhere( Seq<T> pipe ) => Pipe = pipe;
 
-        public static Seq<T> operator |( DoWhere<T> where, Func<T, bool> predicate ) => where.Pipe.get.Where(predicate) | to<T>.pipe;
+        public static Seq<T> operator |( DoWhere<T> where, Func<T, bool> predicate ) => where.Pipe.Get.Where(predicate) | to<T>.pipe;
         
         public static DoWhereIf<T> operator |( DoWhere<T> where, DoWhen doWhen ) => new DoWhereIf<T>(where);
     }
@@ -44,7 +44,7 @@ namespace SharpPipe {
 
         public static Seq<T> operator |( DoWhereIf<T> doWhereIf, [NotNull] Func<T, bool> predicate ) {
             var pipe = doWhereIf._doWhere.Pipe;
-            var filtered = pipe.get.Where(predicate);
+            var filtered = pipe.Get.Where(predicate);
 
             return start<T>.pipe | filtered;
         }

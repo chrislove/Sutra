@@ -2,10 +2,10 @@ using System;
 using System.Globalization;
 using System.Text;
 using JetBrains.Annotations;
-using static SharpPipe.func.takes<string>;
+using static SharpPipe.Commands.func.takes<string>;
 
 namespace SharpPipe {
-    public static partial class Curried {
+    namespace CurryLib {
 
         /*
         public static Func<T1, Func<T2, TResult>> Curry<T1, T2, TResult>(Func<T1, T2, TResult> function) => a => b => function(a, b);
@@ -21,20 +21,20 @@ namespace SharpPipe {
             public static Func<string, bool> Equals( string strB ) => str => str.Equals(strB);
             public static Func<string, bool> Equals( string value, StringComparison comparisonType ) => str => str.Equals(value, comparisonType);
 
-            public static func<string, int> Length => from( str => str.Length );
+            public static PipeFunc<string, int> Length => from( str => str.Length );
 
-            public static toseqfunc<string, char> ToCharArray() => toseq( str => str.ToCharArray() );
-            public static toseqfunc<string, char> ToCharArray( int startIndex, int length ) => toseq( str => str.ToCharArray(startIndex, length) );
+            public static ToSeqFunc<string, char> ToCharArray() => toseq( str => str.ToCharArray() );
+            public static ToSeqFunc<string, char> ToCharArray( int startIndex, int length ) => toseq( str => str.ToCharArray(startIndex, length) );
 
-            public static toseqfunc<string, string> Split( params char[] separator ) => toseq( str => str.Split(separator) );
-            public static toseqfunc<string, string> Split( char[] separator, int count ) => toseq( str => str.Split(separator, count) );
-            public static toseqfunc<string, string> Split( char[] separator, StringSplitOptions options ) => toseq( str => str.Split(separator, options) );
-            public static toseqfunc<string, string> Split( char[] separator, int count, StringSplitOptions options )
+            public static ToSeqFunc<string, string> Split( params char[] separator ) => toseq( str => str.Split(separator) );
+            public static ToSeqFunc<string, string> Split( char[] separator, int count ) => toseq( str => str.Split(separator, count) );
+            public static ToSeqFunc<string, string> Split( char[] separator, StringSplitOptions options ) => toseq( str => str.Split(separator, options) );
+            public static ToSeqFunc<string, string> Split( char[] separator, int count, StringSplitOptions options )
                                 => toseq(str => str.Split(separator, count, options));
             
-            public static toseqfunc<string, string> Split( string[] separator, StringSplitOptions options ) => toseq(str => str.Split(separator, options));
+            public static ToSeqFunc<string, string> Split( string[] separator, StringSplitOptions options ) => toseq(str => str.Split(separator, options));
             
-            public static toseqfunc<string, string> Split( string[] separator, int count, StringSplitOptions options )
+            public static ToSeqFunc<string, string> Split( string[] separator, int count, StringSplitOptions options )
                                                     => toseq(str => str.Split(separator, count, options));
             
             public static Func<string, int> CompareTo( string strB ) => str => str.CompareTo(strB);
@@ -101,8 +101,8 @@ namespace SharpPipe {
             public static Func<string, bool> IsNullOrEmpty => string.IsNullOrEmpty;
             public static Func<string, bool> IsNullOrWhiteSpace => string.IsNullOrWhiteSpace;
 
-            public static fromseqfunc<string, string> join( [NotNull] string separator ) => FromSeq(e => string.Join(separator, e));
-            public static fromseqfunc<string, string> concat => FromSeq(string.Concat);
+            public static FromSeqFunc<string, string> join( [NotNull] string separator ) => FromSeq(e => string.Join(separator, e));
+            public static FromSeqFunc<string, string> concat => FromSeq(string.Concat);
         }
     }
 }

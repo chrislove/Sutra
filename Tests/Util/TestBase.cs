@@ -9,11 +9,11 @@ using static SharpPipe.Commands;
 namespace SharpPipe.Tests {
     [TestFixture]
     public abstract class TestBase {
-        [NotNull] protected readonly string[] abcarray = {"A", "B", "C"};
-        [NotNull] protected List<string>      abclist  => abcarray.ToList();
+        [NotNull] protected readonly string[] ABCArray = {"A", "B", "C"};
+        [NotNull] protected List<string>      ABCList  => ABCArray.ToList();
         
-        protected Seq<string>                 abcseq         => start.str.pipe | abcarray;
-        protected Pipe<string>                testpipe       => start.str.pipe | "TEST";
+        protected Seq<string>                 ABCSeq      => start.str.pipe | ABCArray;
+        protected Pipe<string>                TestPipe    => start.str.pipe | "TEST";
         
         
         
@@ -24,7 +24,7 @@ namespace SharpPipe.Tests {
 
         [NotNull] protected Action<string> write => i => WriteOutput += i.To<string>("Write");
 
-        protected void ThrowAssert<TException>(TestDelegate testDelegate, bool shouldThrow, string message = null) where TException : Exception {
+        protected static void ThrowAssert<TException>(TestDelegate testDelegate, bool shouldThrow, [CanBeNull] string message = null) where TException : Exception {
             if (shouldThrow) {
                 if (!message.IsNullOrEmpty())
                     Assert.That(testDelegate, Throws.TypeOf<TException>().With.Message.EqualTo(message));

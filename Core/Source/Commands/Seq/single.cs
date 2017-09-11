@@ -16,6 +16,6 @@ namespace SharpPipe {
     public struct DoSingle {}
     
     public partial struct Seq<T> {
-        public static Pipe<T> operator |( Seq<T> pipe, DoSingle @do ) => pipe.get.Single() | to<T>.pipe;
+        public static Pipe<T> operator |( Seq<T> pipe, DoSingle @do ) => pipe.Get.Single() | to<T>.pipe;
     }
 }

@@ -75,9 +75,9 @@
     <Compile Include="Source\Commands\Seq\toarray.cs" />
     <Compile Include="Source\Commands\Seq\tolist.cs" />
     <Compile Include="Source\Commands\ret.cs" />
-    <Compile Include="Source\Curried\curried.datetime.cs" />
-    <Compile Include="Source\Curried\curried.path.cs" />
-    <Compile Include="Source\Curried\curried.str.cs" />
+    <Compile Include="Source\CurryLib\datetime.cs" />
+    <Compile Include="Source\CurryLib\path.cs" />
+    <Compile Include="Source\CurryLib\str.cs" />
     <Compile Include="Source\Exceptions\EmptyPipeException.cs" />
     <Compile Include="Source\Exceptions\NullFunctionException.cs" />
     <Compile Include="Source\Exceptions\NullPipeException.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
     <Compile Include="Source\Types\Funcs\aliases.cs" />
     <Compile Include="Source\Types\Funcs\fromseqfunc.cs" />
-    <Compile Include="Source\Types\Funcs\func.cs" />
+    <Compile Include="Source\Types\Funcs\PipeFunc.cs" />
     <Compile Include="Source\Types\Funcs\seqfunc.cs" />
     <Compile Include="Source\Types\Funcs\toseqfunc.cs" />
     <Compile Include="Source\Types\Pipes\IPipe.cs" />

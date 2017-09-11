@@ -41,7 +41,7 @@ namespace SharpPipe {
         public static Seq<T> operator |(DoAdd<T> lhs, [NotNull] IEnumerable<T> rhs) {
             if (rhs == null) throw new ArgumentNullException(nameof(rhs));
 
-            return lhs._pipe.get.Concat(rhs) | to<T>.pipe;
+            return lhs._pipe.Get.Concat(rhs) | to<T>.pipe;
         }
 		
         /// <summary>
@@ -53,7 +53,7 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator, concatenates two IEnumerable{T} and returns a new Sequence
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> lhs, Seq<T> rhs ) => lhs | rhs.get;
+        public static Seq<T> operator |( DoAdd<T> lhs, Seq<T> rhs ) => lhs | rhs.Get;
 
         private static IEnumerable<T> Yield([CanBeNull] T item) {
             yield return item;

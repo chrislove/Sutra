@@ -20,6 +20,6 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into List{TOut} and returns
         /// </summary>
-        public static List<T> operator |( Seq<T> pipe, DoToList act ) => start<List<T>>.pipe | pipe.get.ToList() | Commands.ret;
+        public static List<T> operator |( Seq<T> pipe, DoToList act ) => start<List<T>>.pipe | pipe.Get.ToList() | Commands.ret;
     }
 }

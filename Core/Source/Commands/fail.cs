@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
-
 
 
 namespace SharpPipe {
@@ -25,7 +21,7 @@ namespace SharpPipe {
     
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoThrow<T> : Command<T> {
-        internal Exception Exception = PIPE.NextException ?? new PipeCommandException("fail");
+        internal Exception Exception = SharpPipe.Pipe.NextException ?? new PipeCommandException("fail");
 
         internal  DoThrow( IPipe<T> pipe ) : base(pipe) {}
         protected DoThrow( DoThrow<T> command ) : base(command) {}

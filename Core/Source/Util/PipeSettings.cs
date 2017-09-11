@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
 
@@ -8,7 +6,7 @@ namespace SharpPipe {
     /// <summary>
     /// Global pipe settings
     /// </summary>
-    public static class PIPE {
+    public static class Pipe {
         [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullInput  { get; set; } = false;
 
         [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullOutput { get; set; } = false;

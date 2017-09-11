@@ -39,7 +39,7 @@ namespace SharpPipe {
         public static Seq<T> operator |( DoThrowIfSeq<T> doThrowIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
             var pipe = (Seq<T>)doThrowIf.Pipe;
             
-            if ( predicate(pipe.get) )
+            if ( predicate(pipe.Get) )
                 throw doThrowIf.Exception;
 
             return pipe;
@@ -62,7 +62,7 @@ namespace SharpPipe {
         public static Seq<T> operator |( DoThrowIfAnySeq<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
             var pipe = (Seq<T>)doThrowIf.Pipe;
             
-            if ( pipe.get.Any(predicate) )
+            if ( pipe.Get.Any(predicate) )
                 throw doThrowIf.Exception;
 
             return pipe;

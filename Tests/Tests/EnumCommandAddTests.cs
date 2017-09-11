@@ -1,7 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.Curried.str;
+using static SharpPipe.CurryLib.str;
 
 namespace SharpPipe.Tests {
     [TestFixture]
@@ -12,7 +12,7 @@ namespace SharpPipe.Tests {
             var xyzPipe       = new[] {"X", "Y", "Z"} | to.str.pipe;
 
 
-            var result = abcseq
+            var result = ABCSeq
                          | add | defEnumerable
                          | add | new[] {"G", "H", "I"}
                          | add | xyzPipe

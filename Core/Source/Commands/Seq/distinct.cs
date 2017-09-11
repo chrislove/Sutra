@@ -19,6 +19,6 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator.
         /// </summary>
-        public static Seq<T> operator |( Seq<T> pipe, DoDistinct act ) => start<T>.pipe | pipe.get.Distinct();
+        public static Seq<T> operator |( Seq<T> pipe, DoDistinct act ) => start<T>.pipe | pipe.Get.Distinct();
     }
 }

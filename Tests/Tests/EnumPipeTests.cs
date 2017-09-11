@@ -2,8 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.Curried.str;
-using static SharpPipe.func;
+using static SharpPipe.CurryLib.str;
 
 // ReSharper disable SuggestVarOrType_Elsewhere
 // ReSharper disable PossibleMultipleSeqeration
@@ -11,7 +10,7 @@ using static SharpPipe.func;
 namespace SharpPipe.Tests {
     [TestFixture]
     public sealed class SequenceTests : TestBase {
-        private static func<int, string> ConvertToString => integerfunc.from(i => i.ToString());
+        private static PipeFunc<int, string> ConvertToString => func.integer.from(i => i.ToString());
 
         [Test]
         public void Test_Pipe_Action() {
@@ -52,7 +51,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Foreach() {
-            var pipe = abcseq
+            var pipe = ABCSeq
                        | act | write;
 
             Assert.That(WriteOutput, Is.EqualTo("ABC"));

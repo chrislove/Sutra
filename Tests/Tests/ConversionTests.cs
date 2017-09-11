@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.Curried.str;
+using static SharpPipe.CurryLib.str;
 
 namespace SharpPipe.Tests {
     [TestFixture]
@@ -16,7 +16,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_List_ToPipe() {
-            string result = abclist | to.str.pipe | concat | ret;
+            string result = ABCList | to.str.pipe | concat | ret;
             
             Assert.That(result, Is.EqualTo("ABC"));
         }
@@ -26,7 +26,7 @@ namespace SharpPipe.Tests {
             IEnumerable<string> converter( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
 
             string result = start.str.pipe | "IN"
-                            | to.toseq | converter
+                            | to.seq | converter
                             | join(";") | ret;
             
             Assert.That(result, Is.EqualTo("IN0;IN1;IN2"));
@@ -34,7 +34,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Array_ToEnumerable() {
-            string result = abcarray | to.str.pipe
+            string result = ABCArray | to.str.pipe
                             | concat | ret;
             
             Assert.That(result, Is.EqualTo("ABC"));

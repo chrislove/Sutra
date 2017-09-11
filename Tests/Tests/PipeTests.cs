@@ -2,7 +2,7 @@
 using System.IO;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using static SharpPipe.Curried;
+using SharpPipe.CurryLib;
 using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests  {
@@ -11,12 +11,12 @@ namespace SharpPipe.Tests  {
 		[NotNull]
 		private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
 
-		private static func<DateTime, string> GetShortDate => func.takes<DateTime>.from(d => d.ToShortDateString());
+		private static PipeFunc<DateTime, string> getshortdate => func.takes<DateTime>.from(d => d.ToShortDateString());
 
 		
 		private static Pipe<string> YesterdayPipe => start<DateTime>.pipe | DateTime.Now
 		                                             | AddDays(-1)
-		                                             | GetShortDate
+		                                             | getshortdate
 		                                             | (i => "Yesterday: " + i);
 
 		[Test]
@@ -32,7 +32,7 @@ namespace SharpPipe.Tests  {
 			var nowDateTime = DateTime.Now;	
 			
 			var pipe = start<DateTime>.pipe | nowDateTime
-			           | when | (i => GetShortDate[i] == nowDateTime.ToShortDateString()) | select | (i => nowDateTime)
+			           | when | (i => getshortdate[i] == nowDateTime.ToShortDateString()) | select | (i => nowDateTime)
 			           | ret;
 			
 			Assert.That(pipe, Is.EqualTo(nowDateTime));

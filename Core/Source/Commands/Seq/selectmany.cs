@@ -34,6 +34,6 @@ namespace SharpPipe {
         internal DoSelectMany( Seq<T> pipe ) => this.pipe = pipe;
 
         public static Seq<T> operator |( DoSelectMany<T> doSelect, [NotNull] Func<T, IEnumerable<T>> func )
-            => doSelect.pipe.get.SelectMany(func) | to<T>.pipe;
+            => doSelect.pipe.Get.SelectMany(func) | to<T>.pipe;
     }
 }

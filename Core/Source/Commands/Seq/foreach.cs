@@ -14,6 +14,6 @@ namespace SharpPipe {
         public DoForEach( Seq<T> lhs ) => _pipe = lhs;
 
         public static Unit operator |( DoForEach<T> lhs, [NotNull] Action<T> action )
-            => ( () => lhs._pipe.get.ForEach(action) ) | unit;
+            => ( () => lhs._pipe.Get.ForEach(action) ) | unit;
     }
 }

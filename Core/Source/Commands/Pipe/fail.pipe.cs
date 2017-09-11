@@ -35,7 +35,7 @@ namespace SharpPipe {
         public static Pipe<T> operator |( DoThrowIfPipe<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
             var pipe = (Pipe<T>)doThrowIf.Pipe;
             
-            if ( predicate(pipe.get) )
+            if ( predicate(pipe.Get) )
                 throw doThrowIf.Exception;
 
             return pipe;

@@ -6,7 +6,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Seq_Null_Throws() {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | add
                            | (string) null
                            | fail | whenany | isnull;
@@ -18,7 +18,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Null_Filtered_DoesntThrow() {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | add   | (string) null
                            | where | notnull
                            | fail | whenany | isnull;
@@ -30,7 +30,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Throw_With_Message() {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | add  | (string) null
                            | fail | "TEST" | whenany | isnull;
                 ;
@@ -42,7 +42,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Throw_With_Exception() {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | add  | (string) null
                            | fail | new PipeUserException("TEST") | whenany | isnull;
             }
@@ -53,7 +53,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Pipe_Throw_NonConditional() {
             void TestDelegate() {
-                var pipe = testpipe
+                var pipe = TestPipe
                            | fail | when | (() => true);
             }
 
@@ -63,7 +63,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Seq_Throw_NonConditional() {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | fail | when | (() => true);
             }
 
@@ -73,9 +73,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Throw_NextException() {
             void TestDelegate() {
-                PIPE.NextException = new PipeUserException("TEST");
+                SharpPipe.Pipe.NextException = new PipeUserException("TEST");
                 
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | add   | (string) null
                            | fail | whenany | isnull;
             }
@@ -87,7 +87,7 @@ namespace SharpPipe.Tests {
         [TestCase("DONT", false)]
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
-                var pipe = abcseq
+                var pipe = ABCSeq
                            | fail | whenany | equals(ifInput);
             }
             

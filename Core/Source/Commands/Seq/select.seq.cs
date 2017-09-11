@@ -18,7 +18,7 @@ namespace SharpPipe {
         internal DoSelectSeq( Seq<T> pipe ) => Pipe = pipe;
 
         public static Seq<T> operator |( DoSelectSeq<T> doSelect, [NotNull] Func<T, T> func )
-            => doSelect.Pipe.get.Select(func) | to<T>.pipe;
+            => doSelect.Pipe.Get.Select(func) | to<T>.pipe;
     }
 
 }

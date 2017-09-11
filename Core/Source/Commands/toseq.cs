@@ -15,7 +15,7 @@ namespace SharpPipe {
             /// <summary>
             /// Converts Pipe to Sequence
             /// </summary>
-            public static DoConvertToSeq toseq => new DoConvertToSeq();
+            public static DoConvertToSeq seq => new DoConvertToSeq();
         }
     }
     
@@ -38,7 +38,7 @@ namespace SharpPipe {
         /// </summary>
         public static Seq<T> operator |( DoConvertToSeq<T> lhs, [NotNull] Func<T, IEnumerable<T>> func )
                                 => start<T>.pipe
-                                   | add | func(lhs._pipe.get);
+                                   | add | func(lhs._pipe.Get);
 
     }
 }

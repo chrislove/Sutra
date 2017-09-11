@@ -8,33 +8,29 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
-        [NotNull] private Func<T> func { get; }
-
-        internal Pipe( [CanBeNull] T obj ) : this(() => obj) {
-            if (obj == null && !PIPE.AllowNullInput)
-                throw new NullPipeException($"Null object is not a valid input to {this.T()}");
+        internal Pipe( [NotNull] T value ) : this() {
+            if (value == null && !Pipe.AllowNullInput) throw new NullPipeException($"Null object is not a valid input to {nameof(Pipe<T>)}");
+            _contents = value;
         }
+        
+        [NotNull] private readonly T _contents;
 
-        private Pipe( [NotNull] Func<T> func ) : this() => this.func = func ?? throw new ArgumentNullException(nameof(func));
-
-        [NotNull] internal T get {
+        [NotNull] internal T Get {
             get {
-                var result = func();
-
-                if (result == null && !PIPE.AllowNullOutput && !AllowNullOutput)
+                if (_contents == null && !Pipe.AllowNullOutput && !AllowNullOutput)
                     throw new NullPipeException($"'{this.T()}.Get' returned a null IEnumerable");
 
-                return result;
+                return _contents;
             }
         }
 
         private bool AllowNullOutput { get; set; }
         
-        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> rhs ) => new Pipe<T>( rhs(pipe.get) );
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => new Pipe<T>( func(pipe.Get) );
 
         /// <summary>
         /// Replaces pipe contents with an object
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, T rhs ) => new Pipe<T>(rhs);
+        public static Pipe<T> operator |( Pipe<T> pipe, T obj ) => new Pipe<T>(obj);
     }
 }

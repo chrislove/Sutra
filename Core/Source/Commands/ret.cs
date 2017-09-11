@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
-// ReSharper disable InconsistentNaming
+
 
 namespace SharpPipe
 {
+	[PublicAPI]
 	public static partial class Commands {
 		/// <summary>
 		/// Returns pipe contents.
@@ -12,18 +13,18 @@ namespace SharpPipe
 		/// <example><code>
 		/// pipe | OUT
 		/// </code></example>
-		public static DoOut ret => new DoOut();
+		public static DoRet ret => new DoRet();
 	}
 	
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public struct DoOut {}
+	public struct DoRet {}
 	
 	partial struct Seq<T> {
 		/// <summary>
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<T> operator |( Seq<T> pipe, DoOut act ) => pipe.get;
+		public static IEnumerable<T> operator |( Seq<T> pipe, DoRet act ) => pipe.Get;
 	}
 
 	public partial struct Pipe<T> {
@@ -31,6 +32,6 @@ namespace SharpPipe
 		/// Forward pipe operator. Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static T operator |( Pipe<T> pipe, DoOut doOut ) => pipe.get;
+		public static T operator |( Pipe<T> pipe, DoRet doRet ) => pipe.Get;
 	}
 }
