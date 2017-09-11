@@ -22,11 +22,11 @@ namespace SharpPipe {
         public static DoAdd<T> operator |( Seq<T> pipe, DoAdd doAdd ) => new DoAdd<T>( pipe );
     }
 
-    public partial struct DoToPipe<T> {
+    public partial struct DoStartPipe<T> {
         /// <summary>
         /// Starts a new sequence.
         /// </summary>
-        public static DoAdd<T> operator |( DoToPipe<T> pipe, DoAdd doAdd ) => new DoAdd<T>( Seq<T>.Empty );
+        public static DoAdd<T> operator |( DoStartPipe<T> pipe, DoAdd doAdd ) => new DoAdd<T>( Seq<T>.Empty );
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -41,7 +41,7 @@ namespace SharpPipe {
         public static Seq<T> operator |(DoAdd<T> doAdd, [NotNull] IEnumerable<T> enumerable) {
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
-            return doAdd._pipe.Get.Concat(enumerable) | to<T>.pipe;
+            return start<T>.pipe | doAdd._pipe.Get.Concat(enumerable);
         }
 		
         /// <summary>

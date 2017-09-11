@@ -49,7 +49,7 @@ namespace SharpPipe {
             var pipe = (Seq<T>) doSelectPipe.Pipe;
             
             if (doSelectPipe.Predicate(pipe.Get))
-                return pipe.Get.Select(func) | to<T>.pipe;
+                return start<T>.pipe | pipe.Get.Select(func);
 
             return pipe;
         }

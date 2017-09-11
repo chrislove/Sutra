@@ -9,7 +9,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Filters contents of sequence
+        /// Filters contents of Sequence
         /// </summary>
         public static DoWhere where => new DoWhere();
     }
@@ -31,7 +31,7 @@ namespace SharpPipe {
 
         internal DoWhere( Seq<T> pipe ) => Pipe = pipe;
 
-        public static Seq<T> operator |( DoWhere<T> where, Func<T, bool> predicate ) => where.Pipe.Get.Where(predicate) | to<T>.pipe;
+        public static Seq<T> operator |( DoWhere<T> where, Func<T, bool> predicate ) => start<T>.pipe | where.Pipe.Get.Where(predicate);
         
         public static DoWhereIf<T> operator |( DoWhere<T> where, DoWhen doWhen ) => new DoWhereIf<T>(where);
     }

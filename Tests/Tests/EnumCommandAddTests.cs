@@ -9,7 +9,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_ADD_IEnumerable() {
             var defEnumerable = new[] {"D", "E", "F"}.Select(i => i);
-            var xyzPipe       = new[] {"X", "Y", "Z"} | to.str.pipe;
+            var xyzPipe       = start.str.pipe | new[] {"X", "Y", "Z"};
 
 
             var result = ABCSeq

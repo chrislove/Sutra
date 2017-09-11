@@ -16,7 +16,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_List_ToPipe() {
-            string result = ABCList | to.str.pipe | concat | ret;
+            string result = start.str.pipe | ABCList | concat | ret;
             
             Assert.That(result, Is.EqualTo("ABC"));
         }
@@ -34,7 +34,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Array_ToEnumerable() {
-            string result = ABCArray | to.str.pipe
+            string result = start.str.pipe | ABCArray
                             | concat | ret;
             
             Assert.That(result, Is.EqualTo("ABC"));

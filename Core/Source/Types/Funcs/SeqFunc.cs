@@ -15,7 +15,7 @@ namespace SharpPipe {
     /// <summary>
     /// A function transforming an entire sequence.
     /// </summary>
-    public struct SeqFunc<TIn, TOut> {
+    public partial struct SeqFunc<TIn, TOut> {
         [NotNull] private Func<IEnumerable<TIn>, IEnumerable<TOut>> Func { get; }
 
         internal SeqFunc([NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
@@ -30,10 +30,10 @@ namespace SharpPipe {
         public static implicit operator SeqFunc<TIn, TOut>( [NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func ) => seqfunc.takes<TIn>.from(func);
 		
         /// <summary>
-        /// Forward pipe operator. Transforms an sequence.
+        /// Forward pipe operator. Transforms an Sequence.
         /// </summary>
         [UsedImplicitly]
         public static Seq<TOut> operator |( Seq<TIn> pipe, SeqFunc<TIn, TOut> func )
-            => func[pipe.Get] | to<TOut>.pipe;
+            => start<TOut>.pipe | func[pipe.Get];
     }
 }

@@ -26,11 +26,16 @@ namespace SharpPipe {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoTransform<T> {
-        private readonly Seq<T> _pipe;
+        internal readonly Seq<T> _pipe;
 
         internal DoTransform( Seq<T> pipe ) => _pipe = pipe;
 
         public static Seq<T> operator |( DoTransform<T> @do, [NotNull] Func<IEnumerable<T>, IEnumerable<T>> func )
-            => func(@do._pipe.Get) | to<T>.pipe;
+            => start<T>.pipe | func(@do._pipe.Get);
+    }
+    
+    public partial struct SeqFunc<TIn, TOut> {
+        public static Seq<TOut> operator |( DoTransform<TIn> @do, SeqFunc<TIn, TOut> func )
+            => start<TOut>.pipe | func[@do._pipe.Get];
     }
 }

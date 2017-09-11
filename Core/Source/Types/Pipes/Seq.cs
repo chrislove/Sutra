@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -27,6 +28,9 @@ namespace SharpPipe {
                 return _contents;
             }
         }
+
+        internal Seq<U> Transform<U>( Func<IEnumerable<T>, IEnumerable<U>> func )
+            => start<U>.pipe | func(Get);
 
         private bool AllowNullOutput { get; set; }
     }

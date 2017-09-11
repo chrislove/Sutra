@@ -43,7 +43,7 @@ namespace SharpPipe
 		public static Seq<TOut> operator |( Seq<TIn> pipe, PipeFunc<TIn, TOut> func ) {
 			var enumerable = pipe.Get.Select(i => func.Func(i).To<TOut>($"{pipe.T()} | {func.T()}"));
 
-			return enumerable | to<TOut>.pipe;
+			return start<TOut>.pipe | enumerable;
 		}
 	}
 }

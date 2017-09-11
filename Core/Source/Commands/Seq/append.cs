@@ -18,11 +18,11 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoAppend { }
     
-    public partial struct DoToPipe<T> {
+    public partial struct DoStartPipe<T> {
         /// <summary>
         /// Starts a new sequence.
         /// </summary>
-        public static DoAppend<T> operator |( DoToPipe<T> pipe, DoAppend doAdd ) => new DoAppend<T>( Seq<T>.Empty );
+        public static DoAppend<T> operator |( DoStartPipe<T> pipe, DoAppend doAdd ) => new DoAppend<T>( Seq<T>.Empty );
     }
 
     public partial struct Seq<T> {

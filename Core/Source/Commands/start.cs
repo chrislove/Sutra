@@ -1,7 +1,11 @@
-﻿namespace SharpPipe {
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using JetBrains.Annotations;
+
+namespace SharpPipe {
     public static partial class Commands {
         public static class start<T> {
-            public static DoToPipe<T> pipe => new DoToPipe<T>();
+            public static DoStartPipe<T> pipe => new DoStartPipe<T>();
         }
 
         public static class start {
@@ -9,29 +13,42 @@
             /// Starts a {string} pipe.
             /// </summary>
             public static class str {
-                public static DoToPipe<string> pipe => start<string>.pipe;
+                public static DoStartPipe<string> pipe => start<string>.pipe;
             }
 
             /// <summary>
             /// Starts a {int} pipe.
             /// </summary>
             public static class integer {
-                public static DoToPipe<int> pipe => start<int>.pipe;
+                public static DoStartPipe<int> pipe => start<int>.pipe;
             }
 
             /// <summary>
             /// Starts a {float} pipe.
             /// </summary>
             public static class flt {
-                public static DoToPipe<float> pipe => start<float>.pipe;
+                public static DoStartPipe<float> pipe => start<float>.pipe;
             }
 
             /// <summary>
             /// Starts a {double} pipe.
             /// </summary>
             public static class dbl {
-                public static DoToPipe<double> pipe => start<double>.pipe;
+                public static DoStartPipe<double> pipe => start<double>.pipe;
             }
         }
+    }
+        
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public partial struct DoStartPipe<T> {
+        /// <summary>
+        /// Initializes a pipe with object on the right
+        /// </summary>
+        public static Pipe<T> operator |( DoStartPipe<T> doStartPipe, [NotNull] T obj ) => Pipe.From(obj);
+        
+        /// <summary>
+        /// Initializes a sequence with enumerable on the right
+        /// </summary>
+        public static Seq<T> operator |( DoStartPipe<T> doStartPipe, [NotNull] IEnumerable<T> enumerable ) => Pipe.From(enumerable);
     }
 }

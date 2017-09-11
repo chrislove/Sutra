@@ -19,6 +19,6 @@ namespace SharpPipe {
 
         internal FromSeqFunc([NotNull] Func<IEnumerable<TIn>, TOut> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
-        public static Pipe<TOut> operator |( Seq<TIn> pipe, FromSeqFunc<TIn, TOut> func ) => func[pipe.Get] | to<TOut>.pipe;
+        public static Pipe<TOut> operator |( Seq<TIn> pipe, FromSeqFunc<TIn, TOut> func ) => start<TOut>.pipe | func[pipe.Get];
     }
 }

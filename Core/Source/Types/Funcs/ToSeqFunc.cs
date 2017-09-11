@@ -20,6 +20,6 @@ namespace SharpPipe {
         internal ToSeqFunc([NotNull] Func<TIn, IEnumerable<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
         public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func )
-            => func[pipe.Get] | to<TOut>.pipe;
+            => start<TOut>.pipe | func[pipe.Get];
     }
 }

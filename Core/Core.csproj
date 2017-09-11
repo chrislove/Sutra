@@ -64,7 +64,6 @@
     <Compile Include="Source\Commands\not.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\select.cs" />
-    <Compile Include="Source\Commands\topipe.cs" />
     <Compile Include="Source\Commands\when.cs" />
     <Compile Include="Source\Commands\fail.cs" />
     <Compile Include="Source\Commands\Seq\add.cs" />
