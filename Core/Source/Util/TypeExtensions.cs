@@ -21,6 +21,6 @@ namespace SharpPipe {
 		/// Returns the compile-time generic type
 		/// </summary>
 		[NotNull]
-		public static Type T<U>(this U obj) => typeof(U);
+		public static Type T<U>([CanBeNull] this U _) => typeof(U);
 	}
 }

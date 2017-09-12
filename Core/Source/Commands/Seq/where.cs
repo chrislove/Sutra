@@ -2,8 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
-
 
 
 namespace SharpPipe {
@@ -14,6 +12,9 @@ namespace SharpPipe {
         public static DoWhere where => new DoWhere();
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoWhere { }
 
@@ -21,32 +22,19 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static DoWhere<T> operator |( Seq<T> pipe, DoWhere where ) => new DoWhere<T>(pipe);
+        public static DoWhere<T> operator |( Seq<T> seq, DoWhere _ ) => new DoWhere<T>(seq);
     }
     
-
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoWhere<T> {
-        internal readonly Seq<T> Pipe;
+        private readonly Seq<T> Seq;
 
-        internal DoWhere( Seq<T> pipe ) => Pipe = pipe;
+        internal DoWhere( Seq<T> pipe ) => Seq = pipe;
 
-        public static Seq<T> operator |( DoWhere<T> where, Func<T, bool> predicate ) => start<T>.pipe | where.Pipe.Get.Where(predicate);
-        
-        public static DoWhereIf<T> operator |( DoWhere<T> where, DoWhen doWhen ) => new DoWhereIf<T>(where);
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoWhereIf<T> {
-        private readonly DoWhere<T> _doWhere;
-
-        internal DoWhereIf( DoWhere<T> doWhere ) => _doWhere = doWhere;
-
-        public static Seq<T> operator |( DoWhereIf<T> doWhereIf, [NotNull] Func<T, bool> predicate ) {
-            var pipe = doWhereIf._doWhere.Pipe;
-            var filtered = pipe.Get.Where(predicate);
-
-            return start<T>.pipe | filtered;
-        }
+        public static Seq<T> operator |( DoWhere<T> where, [NotNull] Func<T, bool> predicate )
+                    => where.Seq | (enm => enm.Where(predicate));
     }
 }

@@ -13,13 +13,16 @@ namespace SharpPipe {
         public static DoNotEmpty notempty => new DoNotEmpty();
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoNotEmpty {}
 
     public partial struct Seq<T> {
-        public static Seq<T> operator |( Seq<T> pipe, DoNotEmpty notEmpty ) {
+        public static Seq<T> operator |( Seq<T> seq, DoNotEmpty _ ) {
             var exception = EmptyPipeException.For<Seq<T>>();
-            return pipe | fail | exception | when | (Func<IEnumerable<T>, bool>) isempty;
+            return seq | fail | exception | when | (Func<IEnumerable<T>, bool>) isempty;
         }
     }
 }

@@ -11,34 +11,44 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe conversion commands
         /// </summary>
-        public static partial class to {
+        public static class to {
             /// <summary>
             /// Converts Pipe to sequence
             /// </summary>
-            public static DoConvertToSeq seq => new DoConvertToSeq();
+            [PublicAPI]
+            public static DoTransformToSeq seq => new DoTransformToSeq();
         }
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoConvertToSeq { }
+    public struct DoTransformToSeq { }
 
     public partial struct Pipe<T> {
-        public static DoConvertToSeq<T> operator |( Pipe<T> pipe, DoConvertToSeq doConvertToSeq )
-            => new DoConvertToSeq<T>( pipe );
+        public static DoTransformToSeq<T> operator |( Pipe<T> pipe, DoTransformToSeq _ )
+            => new DoTransformToSeq<T>( pipe );
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoConvertToSeq<T> {
+    public struct DoTransformToSeq<T> {
         private readonly Pipe<T> _pipe;
 
-        internal DoConvertToSeq( Pipe<T> pipe ) => _pipe = pipe;
+        internal DoTransformToSeq( Pipe<T> pipe ) => _pipe = pipe;
 
         /// <summary>
-        /// Attaches a sequence converter function to DoToPipe.
+        /// Transforms pipe to sequence using a function on the right.
         /// </summary>
-        public static Seq<T> operator |( DoConvertToSeq<T> doConvert, [NotNull] Func<T, IEnumerable<T>> func )
-                                => start<T>.pipe
-                                   | add | func(doConvert._pipe.Get);
+        public static Seq<T> operator |( DoTransformToSeq<T> doTransform, [NotNull] Func<T, IEnumerable<T>> func ) {
+            var pipeOut = doTransform._pipe.Get;
 
+            if (pipeOut.ShouldSkip) return Seq<T>.SkipSeq;
+            
+            return start<T>.seq | func(doTransform._pipe.Get.Contents);
+        }
     }
 }

@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Linq;
-using static SharpPipe.Commands;
-
+using JetBrains.Annotations;
 
 
 namespace SharpPipe {
@@ -9,16 +8,24 @@ namespace SharpPipe {
         /// <summary>
         /// Converts the contents of sequence into T[] and returns.
         /// </summary>
-        public static DoToArray retarray => new DoToArray();
+        public static DoReturnArray getarray => new DoReturnArray();
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoToArray {}
+    public struct DoReturnArray {}
 
     public partial struct Seq<T> {
         /// <summary>
         /// Converts pipe contents into TOut[] and returns.
         /// </summary>
-        public static T[] operator |( Seq<T> pipe, DoToArray act ) => start<T[]>.pipe | pipe.Get.ToArray() | Commands.ret;
+        [NotNull]
+        public static T[] operator |( Seq<T> seq, DoReturnArray _ ) {
+            var seqOutput = seq.Get;
+            
+            return seqOutput.ShouldSkip ? new T[0] : seqOutput.Contents.ToArray();
+        }
     }
 }

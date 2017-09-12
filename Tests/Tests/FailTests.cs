@@ -21,7 +21,7 @@ namespace SharpPipe.Tests {
                 var pipe = ABCSeq
                            | add   | (string) null
                            | where | notnull
-                           | fail | whenany | isnull;
+                           | fail  | whenany | isnull;
             }
 
             Assert.That(TestDelegate, Throws.Nothing);
@@ -32,7 +32,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ABCSeq
                            | add  | (string) null
-                           | fail | "TEST" | whenany | isnull;
+                           | failwith("TEST") | whenany | isnull;
                 ;
             }
 

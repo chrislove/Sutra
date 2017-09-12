@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
@@ -9,32 +10,37 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
-        [NotNull] private readonly T _contents;
+        [CanBeNull]
+        private readonly T _contents;
+        
+        private readonly bool _shouldSkip;
 
-        internal Pipe( [NotNull] T value ) : this() {
-            if (value == null && !Pipe.AllowNullInput) throw new NullPipeException($"Null object is not a valid input to {nameof(Pipe<T>)}");
-            _contents = value;
+        internal Pipe( [CanBeNull] T value, bool shouldSkip = false ) : this() {
+            _contents   = value;
+            _shouldSkip = shouldSkip || value == null;
         }
         
-        [NotNull] internal T Get {
-            get {
-                if (_contents == null && !Pipe.AllowNullOutput && !AllowNullOutput)
-                    throw new NullPipeException($"'{this.T()}.Get' returned a null IEnumerable");
+        internal PipeOutput<T> Get => PipeOutput.New(_contents, _shouldSkip);
 
-                return _contents;
-            }
-        }
+        internal static Pipe<T> SkipPipe => new Pipe<T>();
 
         private bool AllowNullOutput { get; set; }
         
+        internal Pipe<TOut> Transform<TOut>([NotNull] Func<T, TOut> func) {
+            var seqOut = this.Get;
+            if (seqOut.ShouldSkip) return Pipe<TOut>.SkipPipe;
+
+            return start<TOut>.pipe | func(seqOut.Contents);
+        }
+
         /// <summary>
         /// Transforms pipe contents using a function on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => start<T>.pipe | func(pipe.Get);
-
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => pipe.Transform(func);
+        
         /// <summary>
         /// Replaces pipe contents with object on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, T obj ) => start<T>.pipe | obj;
+        public static Pipe<T> operator |( Pipe<T> _, T obj ) => start<T>.pipe | obj;
     }
 }

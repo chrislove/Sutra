@@ -20,9 +20,15 @@ namespace SharpPipe {
         public static DoWhen when => new DoWhen();
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoWhenAny {}
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoWhen {}
 }

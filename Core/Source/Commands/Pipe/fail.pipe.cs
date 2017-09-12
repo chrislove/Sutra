@@ -6,49 +6,64 @@ namespace SharpPipe {
     public partial struct Pipe<T> {
         // PIPE '|' fail
         [NotNull]
-        public static DoThrowPipe<T> operator |( Pipe<T> pipe, DoThrow @do ) => new DoThrowPipe<T>(pipe);
+        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFail _ ) => new DoFailPipe<T>(pipe);
+        
+        [NotNull]
+        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, null, failWith.Message);
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoThrowPipe<T> : DoThrow<T>{
-        internal DoThrowPipe( Pipe<T> pipe ) : base(pipe) {}
-        internal DoThrowPipe( DoThrowPipe<T> pipe ) : base(pipe) {}
+    public class DoFailPipe<T> : DoFail<T>{
+        internal DoFailPipe( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
 
         // PIPE | fail '|' when
-        [NotNull] public static DoThrowIfPipe<T>    operator |( DoThrowPipe<T> doThrow, DoWhen @if ) 
-                                            => (DoThrowIfPipe<T>) new DoThrowIfPipe<T>(doThrow).WithException(doThrow.Exception);
-
+        [NotNull]
+        public static DoFailIfPipe<T> operator |( DoFailPipe<T> doFail, DoWhen _ )
+            => new DoFailIfPipe<T>(doFail.Pipe, doFail.Exception);
 
         [NotNull]
-        public static DoThrowPipe<T> operator |( DoThrowPipe<T> doThrow, [NotNull] string message )
-                                            => (DoThrowPipe<T>) new DoThrowPipe<T>(doThrow).WithMessage(message);
-
-        [NotNull]
-        public static DoThrowPipe<T> operator |( DoThrowPipe<T> doThrow, [NotNull] Exception exception )
-            => (DoThrowPipe<T>) new DoThrowPipe<T>(doThrow).WithException(exception);
+        public static DoFailPipe<T> operator |( DoFailPipe<T> doFail, [NotNull] Exception exc )
+            => new DoFailIfPipe<T>(doFail.Pipe, exc);
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class DoThrowIfPipe<T> : DoThrowPipe<T> {
-        internal DoThrowIfPipe( DoThrowPipe<T> doThrow ) : base(doThrow) {}
+    public sealed class DoFailIfPipe<T> : DoFailPipe<T> {
+        internal DoFailIfPipe( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
+        
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
+            var pipe = (Pipe<T>)doFailIf.Pipe;
+            var pipeOut = pipe.Get;
 
-        public static Pipe<T> operator |( DoThrowIfPipe<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
-            var pipe = (Pipe<T>)doThrowIf.Pipe;
+            //if (pipeOut.ShouldSkip) return pipe;
             
-            if ( predicate(pipe.Get) )
-                throw doThrowIf.Exception;
+            if ( predicate(pipeOut.Contents) )
+                throw doFailIf.Exception;
 
             return pipe;
         }
         
-        public static Pipe<T> operator |( DoThrowIfPipe<T> doThrowIf, [NotNull] Func<bool> predicate ) {
-            var pipe = (Pipe<T>)doThrowIf.Pipe;
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<bool> predicate ) {
+            var pipe = (Pipe<T>)doFailIf.Pipe;
+            var pipeOut = pipe.Get;
+
+            //if (pipeOut.ShouldSkip) return pipe;
             
             if ( predicate() )
-                throw doThrowIf.Exception;
+                throw doFailIf.Exception;
 
             return pipe;
         }
     }
-
 }

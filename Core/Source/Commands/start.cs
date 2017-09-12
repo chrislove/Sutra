@@ -3,52 +3,85 @@ using System.ComponentModel;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
+    /// <summary>
+    /// A set of pipe command factories.
+    /// </summary>
     public static partial class Commands {
-        public static class start<T> {
+        /// <summary>
+        /// Starts a new pipe of type {T}.
+        /// </summary>
+        [PublicAPI]
+        public abstract class start<T> {
+            internal start() { }
+            
+            /// <summary>
+            /// Starts a pipe.
+            /// </summary>
             public static DoStartPipe<T> pipe => new DoStartPipe<T>();
+            
+            /// <summary>
+            /// Starts a sequence.
+            /// </summary>
+            public static DoStartSeq<T> seq => new DoStartSeq<T>();
         }
 
+        /// <summary>
+        /// Starts a new pipe of built-in type.
+        /// </summary>
+        [PublicAPI]
         public static class start {
             /// <summary>
             /// Starts a {string} pipe.
             /// </summary>
-            public static class str {
-                public static DoStartPipe<string> pipe => start<string>.pipe;
+            [PublicAPI]
+            public abstract class str : start<string> {
+                private str() { }
             }
 
             /// <summary>
             /// Starts a {int} pipe.
             /// </summary>
-            public static class integer {
-                public static DoStartPipe<int> pipe => start<int>.pipe;
+            [PublicAPI]
+            public abstract class integer : start<int> {
+                private integer() { }
             }
 
             /// <summary>
             /// Starts a {float} pipe.
             /// </summary>
-            public static class flt {
-                public static DoStartPipe<float> pipe => start<float>.pipe;
+            [PublicAPI]
+            public abstract class flt : start<float> {
+                private flt() { }
             }
 
             /// <summary>
             /// Starts a {double} pipe.
             /// </summary>
-            public static class dbl {
-                public static DoStartPipe<double> pipe => start<double>.pipe;
+            [PublicAPI]
+            public abstract class dbl : start<double> {
+                private dbl() { }
             }
         }
     }
         
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial struct DoStartPipe<T> {
+    public struct DoStartPipe<T> {
         /// <summary>
         /// Initializes a pipe with object on the right
         /// </summary>
-        public static Pipe<T> operator |( DoStartPipe<T> doStartPipe, [NotNull] T obj ) => Pipe.From(obj);
-        
-        /// <summary>
+        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] T obj ) => Pipe.From(obj);
+    } 
+    
+    /// <summary>
+    /// Command marker.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public partial struct DoStartSeq<T> {
         /// Initializes a sequence with enumerable on the right
         /// </summary>
-        public static Seq<T> operator |( DoStartPipe<T> doStartPipe, [NotNull] IEnumerable<T> enumerable ) => Pipe.From(enumerable);
+        public static Seq<T> operator |( DoStartSeq<T> _, [NotNull] IEnumerable<T> enumerable ) => Pipe.From(enumerable);
     }
 }

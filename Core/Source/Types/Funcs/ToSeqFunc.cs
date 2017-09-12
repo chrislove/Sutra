@@ -12,14 +12,32 @@ namespace SharpPipe {
         }
     }
 
+    /// <summary>
+    /// Function transforming pipe to a sequence.
+    /// </summary>
     public struct ToSeqFunc<TIn, TOut> {
-        [NotNull] private Func<TIn, IEnumerable<TOut>> Func { get; }
+        /// <summary>
+        /// Inner function
+        /// </summary>
+        [PublicAPI]
+        [NotNull] public Func<TIn, IEnumerable<TOut>> Func { get; }
         
+        /// <summary>
+        /// Use this operator to invoke the function.
+        /// </summary>
+        [CanBeNull] [PublicAPI]
         public IEnumerable<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue);
 
         internal ToSeqFunc([NotNull] Func<TIn, IEnumerable<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
-        public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func )
-            => start<TOut>.pipe | func[pipe.Get];
+        /// <summary>
+        /// Transforms pipe to a sequence using function on the right.
+        /// </summary>
+        public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) {
+            var pipeOut = pipe.Get;
+            if (pipeOut.ShouldSkip) return Seq<TOut>.SkipSeq;
+            
+            return start<TOut>.seq | func[pipeOut.Contents];
+        }
     }
 }

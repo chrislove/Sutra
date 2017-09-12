@@ -1,8 +1,10 @@
 using System.IO;
+using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
     namespace CurryLib {
+        [PublicAPI]
         public static class path {
             /// <summary>
             /// Uses Path.Combine to append path.

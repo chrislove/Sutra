@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\NullInOutTests.cs" />
     <Compile Include="Tests\EnumCommandAddTests.cs" />
     <Compile Include="Tests\EnumCommandTests.cs" />
     <Compile Include="Tests\EnumPipeTests.cs" />
@@ -59,6 +58,7 @@
     <Compile Include="Tests\IfTests.cs" />
     <Compile Include="Tests\PipeTests.cs" />
     <Compile Include="Tests\FailTests.cs" />
+    <Compile Include="Tests\SkipTests.cs" />
     <Compile Include="Util\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>

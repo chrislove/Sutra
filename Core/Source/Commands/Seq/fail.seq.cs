@@ -6,66 +6,93 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
     public partial struct Seq<T> {
-        // PIPE '|' fail
         [NotNull]
-        public static DoThrowSeq<T> operator |( Seq<T> pipe, DoThrow @do ) => new DoThrowSeq<T>(pipe);
+        public static DoFailSeq<T> operator |( Seq<T> seq, DoFail _ ) => new DoFailSeq<T>(seq);
+        
+        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, null, failWith.Message);
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoThrowSeq<T> : DoThrow<T> {
-        public DoThrowSeq( Seq<T> pipe ) : base(pipe) {}
-        public DoThrowSeq( DoThrowSeq<T> command ) : base(command) {}
+    public class DoFailSeq<T> : DoFail<T> {
+        internal DoFailSeq( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
 
         // PIPE | fail '|' when
-        [NotNull] public static DoThrowIfSeq<T> operator |( DoThrowSeq<T> doThrow, DoWhen @if )
-                                            => (DoThrowIfSeq<T>) new DoThrowIfSeq<T>(doThrow).WithException(doThrow.Exception);
-
-        [NotNull] public static DoThrowIfAnySeq<T> operator |( DoThrowSeq<T> doThrow, DoWhenAny @if )
-                                            => (DoThrowIfAnySeq<T>) new DoThrowIfAnySeq<T>(doThrow).WithException(doThrow.Exception);
-
         [NotNull]
-        public static DoThrowSeq<T> operator |( DoThrowSeq<T> doThrow, [NotNull] string message )
-            => (DoThrowSeq<T>) new DoThrowSeq<T>(doThrow).WithMessage(message);
+        public static DoFailIfSeq<T> operator |( DoFailSeq<T> doFail, DoWhen _ )
+                                            => new DoFailIfSeq<T>(doFail.Pipe, doFail.Exception);
 
+        [NotNull] public static DoFailIfAnySeq<T> operator |( DoFailSeq<T> doFail, DoWhenAny _ )
+                                            => new DoFailIfAnySeq<T>(doFail.Pipe, doFail.Exception);
+        
+        /// <summary>
+        /// Attaches exception to the fail command.
+        /// </summary>
         [NotNull]
-        public static DoThrowSeq<T> operator |( DoThrowSeq<T> doThrow, [NotNull] Exception exception )
-            => (DoThrowSeq<T>) new DoThrowSeq<T>(doThrow).WithException(exception);
+        public static DoFailSeq<T> operator |( DoFailSeq<T> doFail, [NotNull] Exception exception )
+                                            => new DoFailSeq<T>(doFail.Pipe, exception);
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoThrowIfSeq<T> : DoThrowSeq<T> {
-        public DoThrowIfSeq( DoThrowSeq<T> doThrow ) : base(doThrow) { }
+    public class DoFailIfSeq<T> : DoFailSeq<T> {
+        internal DoFailIfSeq( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
 
-        public static Seq<T> operator |( DoThrowIfSeq<T> doThrowIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
-            var pipe = (Seq<T>)doThrowIf.Pipe;
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
+            var seq = (Seq<T>)doFailIf.Pipe;
+            var seqOutput = seq.Get;
+
+            //if (seqOutput.ShouldSkip) return seq;
             
-            if ( predicate(pipe.Get) )
-                throw doThrowIf.Exception;
+            if (predicate(seqOutput.Contents) )
+                throw doFailIf.Exception;
 
-            return pipe;
+            return seq;
         }
         
-        public static Seq<T> operator |( DoThrowIfSeq<T> doThrowIf, [NotNull] Func<bool> predicate ) {
-            var pipe = (Seq<T>)doThrowIf.Pipe;
-            
-            if ( predicate() )
-                throw doThrowIf.Exception;
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<bool> predicate ) {
+            var seq = (Seq<T>)doFailIf.Pipe;
+            var seqOutput = seq.Get;
 
-            return pipe;
+            //if (seqOutput.ShouldSkip) return seq;
+
+            if ( predicate() )
+                throw doFailIf.Exception;
+
+            return seq;
         }
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class DoThrowIfAnySeq<T> : DoThrowIfSeq<T> {
-        public DoThrowIfAnySeq( DoThrowSeq<T> doThrow ) : base(doThrow) {}
+    public sealed class DoFailIfAnySeq<T> : DoFailIfSeq<T> {
+        internal DoFailIfAnySeq( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
 
-        public static Seq<T> operator |( DoThrowIfAnySeq<T> doThrowIf, [NotNull] Func<T, bool> predicate ) {
-            var pipe = (Seq<T>)doThrowIf.Pipe;
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Seq<T> operator |( DoFailIfAnySeq<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
+            var seq = (Seq<T>)doFailIf.Pipe;
+            var seqOutput = seq.Get;
+
+            if (seqOutput.ShouldSkip) return seq;
             
-            if ( pipe.Get.Any(predicate) )
-                throw doThrowIf.Exception;
+            if (seq.Get.Contents.Any(predicate) )
+                throw doFailIf.Exception;
 
-            return pipe;
+            return seq;
         }
     }
 }

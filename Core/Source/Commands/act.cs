@@ -13,19 +13,33 @@ namespace SharpPipe {
         public static DoAct act => new DoAct();
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoAct {}
 
     public partial struct Pipe<T> {
-        public static DoAct<T> operator |( Pipe<T> pipe, DoAct doAct ) => new DoAct<T>(pipe);
+        public static DoAct<T> operator |( Pipe<T> pipe, DoAct _ ) => new DoAct<T>(pipe);
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     public struct DoAct<T> {
         private readonly Pipe<T> _pipe;
 
-        public DoAct( Pipe<T> pipe ) => _pipe = pipe;
+        internal DoAct( Pipe<T> pipe ) => _pipe = pipe;
 
-        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) => ( () => act(doAct._pipe.Get) ) | unit;
-
+        /// <summary>
+        /// Executes the action on the right.
+        /// </summary>
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) {
+            var pipeOut = doAct._pipe.Get;
+            if (pipeOut.ShouldSkip)
+                return unit;
+            
+            return (() => act(pipeOut.Contents)) | unit;
+        }
     }
 }

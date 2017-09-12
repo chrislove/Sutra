@@ -13,25 +13,28 @@ namespace SharpPipe
 		/// <example><code>
 		/// pipe | OUT
 		/// </code></example>
-		public static DoRet ret => new DoRet();
+		public static DoGet get => new DoGet();
 	}
 	
+	/// <summary>
+	/// Command marker.
+	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public struct DoRet {}
+	public struct DoGet {}
 	
 	partial struct Seq<T> {
 		/// <summary>
-		/// Forward pipe operator. Returns pipe contents.
+		/// Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<T> operator |( Seq<T> pipe, DoRet act ) => pipe.Get;
+		public static IEnumerable<T> operator |( Seq<T> seq, DoGet _ ) => seq.Get.Contents;
 	}
 
 	public partial struct Pipe<T> {
 		/// <summary>
-		/// Forward pipe operator. Returns pipe contents.
+		/// Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static T operator |( Pipe<T> pipe, DoRet doRet ) => pipe.Get;
+		public static T operator |( Pipe<T> pipe, DoGet _ ) => pipe.Get;
 	}
 }

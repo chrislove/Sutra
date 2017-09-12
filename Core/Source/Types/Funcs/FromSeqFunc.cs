@@ -6,19 +6,43 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         public static partial class func {
+            [PublicAPI]
             public partial class takes<TIn> {
-                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( Func<IEnumerable<TIn>, TOut> func ) => new FromSeqFunc<TIn, TOut>(func);
+                /// <summary>
+                /// Creates a function converting a sequence to a pipe.
+                /// </summary>
+                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<IEnumerable<TIn>, TOut> func ) => new FromSeqFunc<TIn, TOut>(func);
             }
         }
     }
 
+    /// <summary>
+    /// Function transforming sequence to a pipe.
+    /// </summary>
     public struct FromSeqFunc<TIn, TOut> {
-        [NotNull] private Func<IEnumerable<TIn>, TOut> Func { get; }
+        /// <summary>
+        /// Inner function
+        /// </summary>
+        [PublicAPI]
+        [NotNull] public Func<IEnumerable<TIn>, TOut> Func { get; }
         
+        /// <summary>
+        /// Use this operator to invoke the function.
+        /// </summary>
+        [PublicAPI]
         public TOut this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func(invalue);
 
         internal FromSeqFunc([NotNull] Func<IEnumerable<TIn>, TOut> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
-        public static Pipe<TOut> operator |( Seq<TIn> pipe, FromSeqFunc<TIn, TOut> func ) => start<TOut>.pipe | func[pipe.Get];
+        
+        /// <summary>
+        /// Transforms sequence to a pipe.
+        /// </summary>
+        public static Pipe<TOut> operator |(Seq<TIn> seq, FromSeqFunc<TIn, TOut> func) {
+            var seqOut = seq.Get;
+            if (seqOut.ShouldSkip) return Pipe<TOut>.SkipPipe;
+
+            return start<TOut>.pipe | func[seqOut.Contents];
+        }
     }
 }

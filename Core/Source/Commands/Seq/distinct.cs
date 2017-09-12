@@ -12,6 +12,9 @@ namespace SharpPipe {
         public static DoDistinct distinct => new DoDistinct();
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoDistinct { }
     
@@ -19,6 +22,6 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator.
         /// </summary>
-        public static Seq<T> operator |( Seq<T> pipe, DoDistinct act ) => start<T>.pipe | pipe.Get.Distinct();
+        public static Seq<T> operator |( Seq<T> seq, DoDistinct _ ) => start<T>.seq | seq.Get.Contents.Distinct();
     }
 }

@@ -10,9 +10,9 @@ namespace SharpPipe.Tests {
         [TestCase("D", "ABC")]
         public void Test_Enumerable_IfSelect(string contains, string expected) {
             string result = ABCSeq
-                            | when | (e => e.Contains(contains)) | select | (i => $"[{i}]")
-                            | when | ( () => true ) | select | (i => i)
-                            | concat | ret;
+                            | when | (e => e.Contains(contains)) | map | (i => $"[{i}]")
+                            | when | ( () => true ) | map | (i => i)
+                            | concat | get;
             
             Assert.That(result, Is.EqualTo(expected));
         }
@@ -23,9 +23,9 @@ namespace SharpPipe.Tests {
             string OneDirectoryUp(string path) => GetDirectoryName( GetFullPath(Combine(path, @"..\") ) );
             string result = start.str.pipe
                             | inPath
-                            | when | EndsWith("Editor") | select | OneDirectoryUp
-                            | when | ( () => true )     | select | (i => i)
-                            | ret;
+                            | when | EndsWith("Editor") | map | OneDirectoryUp
+                            | when | ( () => true )     | map | (i => i)
+                            | get;
             
             Assert.That(result, Is.EqualTo(expected));
         }

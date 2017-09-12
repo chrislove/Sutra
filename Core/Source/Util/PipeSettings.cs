@@ -8,10 +8,6 @@ namespace SharpPipe {
     /// </summary>
     [PublicAPI]
     public static partial class Pipe {
-        [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullInput  { get; set; } = false;
-
-        [EditorBrowsable(EditorBrowsableState.Never)] public static bool AllowNullOutput { get; set; } = false;
-
         [ThreadStatic] [CanBeNull] private static Exception _nextException;
 
         [CanBeNull] public static Exception NextException {

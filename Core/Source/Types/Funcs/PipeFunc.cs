@@ -1,23 +1,36 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Linq;
+using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
 	public static partial class Commands {
+		/// <summary>
+		/// Pipe factory.
+		/// </summary>
 		public static partial class func {
+			/// <summary>
+			/// Specifies the input value of a function.
+			/// </summary>
 			public partial class takes<TIn> {
+				/// <summary>
+				/// Creates pipe function from a system function.
+				/// </summary>
 				public static PipeFunc<TIn, TOut> from<TOut>( [NotNull] Func<TIn, TOut> func ) => new PipeFunc<TIn, TOut>(func);
 			}
 		}
 	}
 
 	/// <summary>
-	/// A function transforming a single value.
+	/// Function transforming pipe or sequence value.
 	/// </summary>
 	public partial struct PipeFunc<TIn, TOut> {
-		[NotNull] private Func<TIn, TOut> Func { get; }
+		/// <summary>
+		/// Inner function
+		/// </summary>
+		[PublicAPI]
+		[NotNull] public Func<TIn, TOut> Func { get; }
 
 		internal PipeFunc([NotNull] Func<TIn, TOut> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
 
@@ -32,18 +45,26 @@ namespace SharpPipe
 		
 		
 		/// <summary>
-		/// Forward pipe operator
+		/// Transforms a pipe.
 		/// </summary>
-		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) => start<TOut>.pipe | func[pipe.Get];
-		
-		/// <summary>
-		/// Forward pipe operator. Transforms an sequence.
-		/// </summary>
-		[UsedImplicitly]
-		public static Seq<TOut> operator |( Seq<TIn> pipe, PipeFunc<TIn, TOut> func ) {
-			var enumerable = pipe.Get.Select(i => func.Func(i).To<TOut>($"{pipe.T()} | {func.T()}"));
+		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) {
+			var pipeOut = pipe.Get;
 
-			return start<TOut>.pipe | enumerable;
+			if (pipeOut.ShouldSkip) return Pipe<TOut>.SkipPipe;
+			
+			return start<TOut>.pipe | func[pipeOut.Contents];
+		}
+
+		/// <summary>
+		/// Transforms a sequence.
+		/// </summary>
+		public static Seq<TOut> operator |( Seq<TIn> seq, PipeFunc<TIn, TOut> func ) {
+			var seqOut = seq.Get;
+			if (seqOut.ShouldSkip) return Seq<TOut>.SkipSeq;
+			
+			var enm = seq.Get.Contents.Select(i => func.Func(i).To<TOut>($"{seq.T()} | {func.T()}"));
+
+			return start<TOut>.seq | enm;
 		}
 	}
 }

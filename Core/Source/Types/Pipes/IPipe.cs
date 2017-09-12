@@ -1,3 +1,3 @@
 namespace SharpPipe {
-    internal interface IPipe<T> {}
+    public interface IPipe<T> {}
 }

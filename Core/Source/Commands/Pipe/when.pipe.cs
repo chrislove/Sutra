@@ -6,12 +6,15 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public partial struct Pipe<T> {
         [NotNull]
-        public static DoWhenPipe<T> operator |( Pipe<T> pipe, DoWhen doWhen ) => new DoWhenPipe<T>(pipe);
+        public static DoWhenPipe<T> operator |( Pipe<T> pipe, DoWhen _ ) => new DoWhenPipe<T>(pipe);
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoWhenPipe<T> : Command<T> {
-        public DoWhenPipe( Pipe<T> pipe ) : base(pipe) { }
+        internal DoWhenPipe( Pipe<T> pipe ) : base(pipe) { }
         
         [NotNull]
         public static DoWhenPipeWithPredicate<T> operator |( [CanBeNull] DoWhenPipe<T> doWhen, [NotNull] Func<T, bool> predicate )
@@ -22,21 +25,35 @@ namespace SharpPipe {
             => new DoWhenPipeWithPredicate<T>(doWhen, predicate);
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoWhenPipeWithPredicate<T> : DoWhenSeq<T> {
+        [NotNull]
         internal readonly Func<T, bool> Predicate;
 
-        internal DoWhenPipeWithPredicate( DoWhenPipe<T> doWhen, Func<T, bool> predicate ) : base(doWhen) => Predicate = predicate;
-        internal DoWhenPipeWithPredicate( DoWhenPipe<T> doWhen, Func<bool> predicate )    : base(doWhen) => Predicate = _ => predicate();
-        internal DoWhenPipeWithPredicate( DoWhenPipeWithPredicate<T> doWhen )             : base(doWhen) => Predicate = doWhen.Predicate;
+        internal DoWhenPipeWithPredicate( [NotNull] DoWhenPipe<T> doWhen, [NotNull] Func<T, bool> predicate ) : base(doWhen) {
+            Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+        }
+
+        internal DoWhenPipeWithPredicate( [NotNull] DoWhenPipe<T> doWhen, [NotNull] Func<bool> predicate )    : base(doWhen) {
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            Predicate = _ => predicate();
+        }
+
+        internal DoWhenPipeWithPredicate( [NotNull] DoWhenPipeWithPredicate<T> doWhen ) : base(doWhen) => Predicate = doWhen.Predicate;
     
         [NotNull]
-        public static DoWhenPipeWithPredicateSelect<T> operator |( [CanBeNull] DoWhenPipeWithPredicate<T> doWhen, DoSelect doSelect )
-            => new DoWhenPipeWithPredicateSelect<T>(doWhen);
+        public static DoWhenPipeWithPredicateSelect<T> operator |( [CanBeNull] DoWhenPipeWithPredicate<T> doWhen, DoMap _ )
+                                => new DoWhenPipeWithPredicateSelect<T>(doWhen);
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoWhenPipeWithPredicateSelect<T> : DoWhenPipeWithPredicate<T> {
+    public sealed class DoWhenPipeWithPredicateSelect<T> : DoWhenPipeWithPredicate<T> {
         internal DoWhenPipeWithPredicateSelect( DoWhenPipeWithPredicate<T> doWhen ) : base(doWhen) {}
         
         public static Pipe<T> operator |( [NotNull] DoWhenPipeWithPredicateSelect<T> doSelectPipe, [NotNull] Func<T, T> func ) {
@@ -44,9 +61,12 @@ namespace SharpPipe {
             if (func == null) throw new ArgumentNullException(nameof(func));
             
             var pipe = (Pipe<T>) doSelectPipe.Pipe;
+            var pipeOut = pipe.Get;
 
-            if (doSelectPipe.Predicate(pipe.Get))
-                return start<T>.pipe | func(pipe.Get);
+            if (pipeOut.ShouldSkip) return pipe;
+
+            if (doSelectPipe.Predicate(pipeOut.Contents))
+                return start<T>.pipe | func(pipeOut.Contents);
 
             return pipe;
         }

@@ -9,14 +9,14 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_ADD_IEnumerable() {
             var defEnumerable = new[] {"D", "E", "F"}.Select(i => i);
-            var xyzPipe       = start.str.pipe | new[] {"X", "Y", "Z"};
+            var xyzPipe       = start.str.seq | new[] {"X", "Y", "Z"};
 
 
             var result = ABCSeq
                          | add | defEnumerable
                          | add | new[] {"G", "H", "I"}
                          | add | xyzPipe
-                         | concat | ret;
+                         | concat | get;
             
             Assert.That(result, Is.EqualTo("ABCDEFGHIXYZ"));
         }

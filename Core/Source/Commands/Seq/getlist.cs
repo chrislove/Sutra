@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using static SharpPipe.Commands;
-
+using JetBrains.Annotations;
 
 
 namespace SharpPipe {
@@ -10,16 +9,24 @@ namespace SharpPipe {
         /// <summary>
         /// Converts the contents of sequence into List{T} and returns.
         /// </summary>
-        public static DoToList retlist => new DoToList();
+        public static DoReturnList getlist => new DoReturnList();
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoToList {}
+    public struct DoReturnList {}
 
     public partial struct Seq<T> {
         /// <summary>
         /// Converts pipe contents into List{TOut} and returns
         /// </summary>
-        public static List<T> operator |( Seq<T> pipe, DoToList act ) => start<List<T>>.pipe | pipe.Get.ToList() | Commands.ret;
+        [NotNull]
+        public static List<T> operator |( Seq<T> seq, DoReturnList _ ) {
+            var seqOutput = seq.Get;
+
+            return seqOutput.ShouldSkip ? new List<T>() : seqOutput.Contents.ToList();
+        }
     }
 }

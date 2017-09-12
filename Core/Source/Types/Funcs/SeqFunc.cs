@@ -6,6 +6,7 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         public static class seqfunc {
+            [PublicAPI]
             public class takes<TIn> {
                 public static SeqFunc<TIn, TOut> from<TOut>( [NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func ) => new SeqFunc<TIn, TOut>(func);
             }
@@ -13,27 +14,32 @@ namespace SharpPipe {
     }
 
     /// <summary>
-    /// A function transforming an entire sequence.
+    /// Function transforming an entire sequence.
     /// </summary>
     public partial struct SeqFunc<TIn, TOut> {
-        [NotNull] private Func<IEnumerable<TIn>, IEnumerable<TOut>> Func { get; }
+        /// <summary>
+        /// Inner function
+        /// </summary>
+        [PublicAPI]
+        [NotNull] public Func<IEnumerable<TIn>, IEnumerable<TOut>> Func { get; }
 
         internal SeqFunc([NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
 
         /// <summary>
         /// Use this operator to invoke the function.
         /// </summary>
+        [PublicAPI]
         public IEnumerable<TOut> this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func(invalue);
 
         [NotNull]
         public static implicit operator Func<IEnumerable<TIn>, IEnumerable<TOut>>( SeqFunc<TIn, TOut> func ) => func.Func;
         public static implicit operator SeqFunc<TIn, TOut>( [NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func ) => seqfunc.takes<TIn>.from(func);
-		
+
         /// <summary>
-        /// Forward pipe operator. Transforms an Sequence.
+        /// Transforms a sequence.
         /// </summary>
         [UsedImplicitly]
-        public static Seq<TOut> operator |( Seq<TIn> pipe, SeqFunc<TIn, TOut> func )
-            => start<TOut>.pipe | func[pipe.Get];
+        public static Seq<TOut> operator |( Seq<TIn> seq, SeqFunc<TIn, TOut> func )
+            => seq.Transform<TOut>(func);
     }
 }

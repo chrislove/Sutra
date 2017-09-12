@@ -6,17 +6,7 @@ using static SharpPipe.Commands.func.takes<string>;
 
 namespace SharpPipe {
     namespace CurryLib {
-
-        /*
-        public static Func<T1, Func<T2, TResult>> Curry<T1, T2, TResult>(Func<T1, T2, TResult> function) => a => b => function(a, b);
-
-
-        public static Func<T1, Func<T2, Func<T3, TResult>>> Curry<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> function) => a => b => c => function(a, b, c);
-
-        public static Func<T1, Func<T2, Func<T3, Func<T4, TResult>>>> Curry<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> function)
-            => a => b => c => d => function(a, b, c, d);
-*/
-
+        [PublicAPI]
         public static class str {
             public static Func<string, bool> Equals( string strB ) => str => str.Equals(strB);
             public static Func<string, bool> Equals( string value, StringComparison comparisonType ) => str => str.Equals(value, comparisonType);

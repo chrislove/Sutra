@@ -7,30 +7,72 @@ using static SharpPipe.Commands;
 
 namespace SharpPipe {
     /// <summary>
-    /// A pipe containing a set of objects.
+    /// A sequence of objects.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial struct Seq<T> : IPipe<T> {
-        [NotNull] private readonly IEnumerable<T> _contents;
+    public partial struct Seq<T> : IPipe<T>//, IEnumerable<T>
+    {
+        [CanBeNull]
+        private readonly IEnumerable<T> _contents;
+        
+        private readonly bool _shouldSkip;
 
-        internal static Seq<T> Empty => start<T>.pipe | Enumerable.Empty<T>();
+        internal static Seq<T> Empty => start<T>.seq | Enumerable.Empty<T>();
 
-        internal Seq( [NotNull] IEnumerable<T> sequence ) : this() {
-            _contents = sequence ?? throw new NullPipeException($"Null IEnumerable is not a valid input to {nameof(Seq<T>)}");
+        internal Seq( [CanBeNull] IEnumerable<T> enm, bool shouldSkip = false ) : this() {
+            _contents   = enm;
+            _shouldSkip = shouldSkip || enm == null;
         }
 
-        [NotNull]
-        internal IEnumerable<T> Get {
-            get {
-                if (_contents == null && !Pipe.AllowNullOutput && !AllowNullOutput)
-                    throw new NullPipeException($"'{this.T()}.Get' returned a null IEnumerable");
+        internal static Seq<T> SkipSeq => new Seq<T>(null, true);
 
-                return _contents;
+        internal SeqOutput<T> Get => SeqOutput.New(_contents, _shouldSkip);
+
+        internal Seq<TOut> Transform<TOut>([NotNull] Func<IEnumerable<T>, IEnumerable<TOut>> func) {
+            var seqOut = this.Get;
+            if (seqOut.ShouldSkip) return Seq<TOut>.SkipSeq;
+
+            return start<TOut>.seq | func(seqOut.Contents);
+        }
+
+
+        /// <summary>
+        /// Appends a single object to sequence.
+        /// </summary>
+        public static Seq<T> operator |( Seq<T> seq, [CanBeNull] T obj ) {
+            IEnumerable<T> Yield(T inobj) {
+                yield return inobj;
             }
+            
+            return seq | Yield(obj);
         }
 
-        internal Seq<U> Transform<U>( Func<IEnumerable<T>, IEnumerable<U>> func )
-            => start<U>.pipe | func(Get);
+        /// <summary>
+        /// Appends an enumerable to sequence.
+        /// </summary>
+        public static Seq<T> operator |(Seq<T> seq, [CanBeNull] IEnumerable<T> enm) {
+            var seqOut = seq.Get;
+
+            if (seqOut.ShouldSkip || enm == null) return Seq<T>.SkipSeq;
+
+            return start<T>.seq | seqOut.Contents.Concat(enm);
+        }
+        
+        /// <summary>
+        /// Transforms sequence.
+        /// </summary>
+        /// <returns></returns>
+        public static Seq<T> operator |(Seq<T> seq, [NotNull] Func<IEnumerable<T>, IEnumerable<T>> func) => seq.Transform(func);
+
+        /// <summary>
+        /// Transforms sequence into a pipe.
+        /// </summary>
+        public static Pipe<T> operator ^(Seq<T> seq, [NotNull] Func<IEnumerable<T>, T> func) {
+            var seqOut = seq.Get;
+            if (seqOut.ShouldSkip) return Pipe<T>.SkipPipe;
+
+            return start<T>.pipe | func(seqOut.Contents);
+        }
 
         private bool AllowNullOutput { get; set; }
     }

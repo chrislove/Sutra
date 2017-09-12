@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Linq;
-using static SharpPipe.Commands;
-
 
 
 namespace SharpPipe {
@@ -12,10 +10,14 @@ namespace SharpPipe {
         public static DoSingle single => new DoSingle();
     }
     
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoSingle {}
     
     public partial struct Seq<T> {
-        public static Pipe<T> operator |( Seq<T> pipe, DoSingle @do ) => start<T>.pipe | pipe.Get.Single();
+        public static Pipe<T> operator |( Seq<T> seq, DoSingle _ )
+            => seq ^ (enm => enm.Single());
     }
 }

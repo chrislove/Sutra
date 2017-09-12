@@ -14,7 +14,7 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_Pipe_Action() {
-            var pipe = start.integer.pipe
+            var pipe = start.integer.seq
                 | add | Enumerable.Range(0, 3)
                 | ConvertToString
                 | concat
@@ -29,22 +29,22 @@ namespace SharpPipe.Tests {
             IEnumerable<string> GetSeqA( string i ) => Enumerable.Repeat(i, 2);
             IEnumerable<string> GetSeqB( string i ) => Enumerable.Repeat(i, 3);
 
-            string enumPipeStr = start.str.pipe
+            string enumPipeStr = start.str.seq
                                  | add | GetSeqA("A")
                                  | add | GetSeqB("B")
                                  | concat
-                                 | ret;
+                                 | get;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }
 
         [Test]
         public void Test_IEnumerableComposition() {
-            string enumPipeStr = start.str.pipe
+            string enumPipeStr = start.str.seq
                                  | add | Enumerable.Repeat("A", 2)
                                  | add | Enumerable.Repeat("B", 3)
                                  | concat
-                                 | ret;
+                                 | get;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }

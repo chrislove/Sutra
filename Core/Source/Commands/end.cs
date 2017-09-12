@@ -9,6 +9,9 @@ namespace SharpPipe {
         public static CommandEnd end => new CommandEnd();
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct CommandEnd {}
 }

@@ -7,6 +7,9 @@ namespace SharpPipe {
         public static DoNot NOT => new DoNot();
     }
 
+    /// <summary>
+    /// Command marker.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoNot { }
 }
