@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-
-
 namespace SharpPipe {
     public static partial class Commands {
         public static Unit unit => new Unit();

@@ -4,14 +4,14 @@ using static SharpPipe.Commands;
 namespace SharpPipe.Tests {
     public sealed class SkipTests : TestBase {
         [Test]
-        public void Test_NullInput_ReturnsNull() {
+        public void Test_NullInput_ReturnsEmptyOption() {
             var pipe = start.str.pipe
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
-                       | !get;
+                       | get;
 
-            Assert.That(pipe, Is.EqualTo(null));
+            Assert.That(!pipe.HasValue);
         }
         
         [Test]
@@ -26,6 +26,32 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
+        public void Test_NullInput_DoesntSkipOptionAction() {
+            var pipe = start.str.pipe
+                       | (string) null
+                       | (i => i + "TEST1")
+                       | (i => i + "TEST2")
+                       | act | writeoption;
+
+            Assert.That(WriteOutput, Is.EqualTo("!"));
+        }
+        
+        [Test]
+        public void Test_NullInput_DoesntSkipOptionFunc() {
+            Option<string> Func( Option<string> str )
+                => str.Match(i => i, "NONE").ToOption();
+            
+            var pipe = start.str.pipe
+                       | (string) null
+                       | (i => i + "TEST1")
+                       | (i => i + "TEST2")
+                       | Func
+                       | act | writeoption;
+
+            Assert.That(WriteOutput, Is.EqualTo("NONE"));
+        }
+        
+        [Test]
         public void Test_NullInput_Fail_Throws() {
             void TestDelegate() {
                 var pipe = start.str.pipe
@@ -35,8 +61,5 @@ namespace SharpPipe.Tests {
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
         }
-        
-        [Test]
-        public void Test_OptionFunc_DoesNotSkip() {}
     }
 }

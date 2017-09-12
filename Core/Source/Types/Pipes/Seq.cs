@@ -17,8 +17,8 @@ namespace SharpPipe
 
 		internal static Seq<T> Empty => start<T>.seq | Enumerable.Empty<T>();
 
-		internal Seq( IEnumerable<T> enm )            => Option = enm.ToOption();
-		internal Seq( Option<IEnumerable<T>> option ) => Option = option;
+		internal Seq( Option<IEnumerable<T>> option )  => Option = option;
+		internal Seq( [CanBeNull] IEnumerable<T> enm ) => Option = enm.ToOption();
 
 		internal static Seq<T> SkipSeq => new Seq<T>(Option<IEnumerable<T>>.None);
 		
@@ -46,12 +46,12 @@ namespace SharpPipe
 		/// </summary>
 		public static Seq<T> operator |(Seq<T> seq, [CanBeNull] IEnumerable<T> enm) {
 			if (enm == null)
-				return Seq<T>.SkipSeq;
+				return SkipSeq;
 			
 			foreach (var value in seq.Option)
 				return start<T>.seq | value.Concat(enm).ToOption();
 
-			return Seq<T>.SkipSeq;
+			return SkipSeq;
 		}
 
 		/// <summary>

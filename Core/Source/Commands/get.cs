@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 
-
 namespace SharpPipe
 {
 	[PublicAPI]
@@ -40,7 +39,7 @@ namespace SharpPipe
 		/// Returns sequence contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<T> operator |( Seq<T> seq, DoGetValue _ ) => seq.Option.Match(i => i, Enumerable.Empty<T>());
+		public static IEnumerable<T> operator |( Seq<T> seq, DoGetValue _ ) => seq.Option.ValueOrFail($"{seq.T()} returned an empty sequence.");
 	}
 
 	public partial struct Pipe<T> {
@@ -48,7 +47,7 @@ namespace SharpPipe
 		/// Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static T operator |( Pipe<T> pipe, DoGetValue _ ) => pipe.Option.ValueOrDefault;
+		public static T operator |( Pipe<T> pipe, DoGetValue _ )    => pipe.Option.ValueOrFail($"{pipe.T()} returned an empty value.");
 		
 		/// <summary>
 		/// Returns pipe contents.

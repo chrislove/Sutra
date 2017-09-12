@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 
-
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>

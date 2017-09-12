@@ -36,7 +36,6 @@ namespace SharpPipe {
         /// </summary>
         public void MatchAny( Action<T> act ) => act(_value);
 
-
         [NotNull]
         public T ValueOr( [NotNull] T alternative ) => _value != null && HasValue ? _value : alternative;
 
@@ -44,6 +43,9 @@ namespace SharpPipe {
         
         [NotNull]
         public T ValueOrFail() => _value != null && HasValue ? _value : throw EmptyOptionException.For<T>();
+
+        [NotNull]
+        public T ValueOrFail( string failMessage ) => _value != null && HasValue ? _value : throw new EmptyOptionException(failMessage);
         
         public static Option<T> None => new Option<T>();
         

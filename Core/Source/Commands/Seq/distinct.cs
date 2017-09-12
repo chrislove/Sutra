@@ -27,7 +27,7 @@ namespace SharpPipe {
                 return start<T>.seq | value.Distinct();
             }
 
-            return Seq<T>.SkipSeq;
+            return SkipSeq;
         }
     }
 }

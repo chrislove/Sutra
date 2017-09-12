@@ -10,7 +10,7 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
         internal Pipe( Option<T> value )   => Option = value;
-        internal Pipe( T value )           => Option = value.ToOption();
+        internal Pipe( [CanBeNull] T value )           => Option = value.ToOption();
 
         internal Option<T> Option { get; }
 
@@ -29,6 +29,11 @@ namespace SharpPipe {
         /// Transforms pipe contents using a function on the right.
         /// </summary>
         public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => pipe.Bind(func);
+        
+        /// <summary>
+        /// Transforms pipe contents using a function on the right.
+        /// </summary>
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<Option<T>, Option<T>> func ) => pipe.Bind(func);
         
         /// <summary>
         /// Replaces pipe contents with object on the right.

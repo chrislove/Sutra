@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 
-
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>

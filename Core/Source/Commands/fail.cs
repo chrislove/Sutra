@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
 
-
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
