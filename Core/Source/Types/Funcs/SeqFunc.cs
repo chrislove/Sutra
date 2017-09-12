@@ -40,6 +40,6 @@ namespace SharpPipe {
         /// </summary>
         [UsedImplicitly]
         public static Seq<TOut> operator |( Seq<TIn> seq, SeqFunc<TIn, TOut> func )
-            => seq.Transform<TOut>(func);
+            => seq.Bind<TOut>(func);
     }
 }

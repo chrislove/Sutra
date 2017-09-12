@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
@@ -27,14 +27,11 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,15 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Annotations.cs" />
     <Compile Include="Source\Commands\act.cs" />
     <Compile Include="Source\Commands\end.cs" />
     <Compile Include="Source\Commands\Pipe\fail.pipe.cs" />
     <Compile Include="Source\Commands\Pipe\when.pipe.cs" />
+    <Compile Include="Source\Commands\Seq\iter.cs" />
     <Compile Include="Source\Commands\start.cs" />
     <Compile Include="Source\Commands\toseq.cs" />
     <Compile Include="Source\Commands\Command.cs" />
     <Compile Include="Source\Commands\Seq\notempty.cs" />
-    <Compile Include="Source\Commands\Seq\foreach.cs" />
     <Compile Include="Source\Commands\Seq\when.seq.cs" />
     <Compile Include="Source\Commands\Seq\collect.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />

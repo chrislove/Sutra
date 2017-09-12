@@ -52,7 +52,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Foreach() {
             var pipe = ABCSeq
-                       | act | write;
+                       | Commands.iter | write;
 
             Assert.That(WriteOutput, Is.EqualTo("ABC"));
         }

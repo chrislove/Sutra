@@ -42,6 +42,12 @@ namespace SharpPipe
 		/// Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static T operator |( Pipe<T> pipe, DoGetValue _ ) => pipe.Get.ValueOrDefault;
+		public static T operator |( Pipe<T> pipe, DoGetValue _ ) => pipe.Value.ValueOrDefault;
+		
+		/// <summary>
+		/// Returns pipe contents.
+		/// </summary>
+		[NotNull]
+		public static Option<T> operator |( Pipe<T> pipe, DoGet _ ) => pipe.Value;
 	}
 }

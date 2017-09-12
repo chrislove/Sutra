@@ -16,19 +16,19 @@ namespace SharpPipe {
 
         internal static Pipe<T> SkipPipe => new Pipe<T>(Option<T>.None);
 
-        internal Pipe<TOut> Transform<TOut>([NotNull] Func<T, TOut> func) {
+        internal Pipe<TOut> Bind<TOut>([NotNull] Func<T, TOut> func) {
             foreach (var value in Value)
                 return start<TOut>.pipe | func(value);
 
             return Pipe<TOut>.SkipPipe;
         }
         
-        internal Pipe<TOut> Transform<TOut>([NotNull] Func<Option<T>, Option<TOut>> func) => start<TOut>.pipe | func(Value);
+        internal Pipe<TOut> Bind<TOut>([NotNull] Func<Option<T>, Option<TOut>> func) => start<TOut>.pipe | func(Value);
 
         /// <summary>
         /// Transforms pipe contents using a function on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => pipe.Transform(func);
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => pipe.Bind(func);
         
         /// <summary>
         /// Replaces pipe contents with object on the right.
