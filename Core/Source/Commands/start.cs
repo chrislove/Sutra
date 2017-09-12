@@ -73,6 +73,11 @@ namespace SharpPipe {
         /// Initializes a pipe with object on the right
         /// </summary>
         public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] T obj ) => Pipe.From(obj);
+        
+        /// <summary>
+        /// Initializes a pipe with option on the right
+        /// </summary>
+        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] Option<T> obj ) => Pipe.From(obj);
     } 
     
     /// <summary>

@@ -12,7 +12,7 @@ namespace SharpPipe.Tests {
             string result = ABCSeq
                             | when | (e => e.Contains(contains)) | map | (i => $"[{i}]")
                             | when | ( () => true ) | map | (i => i)
-                            | concat | get;
+                            | concat | !get;
             
             Assert.That(result, Is.EqualTo(expected));
         }
@@ -25,7 +25,7 @@ namespace SharpPipe.Tests {
                             | inPath
                             | when | EndsWith("Editor") | map | OneDirectoryUp
                             | when | ( () => true )     | map | (i => i)
-                            | get;
+                            | !get;
             
             Assert.That(result, Is.EqualTo(expected));
         }

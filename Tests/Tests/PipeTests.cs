@@ -21,7 +21,7 @@ namespace SharpPipe.Tests  {
 
 		[Test]
 		public void Test_Pipe_OUT() {
-			var yesterday   = YesterdayPipe | get;
+			var yesterday   = YesterdayPipe | !get;
 			
 			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
 			Assert.That(yesterday, Is.EqualTo(expected));
@@ -33,7 +33,7 @@ namespace SharpPipe.Tests  {
 			
 			var pipe = start<DateTime>.pipe | nowDateTime
 			           | when | (i => getshortdate[i] == nowDateTime.ToShortDateString()) | map | (i => nowDateTime)
-			           | get;
+			           | !get;
 			
 			Assert.That(pipe, Is.EqualTo(nowDateTime));
 		}
@@ -55,7 +55,7 @@ namespace SharpPipe.Tests  {
 			string combined = start.str.pipe | inPath
 			                  | path.prepend(projectDirectory)
 			                  | path.getfullpath
-			                  | get;
+			                  | !get;
 			
 			Assert.That(combined, Is.EqualTo( Path.Combine(projectDirectory, inPath) ));
 		}

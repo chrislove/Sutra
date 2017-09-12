@@ -73,7 +73,5 @@ namespace SharpPipe {
 
             return start<T>.pipe | func(seqOut.Contents);
         }
-
-        private bool AllowNullOutput { get; set; }
     }
 }

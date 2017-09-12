@@ -16,7 +16,7 @@ namespace SharpPipe.Tests {
                          | add | defEnumerable
                          | add | new[] {"G", "H", "I"}
                          | add | xyzPipe
-                         | concat | get;
+                         | concat | !get;
             
             Assert.That(result, Is.EqualTo("ABCDEFGHIXYZ"));
         }

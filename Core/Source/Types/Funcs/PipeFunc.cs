@@ -48,11 +48,10 @@ namespace SharpPipe
 		/// Transforms a pipe.
 		/// </summary>
 		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) {
-			var pipeOut = pipe.Get;
+			foreach (var value in pipe.Value)
+				return start<TOut>.pipe | func[value];
 
-			if (pipeOut.ShouldSkip) return Pipe<TOut>.SkipPipe;
-			
-			return start<TOut>.pipe | func[pipeOut.Contents];
+			return Pipe<TOut>.SkipPipe;
 		}
 
 		/// <summary>

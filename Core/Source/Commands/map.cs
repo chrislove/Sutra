@@ -6,11 +6,12 @@ namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
         /// Projects each element of a sequence into a new form using a function on the right.
+        /// Equivalent to Linq.Select().
         /// </summary>
         /// <example><code>
         /// seq | sel | (i => i + 1)
         /// </code></example>
-        public static DoMap sel => new DoMap();
+        public static DoMap map => new DoMap();
     }
 
     /// <summary>

@@ -31,15 +31,19 @@ namespace SharpPipe {
 
         internal DoAct( Pipe<T> pipe ) => _pipe = pipe;
 
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<Option<T>> act ) {
+            return (() => act(doAct._pipe.Get)) | unit;
+        }
+
+
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
         public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) {
-            var pipeOut = doAct._pipe.Get;
-            if (pipeOut.ShouldSkip)
-                return unit;
-            
-            return (() => act(pipeOut.Contents)) | unit;
+            foreach (var value in doAct._pipe.Get)
+                return (() => act(value)) | unit;
+
+            return unit;
         }
     }
 }

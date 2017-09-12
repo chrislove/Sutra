@@ -41,11 +41,20 @@ namespace SharpPipe {
         /// </summary>
         public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
             var pipe = (Pipe<T>)doFailIf.Pipe;
-            var pipeOut = pipe.Get;
-
-            //if (pipeOut.ShouldSkip) return pipe;
             
-            if ( predicate(pipeOut.Contents) )
+            if ( predicate(pipe.Value.ValueOrDefault) )
+                throw doFailIf.Exception;
+            
+            return pipe;
+        }
+        
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<Option<T>, bool> predicate ) {
+            var pipe = (Pipe<T>)doFailIf.Pipe;
+            
+            if (predicate(pipe.Value))
                 throw doFailIf.Exception;
 
             return pipe;
@@ -56,9 +65,6 @@ namespace SharpPipe {
         /// </summary>
         public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<bool> predicate ) {
             var pipe = (Pipe<T>)doFailIf.Pipe;
-            var pipeOut = pipe.Get;
-
-            //if (pipeOut.ShouldSkip) return pipe;
             
             if ( predicate() )
                 throw doFailIf.Exception;

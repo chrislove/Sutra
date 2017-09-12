@@ -61,13 +61,12 @@ namespace SharpPipe {
             if (func == null) throw new ArgumentNullException(nameof(func));
             
             var pipe = (Pipe<T>) doSelectPipe.Pipe;
-            var pipeOut = pipe.Get;
-
-            if (pipeOut.ShouldSkip) return pipe;
-
-            if (doSelectPipe.Predicate(pipeOut.Contents))
-                return start<T>.pipe | func(pipeOut.Contents);
-
+            
+            foreach (var value in pipe.Value) {
+                if (doSelectPipe.Predicate(value))
+                    return start<T>.pipe | func(value);
+            }
+            
             return pipe;
         }
     }

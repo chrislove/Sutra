@@ -33,7 +33,7 @@ namespace SharpPipe.Tests {
                                  | add | GetSeqA("A")
                                  | add | GetSeqB("B")
                                  | concat
-                                 | get;
+                                 | !get;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }
@@ -44,7 +44,7 @@ namespace SharpPipe.Tests {
                                  | add | Enumerable.Repeat("A", 2)
                                  | add | Enumerable.Repeat("B", 3)
                                  | concat
-                                 | get;
+                                 | !get;
 
             Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }

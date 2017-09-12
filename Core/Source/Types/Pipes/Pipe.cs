@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
@@ -10,28 +9,21 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
-        [CanBeNull]
-        private readonly T _contents;
-        
-        private readonly bool _shouldSkip;
+        internal Pipe( [CanBeNull] T value ) => Value = new Option<T>(value);
+        internal Pipe( Option<T> value )     => Value   = value;
 
-        internal Pipe( [CanBeNull] T value, bool shouldSkip = false ) : this() {
-            _contents   = value;
-            _shouldSkip = shouldSkip || value == null;
-        }
-        
-        internal PipeOutput<T> Get => PipeOutput.New(_contents, _shouldSkip);
+        internal Option<T> Value { get; }
 
-        internal static Pipe<T> SkipPipe => new Pipe<T>();
+        internal static Pipe<T> SkipPipe => new Pipe<T>(Option<T>.None);
 
-        private bool AllowNullOutput { get; set; }
-        
         internal Pipe<TOut> Transform<TOut>([NotNull] Func<T, TOut> func) {
-            var seqOut = this.Get;
-            if (seqOut.ShouldSkip) return Pipe<TOut>.SkipPipe;
+            foreach (var value in Value)
+                return start<TOut>.pipe | func(value);
 
-            return start<TOut>.pipe | func(seqOut.Contents);
+            return Pipe<TOut>.SkipPipe;
         }
+        
+        internal Pipe<TOut> Transform<TOut>([NotNull] Func<Option<T>, Option<TOut>> func) => start<TOut>.pipe | func(Value);
 
         /// <summary>
         /// Transforms pipe contents using a function on the right.
@@ -42,5 +34,10 @@ namespace SharpPipe {
         /// Replaces pipe contents with object on the right.
         /// </summary>
         public static Pipe<T> operator |( Pipe<T> _, T obj ) => start<T>.pipe | obj;
+
+        /// <summary>
+        /// Replaces pipe contents with option on the right if it has value.
+        /// </summary>
+        public static Pipe<T> operator |( Pipe<T> pipe, Option<T> option ) => option.HasValue ? new Pipe<T>(option) : pipe;
     }
 }

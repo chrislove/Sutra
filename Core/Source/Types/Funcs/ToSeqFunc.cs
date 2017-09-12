@@ -34,10 +34,10 @@ namespace SharpPipe {
         /// Transforms pipe to a sequence using function on the right.
         /// </summary>
         public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) {
-            var pipeOut = pipe.Get;
-            if (pipeOut.ShouldSkip) return Seq<TOut>.SkipSeq;
-            
-            return start<TOut>.seq | func[pipeOut.Contents];
+            foreach (var value in pipe.Value)
+                return start<TOut>.seq | func[value];
+
+            return Seq<TOut>.SkipSeq;
         }
     }
 }
