@@ -37,14 +37,14 @@ namespace SharpPipe {
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<Option<T>> act ) => (() => act(doAct._pipe.Value)) | unit;
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<Option<T>> act ) => (() => act(doAct._pipe.Option)) | unit;
 
 
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
         public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) {
-            foreach (var value in doAct._pipe.Value)
+            foreach (var value in doAct._pipe.Option)
                 return (() => act(value)) | unit;
 
             return unit;

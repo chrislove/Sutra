@@ -25,12 +25,10 @@ namespace SharpPipe {
         /// Projects each element of a sequence into a new form.
         /// </summary>
         public static Seq<TOut> operator |( DoMapSeq<TIn> doMap, PipeFunc<TIn, TOut> func ) {
-            var pipeOutput = doMap.Seq.Get;
+            foreach (var value in doMap.Seq.Option)
+                return start<TOut>.seq | value.Select(func.Func);
 
-            if (pipeOutput.ShouldSkip)
-                return Seq<TOut>.SkipSeq;
-
-            return start<TOut>.seq | pipeOutput.Contents.Select(func.Func);
+            return Seq<TOut>.SkipSeq;
         }
     }
 }

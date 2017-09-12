@@ -72,12 +72,12 @@ namespace SharpPipe {
         /// <summary>
         /// Initializes a pipe with object on the right
         /// </summary>
-        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] T obj ) => Pipe.From(obj);
+        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] T obj )   => new Pipe<T>(obj);
         
         /// <summary>
         /// Initializes a pipe with option on the right
         /// </summary>
-        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] Option<T> obj ) => Pipe.From(obj);
+        public static Pipe<T> operator |( DoStartPipe<T> _, Option<T> option )  => new Pipe<T>(option);
     } 
     
     /// <summary>
@@ -87,6 +87,11 @@ namespace SharpPipe {
     public partial struct DoStartSeq<T> {
         /// Initializes a sequence with enumerable on the right
         /// </summary>
-        public static Seq<T> operator |( DoStartSeq<T> _, [NotNull] IEnumerable<T> enumerable ) => Pipe.From(enumerable);
+        public static Seq<T> operator |( DoStartSeq<T> _, [NotNull] IEnumerable<T> enm )  => new Seq<T>(enm);
+        
+        /// <summary>
+        /// Initializes a sequence with enumerable option on the right
+        /// </summary>
+        public static Seq<T> operator |( DoStartSeq<T> _, Option<IEnumerable<T>> option ) => new Seq<T>(option);
     }
 }

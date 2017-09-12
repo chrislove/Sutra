@@ -16,7 +16,7 @@ namespace SharpPipe {
     /// <summary>
     /// Function transforming an entire sequence.
     /// </summary>
-    public partial struct SeqFunc<TIn, TOut> {
+    public struct SeqFunc<TIn, TOut> {
         /// <summary>
         /// Inner function
         /// </summary>

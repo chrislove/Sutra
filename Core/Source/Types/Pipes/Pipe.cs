@@ -5,25 +5,25 @@ using static SharpPipe.Commands;
 
 namespace SharpPipe {
     /// <summary>
-    /// A pipe containing a single object.
+    /// A pipe monad containing a single object.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
-        internal Pipe( [CanBeNull] T value ) => Value = new Option<T>(value);
-        internal Pipe( Option<T> value )     => Value   = value;
+        internal Pipe( Option<T> value )   => Option = value;
+        internal Pipe( T value )           => Option = value.ToOption();
 
-        internal Option<T> Value { get; }
+        internal Option<T> Option { get; }
 
         internal static Pipe<T> SkipPipe => new Pipe<T>(Option<T>.None);
 
         internal Pipe<TOut> Bind<TOut>([NotNull] Func<T, TOut> func) {
-            foreach (var value in Value)
+            foreach (var value in Option)
                 return start<TOut>.pipe | func(value);
 
             return Pipe<TOut>.SkipPipe;
         }
         
-        internal Pipe<TOut> Bind<TOut>([NotNull] Func<Option<T>, Option<TOut>> func) => start<TOut>.pipe | func(Value);
+        internal Pipe<TOut> Bind<TOut>([NotNull] Func<Option<T>, Option<TOut>> func) => start<TOut>.pipe | func(Option);
 
         /// <summary>
         /// Transforms pipe contents using a function on the right.

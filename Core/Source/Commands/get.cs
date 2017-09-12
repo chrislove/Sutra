@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using JetBrains.Annotations;
 
 
@@ -31,10 +32,15 @@ namespace SharpPipe
 
 	partial struct Seq<T> {
 		/// <summary>
-		/// Returns pipe contents.
+		/// Returns sequence contents.
+		/// </summary>
+		public static Option<IEnumerable<T>> operator |( Seq<T> seq, DoGet _ ) => seq.Option;
+		
+		/// <summary>
+		/// Returns sequence contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<T> operator |( Seq<T> seq, DoGet _ ) => seq.Get.Contents;
+		public static IEnumerable<T> operator |( Seq<T> seq, DoGetValue _ ) => seq.Option.Match(i => i, Enumerable.Empty<T>());
 	}
 
 	public partial struct Pipe<T> {
@@ -42,12 +48,11 @@ namespace SharpPipe
 		/// Returns pipe contents.
 		/// </summary>
 		[NotNull]
-		public static T operator |( Pipe<T> pipe, DoGetValue _ ) => pipe.Value.ValueOrDefault;
+		public static T operator |( Pipe<T> pipe, DoGetValue _ ) => pipe.Option.ValueOrDefault;
 		
 		/// <summary>
 		/// Returns pipe contents.
 		/// </summary>
-		[NotNull]
-		public static Option<T> operator |( Pipe<T> pipe, DoGet _ ) => pipe.Value;
+		public static Option<T> operator |( Pipe<T> pipe, DoGet _ ) => pipe.Option;
 	}
 }

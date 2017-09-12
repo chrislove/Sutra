@@ -39,10 +39,10 @@ namespace SharpPipe {
         /// Transforms sequence to a pipe.
         /// </summary>
         public static Pipe<TOut> operator |(Seq<TIn> seq, FromSeqFunc<TIn, TOut> func) {
-            var seqOut = seq.Get;
-            if (seqOut.ShouldSkip) return Pipe<TOut>.SkipPipe;
+            foreach (var value in seq.Option)
+                return start<TOut>.pipe | func[value];
 
-            return start<TOut>.pipe | func[seqOut.Contents];
+            return Pipe<TOut>.SkipPipe;
         }
     }
 }

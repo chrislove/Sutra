@@ -47,12 +47,11 @@ namespace SharpPipe {
         /// </summary>
         public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
             var seq = (Seq<T>)doFailIf.Pipe;
-            var seqOutput = seq.Get;
 
-            //if (seqOutput.ShouldSkip) return seq;
+            seq.Option.MatchAny(i => {
+                                 if (predicate(i)) throw doFailIf.Exception;
+                             } );
             
-            if (predicate(seqOutput.Contents) )
-                throw doFailIf.Exception;
 
             return seq;
         }
@@ -62,9 +61,6 @@ namespace SharpPipe {
         /// </summary>
         public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<bool> predicate ) {
             var seq = (Seq<T>)doFailIf.Pipe;
-            var seqOutput = seq.Get;
-
-            //if (seqOutput.ShouldSkip) return seq;
 
             if ( predicate() )
                 throw doFailIf.Exception;
@@ -85,13 +81,10 @@ namespace SharpPipe {
         /// </summary>
         public static Seq<T> operator |( DoFailIfAnySeq<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
             var seq = (Seq<T>)doFailIf.Pipe;
-            var seqOutput = seq.Get;
-
-            if (seqOutput.ShouldSkip) return seq;
             
-            if (seq.Get.Contents.Any(predicate) )
-                throw doFailIf.Exception;
-
+            seq.Option.MatchAny(i => {
+                                 if (i.Any(predicate) ) throw doFailIf.Exception;
+                             });
             return seq;
         }
     }

@@ -54,15 +54,16 @@ namespace SharpPipe {
         public static Seq<T> operator |( [NotNull] DoWhenSeqWithPredicateSelect<T> doSelectPipe, [NotNull] Func<T, T> func ) {
             if (doSelectPipe == null) throw new ArgumentNullException(nameof(doSelectPipe));
             if (func == null) throw new ArgumentNullException(nameof(func));
-            
+
             var seq = (Seq<T>) doSelectPipe.Pipe;
-            var seqOut = seq.Get;
-
-            if (seqOut.ShouldSkip) return seq;
             
-            if (doSelectPipe.Predicate(seqOut.Contents))
-                return start<T>.seq | seqOut.Contents.Select(func);
-
+            foreach (var value in seq.Option) {
+                // ReSharper disable PossibleMultipleEnumeration
+                if (doSelectPipe.Predicate(value))
+                    return start<T>.seq | value.Select(func);
+                // ReSharper restore PossibleMultipleEnumeration
+            }
+            
             return seq;
         }
     }

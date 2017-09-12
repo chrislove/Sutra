@@ -34,7 +34,7 @@ namespace SharpPipe {
         /// Transforms pipe to a sequence using function on the right.
         /// </summary>
         public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) {
-            foreach (var value in pipe.Value)
+            foreach (var value in pipe.Option)
                 return start<TOut>.seq | func[value];
 
             return Seq<TOut>.SkipSeq;

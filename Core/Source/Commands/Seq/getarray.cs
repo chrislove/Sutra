@@ -23,9 +23,10 @@ namespace SharpPipe {
         /// </summary>
         [NotNull]
         public static T[] operator |( Seq<T> seq, DoReturnArray _ ) {
-            var seqOutput = seq.Get;
-            
-            return seqOutput.ShouldSkip ? new T[0] : seqOutput.Contents.ToArray();
+            foreach (var value in seq.Option)
+                return value.ToArray();
+
+            return new T[0];
         }
     }
 }

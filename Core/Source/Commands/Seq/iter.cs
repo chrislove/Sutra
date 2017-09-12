@@ -28,19 +28,18 @@ namespace SharpPipe {
     /// Command marker.
     /// </summary>
     public struct DoIterate<T> {
-        private readonly Seq<T> _pipe;
+        private readonly Seq<T> _seq;
 
-        internal DoIterate( Seq<T> seq ) => _pipe = seq;
+        internal DoIterate( Seq<T> seq ) => _seq = seq;
 
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
         public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) {
-            var seqContents = doIterate._pipe.Get;
+            foreach (var value in doIterate._seq.Option)
+                return (() => value.ForEach(action)) | unit;
 
-            if (seqContents.ShouldSkip) return unit;
-            
-            return (() => seqContents.Contents.ForEach(action)) | unit;
+            return unit;
         }
     }
 }

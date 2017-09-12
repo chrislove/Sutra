@@ -48,7 +48,7 @@ namespace SharpPipe
 		/// Transforms a pipe.
 		/// </summary>
 		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) {
-			foreach (var value in pipe.Value)
+			foreach (var value in pipe.Option)
 				return start<TOut>.pipe | func[value];
 
 			return Pipe<TOut>.SkipPipe;
@@ -58,12 +58,12 @@ namespace SharpPipe
 		/// Transforms a sequence.
 		/// </summary>
 		public static Seq<TOut> operator |( Seq<TIn> seq, PipeFunc<TIn, TOut> func ) {
-			var seqOut = seq.Get;
-			if (seqOut.ShouldSkip) return Seq<TOut>.SkipSeq;
+			foreach (var value in seq.Option) {
+				TOut Selector( TIn i ) => func.Func(i).To<TOut>(seq, func);
+				return start<TOut>.seq | value.Select((Func<TIn, TOut>) Selector);
+			}
 			
-			var enm = seq.Get.Contents.Select(i => func.Func(i).To<TOut>($"{seq.T()} | {func.T()}"));
-
-			return start<TOut>.seq | enm;
+			return Seq<TOut>.SkipSeq;
 		}
 	}
 }

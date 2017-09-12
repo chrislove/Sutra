@@ -86,11 +86,9 @@
     <Compile Include="Source\Types\Funcs\SeqFunc.cs" />
     <Compile Include="Source\Types\Funcs\ToSeqFunc.cs" />
     <Compile Include="Source\Types\Option.cs" />
-    <Compile Include="Source\Types\Pipes\Factory.cs" />
     <Compile Include="Source\Types\Pipes\IPipe.cs" />
     <Compile Include="Source\Types\Pipes\Pipe.cs" />
     <Compile Include="Source\Types\Pipes\Seq.cs" />
-    <Compile Include="Source\Types\Pipes\SeqOutput.cs" />
     <Compile Include="Source\Types\Unit.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

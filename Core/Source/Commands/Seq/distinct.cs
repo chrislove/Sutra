@@ -22,6 +22,12 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator.
         /// </summary>
-        public static Seq<T> operator |( Seq<T> seq, DoDistinct _ ) => start<T>.seq | seq.Get.Contents.Distinct();
+        public static Seq<T> operator |( Seq<T> seq, DoDistinct _ ) {
+            foreach (var value in seq.Option) {
+                return start<T>.seq | value.Distinct();
+            }
+
+            return Seq<T>.SkipSeq;
+        }
     }
 }

@@ -7,7 +7,22 @@ namespace SharpPipe {
 		/// Casts object to a given type.
 		/// </summary>
 		[CanBeNull]
-		public static T To<T>( [CanBeNull] this object obj, string context ) {
+		public static T To<T>( [CanBeNull] this object obj, [CanBeNull] object lhsContext, [CanBeNull] object rhsContest ) {
+			if (obj == null) return default(T);
+
+			try {
+				return (T) obj;
+			} catch (Exception) {
+				string context = $"{lhsContext?.GetType()} | {rhsContest?.GetType()}";
+				throw new TypeMismatchException(obj.GetType(), typeof(T), context);
+			}
+		}
+
+		/// <summary>
+		/// Casts object to a given type.
+		/// </summary>
+		[CanBeNull]
+		public static T To<T>( [CanBeNull] this object obj, [CanBeNull] string context ) {
 			if (obj == null) return default(T);
 
 			try {

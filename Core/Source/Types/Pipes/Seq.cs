@@ -8,44 +8,33 @@ using static SharpPipe.Commands;
 namespace SharpPipe
 {
 	/// <summary>
-	/// A sequence of objects.
+	/// A sequence monad containing a set of objects.
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public partial struct Seq<T> : IPipe<T>//, IEnumerable<T>
 	{
-		[CanBeNull]
-		private readonly IEnumerable<T> _contents;
-
-		private readonly bool _shouldSkip;
+		internal readonly Option<IEnumerable<T>> Option;
 
 		internal static Seq<T> Empty => start<T>.seq | Enumerable.Empty<T>();
 
-		internal Seq([CanBeNull] IEnumerable<T> enm, bool shouldSkip = false) : this()
-		{
-			_contents = enm;
-			_shouldSkip = shouldSkip || enm == null;
-		}
+		internal Seq( IEnumerable<T> enm )            => Option = enm.ToOption();
+		internal Seq( Option<IEnumerable<T>> option ) => Option = option;
 
-		internal static Seq<T> SkipSeq => new Seq<T>(null, true);
-
-		internal SeqOutput<T> Get => SeqOutput.New(_contents, _shouldSkip);
-
+		internal static Seq<T> SkipSeq => new Seq<T>(Option<IEnumerable<T>>.None);
+		
 		internal Seq<TOut> Bind<TOut>([NotNull] Func<IEnumerable<T>, IEnumerable<TOut>> func)
 		{
-			var seqOut = this.Get;
-			if (seqOut.ShouldSkip) return Seq<TOut>.SkipSeq;
+			foreach (var value in Option)
+				return start<TOut>.seq | func(value);
 
-			return start<TOut>.seq | func(seqOut.Contents);
+			return Seq<TOut>.SkipSeq;
 		}
-
 
 		/// <summary>
 		/// Appends a single object to sequence.
 		/// </summary>
-		public static Seq<T> operator |(Seq<T> seq, [CanBeNull] T obj)
-		{
-			IEnumerable<T> Yield(T inobj)
-			{
+		public static Seq<T> operator |(Seq<T> seq, [CanBeNull] T obj) {
+			IEnumerable<T> Yield(T inobj) {
 				yield return inobj;
 			}
 
@@ -55,13 +44,14 @@ namespace SharpPipe
 		/// <summary>
 		/// Appends an enumerable to sequence.
 		/// </summary>
-		public static Seq<T> operator |(Seq<T> seq, [CanBeNull] IEnumerable<T> enm)
-		{
-			var seqOut = seq.Get;
+		public static Seq<T> operator |(Seq<T> seq, [CanBeNull] IEnumerable<T> enm) {
+			if (enm == null)
+				return Seq<T>.SkipSeq;
+			
+			foreach (var value in seq.Option)
+				return start<T>.seq | value.Concat(enm).ToOption();
 
-			if (seqOut.ShouldSkip || enm == null) return Seq<T>.SkipSeq;
-
-			return start<T>.seq | seqOut.Contents.Concat(enm);
+			return Seq<T>.SkipSeq;
 		}
 
 		/// <summary>
@@ -73,12 +63,14 @@ namespace SharpPipe
 		/// <summary>
 		/// Transforms sequence into a pipe.
 		/// </summary>
-		public static Pipe<T> operator ^(Seq<T> seq, [NotNull] Func<IEnumerable<T>, T> func)
-		{
-			var seqOut = seq.Get;
-			if (seqOut.ShouldSkip) return Pipe<T>.SkipPipe;
+		public static Pipe<T> operator ^(Seq<T> seq, [NotNull] Func<IEnumerable<T>, T> func) {
+			foreach (var value in seq.Option)
+				return start<T>.pipe | func(value);
 
-			return start<T>.pipe | func(seqOut.Contents);
+			return Pipe<T>.SkipPipe;
 		}
+		
+		public static implicit operator Seq<T>(Option<IEnumerable<T>> option) => new Seq<T>(option);
+
 	}
 }

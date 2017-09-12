@@ -24,9 +24,10 @@ namespace SharpPipe {
         /// </summary>
         [NotNull]
         public static List<T> operator |( Seq<T> seq, DoReturnList _ ) {
-            var seqOutput = seq.Get;
+            foreach (var value in seq.Option)
+                return value.ToList();
 
-            return seqOutput.ShouldSkip ? new List<T>() : seqOutput.Contents.ToList();
+            return new List<T>();
         }
     }
 }
