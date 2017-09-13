@@ -44,11 +44,8 @@ namespace SharpPipe {
         /// Transforms pipe to sequence using a function on the right.
         /// </summary>
         public static Seq<T> operator |( DoTransformToSeq<T> doTransform, [NotNull] Func<T, IEnumerable<T>> func ) {
-            var pipeOut = doTransform._pipe.Option;
-            
-            foreach (var value in doTransform._pipe.Option) {
+            foreach (var value in doTransform._pipe.Option)
                 return start<T>.seq | func(value);
-            }
 
             return Seq<T>.SkipSeq;
         }

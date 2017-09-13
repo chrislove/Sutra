@@ -49,7 +49,7 @@ namespace SharpPipe {
         internal DoFail( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe) {
             if (exc != null)     Exception = exc;
             else if (message != null) Exception = new PipeUserException(message);
-            else Exception = SharpPipe.Pipe.NextException ?? new PipeCommandException("fail");
+            else Exception = new PipeCommandException("fail");
         }
     }
 }

@@ -27,8 +27,16 @@ namespace SharpPipe {
         /// </summary>
         [CanBeNull] [PublicAPI] public IEnumerable<TOut> this[ [CanBeNull] TIn invalue ] => Func.Lower()(invalue);
         public EnmOption<TOut> this[ Option<TIn> invalue ] => Func(invalue);
-
+        
         internal ToSeqFunc([NotNull] Func<Option<TIn>, EnmOption<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+        
+        
+        /// <summary>
+        /// Returns the contained function.
+        /// </summary>
+        [NotNull]
+        public static Func<Option<TIn>, EnmOption<TOut>> operator !( ToSeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
+
         
         /// <summary>
         /// Transforms pipe to a sequence using function on the right.

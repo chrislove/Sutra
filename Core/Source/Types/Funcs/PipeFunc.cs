@@ -29,7 +29,7 @@ namespace SharpPipe
 		/// Inner function
 		/// </summary>
 		[PublicAPI]
-		[NotNull] public Func<Option<TIn>, Option<TOut>> Func { get; }
+		[NotNull] private Func<Option<TIn>, Option<TOut>> Func { get; }
 
 		internal PipeFunc([NotNull] Func<TIn, TOut> func) => Func = option => option.Map(func);
 		internal PipeFunc([NotNull] Func<Option<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
@@ -40,7 +40,13 @@ namespace SharpPipe
 		public TOut this[ [CanBeNull] TIn invalue ] => Func.Lower()(invalue);
 
 		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
-
+		
+		/// <summary>
+		/// Returns the contained function.
+		/// </summary>
+		[NotNull]
+		public static Func<Option<TIn>, Option<TOut>> operator !( PipeFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
+		
 		[NotNull]
 		public static implicit operator Func<Option<TIn>, Option<TOut>>( PipeFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
 		public static implicit operator PipeFunc<TIn, TOut>( [NotNull] Func<TIn, TOut> func ) => Commands.func.takes<TIn>.from(func);

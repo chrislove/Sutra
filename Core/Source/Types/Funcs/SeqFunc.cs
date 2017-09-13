@@ -30,7 +30,14 @@ namespace SharpPipe {
         /// </summary>
         [PublicAPI]
         public IEnumerable<TOut> this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func(invalue);
+        
+        /// <summary>
+        /// Returns the contained function.
+        /// </summary>
+        [NotNull]
+        public static Func<IEnumerable<TIn>, IEnumerable<TOut>> operator !( SeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
 
+        
         [NotNull]
         public static implicit operator Func<IEnumerable<TIn>, IEnumerable<TOut>>( SeqFunc<TIn, TOut> func ) => func.Func;
         public static implicit operator SeqFunc<TIn, TOut>( [NotNull] Func<IEnumerable<TIn>, IEnumerable<TOut>> func ) => seqfunc.takes<TIn>.from(func);

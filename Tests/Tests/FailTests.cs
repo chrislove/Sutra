@@ -70,19 +70,6 @@ namespace SharpPipe.Tests {
             Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
         }
         
-        [Test]
-        public void Test_Throw_NextException() {
-            void TestDelegate() {
-                Pipe.NextException = new PipeUserException("TEST");
-                
-                var pipe = ABCSeq
-                           | add   | (string) null
-                           | fail | whenany | isnull;
-            }
-
-            Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
-        }
-        
         [TestCase("B", true)]
         [TestCase("DONT", false)]
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {

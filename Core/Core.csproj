@@ -96,7 +96,6 @@
     <Compile Include="Source\Types\Unit.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Util\PipeSettings.cs" />
     <Compile Include="Source\Util\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
