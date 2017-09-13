@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     public static partial class Commands {
@@ -21,11 +22,6 @@ namespace SharpPipe {
         /// Converts pipe contents into TOut[] and returns.
         /// </summary>
         [NotNull]
-        public static T[] operator |( Seq<T> seq, DoReturnArray _ ) {
-            foreach (var value in seq.Option)
-                return value.ToArray();
-
-            return new T[0];
-        }
+        public static T[] operator |( Seq<T> seq, DoReturnArray _ ) => (seq | !!get).ToArray();
     }
 }

@@ -6,7 +6,7 @@ namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
         /// Projects each element of a sequence into a new form using a function on the right.
-        /// Equivalent to Linq.Select().
+        /// Equivalent to Select() in LINQ.
         /// </summary>
         /// <example><code>
         /// seq | sel | (i => i + 1)

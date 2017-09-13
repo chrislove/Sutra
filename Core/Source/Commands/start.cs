@@ -85,13 +85,19 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct DoStartSeq<T> {
+        /// <summary>
         /// Initializes a sequence with enumerable on the right
         /// </summary>
         public static Seq<T> operator |( DoStartSeq<T> _, [NotNull] IEnumerable<T> enm )  => new Seq<T>(enm);
         
         /// <summary>
+        /// Initializes a sequence with enumerable on the right
+        /// </summary>
+        public static Seq<T> operator |( DoStartSeq<T> _, [NotNull] IEnumerable<Option<T>> enm )  => new Seq<T>(enm);
+        
+        /// <summary>
         /// Initializes a sequence with enumerable option on the right
         /// </summary>
-        public static Seq<T> operator |( DoStartSeq<T> _, Option<IEnumerable<T>> option ) => new Seq<T>(option);
+        public static Seq<T> operator |( DoStartSeq<T> _, EnmOption<T> option ) => new Seq<T>(option);
     }
 }

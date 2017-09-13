@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
@@ -22,24 +23,48 @@ namespace SharpPipe
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public struct DoGet {
 		/// <summary>
-		/// Makes the pipe return the actual value instead of an Option{T}.
+		/// Makes the pipe return the actual value instead of Option{T}.
 		/// </summary>
 		public static DoGetValue operator !( DoGet _ ) => new DoGetValue();
 	}
 
-	public struct DoGetValue { }
+	/// <summary>
+	/// Command marker.
+	/// </summary>
+	public struct DoGetValue {
+		/// <summary>
+		/// Makes the sequence return the actual transformed value instead of Option{T}.
+		/// </summary>
+		public static DoGetInnerValue operator !( DoGetValue _ ) => new DoGetInnerValue();
+	}
+
+	/// <summary>
+	/// Command marker.
+	/// </summary>
+	public struct DoGetInnerValue { }
+
 
 	partial struct Seq<T> {
 		/// <summary>
 		/// Returns sequence contents.
 		/// </summary>
-		public static Option<IEnumerable<T>> operator |( Seq<T> seq, DoGet _ ) => seq.Option;
+		public static EnmOption<T> operator |( Seq<T> seq, DoGet _ ) => seq.Option;
 		
 		/// <summary>
 		/// Returns sequence contents.
 		/// </summary>
 		[NotNull]
-		public static IEnumerable<T> operator |( Seq<T> seq, DoGetValue _ ) => seq.Option.ValueOrFail($"{seq.T()} returned an empty sequence.");
+		public static IEnumerable<Option<T>> operator |( Seq<T> seq, DoGetValue _ ) => seq.Option.ValueOrFail($"{seq.T()} returned an empty sequence.");
+		
+		/// <summary>
+		/// Returns sequence contents.
+		/// </summary>
+		[NotNull]
+		public static IEnumerable<T> operator |( Seq<T> seq, DoGetInnerValue _ ) {
+			var enm = seq | !get;
+			
+			return enm.Select(i => i.ValueOrFail($"{seq.T()} !!get"));
+		}
 	}
 
 	public partial struct Pipe<T> {

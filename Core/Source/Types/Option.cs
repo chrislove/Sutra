@@ -4,48 +4,21 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    internal static class OptionExtensions {
-        public static Option<T> ToOption<T>              ([CanBeNull] this T obj) => new Option<T>(obj);
-        public static Option<IEnumerable<T>> ToOption<T> ([CanBeNull] this IEnumerable<T> enm) => new Option<IEnumerable<T>>(enm);
-    }
-    
     [PublicAPI]
-    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>> {
-        public readonly bool HasValue;
-        [CanBeNull] private readonly T _value;
+    public struct Option<T> : IOption<T>, IOptionValue<T> {
+        public bool HasValue { get; }
+
+        [CanBeNull] T IOptionValue<T>.Value => _value;
+
+        private readonly T _value;
         
         public Option( [CanBeNull] T value ) {
-            _value    = value;
+            _value   = value;
             HasValue = value != null;
         }
 
-        [CanBeNull]
-        public U Match<U>( Func<T, U> some, Func<U> none ) => HasValue ? some(_value) : none();
-        
-        [CanBeNull]
-        public U Match<U>( Func<T, U> some, U none ) => HasValue ? some(_value) : none;
-
-        /// <summary>
-        /// Matches any value value - whether valid or invalid.
-        /// </summary>
-        [CanBeNull]
-        public U MatchAny<U>( Func<T, U> func ) => func(_value);
-        
-        /// <summary>
-        /// Matches any value - whether valid or invalid.
-        /// </summary>
-        public void MatchAny( Action<T> act ) => act(_value);
-
-        [NotNull]
-        public T ValueOr( [NotNull] T alternative ) => _value != null && HasValue ? _value : alternative;
-
-        [CanBeNull] public T ValueOrDefault => ValueOr(default(T));
-        
-        [NotNull]
-        public T ValueOrFail() => _value != null && HasValue ? _value : throw EmptyOptionException.For<T>();
-
-        [NotNull]
-        public T ValueOrFail( string failMessage ) => _value != null && HasValue ? _value : throw new EmptyOptionException(failMessage);
+        public Option<U> Map<U>( Func<T, U> func ) => HasValue ? func(_value).ToOption() : Option<U>.None;
+        public Option<U> Map<U>(Func<T, U> func, U defaultValue ) => this.Match(func, defaultValue).ToOption();
         
         public static Option<T> None => new Option<T>();
         
@@ -56,8 +29,11 @@ namespace SharpPipe {
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         
-        public bool Equals( Option<T> other ) => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, other._value);
-        public bool Equals( T other )         => HasValue == (other != null) && EqualityComparer<T>.Default.Equals(_value, other);
+        public bool Equals( IOption<T> other ) {
+            return HasValue == other.HasValue && EqualityComparer<T>.Default.Equals(_value, other._value());
+        }
+
+        public bool Equals( T other )          => HasValue == (other != null) && EqualityComparer<T>.Default.Equals(_value, other);
 
         public override bool Equals( object obj ) {
             if (ReferenceEquals(null, obj)) return false;

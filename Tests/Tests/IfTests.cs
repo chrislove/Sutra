@@ -11,7 +11,7 @@ namespace SharpPipe.Tests {
         public void Test_Enumerable_IfSelect(string contains, string expected) {
             string result = ABCSeq
                             | when | (e => e.Contains(contains)) | map | (i => $"[{i}]")
-                            | when | ( () => true ) | map | (i => i)
+                            | when | ( () => true ) | map | (i => i + "")
                             | concat | !get;
             
             Assert.That(result, Is.EqualTo(expected));

@@ -45,14 +45,26 @@ namespace SharpPipe {
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
         /// </summary>
+        public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<IEnumerable<Option<T>>, bool> predicate ) {
+            var seq = (Seq<T>)doFailIf.Pipe;
+
+            seq.Option.MatchAny(enm => {
+                                 if (predicate(enm)) throw doFailIf.Exception;
+                             } );
+            
+            return seq;
+        }
+        
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
         public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<IEnumerable<T>, bool> predicate ) {
             var seq = (Seq<T>)doFailIf.Pipe;
 
-            seq.Option.MatchAny(i => {
-                                 if (predicate(i)) throw doFailIf.Exception;
-                             } );
+            seq.Option.MatchAny(enm => {
+                                    if (predicate(enm.Lower())) throw doFailIf.Exception;
+                                });
             
-
             return seq;
         }
         
@@ -79,12 +91,24 @@ namespace SharpPipe {
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
         /// </summary>
-        public static Seq<T> operator |( DoFailIfAnySeq<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
+        public static Seq<T> operator |( DoFailIfAnySeq<T> doFailIf, [NotNull] Func<Option<T>, bool> predicate ) {
             var seq = (Seq<T>)doFailIf.Pipe;
             
             seq.Option.MatchAny(i => {
                                  if (i.Any(predicate) ) throw doFailIf.Exception;
                              });
+            return seq;
+        }
+        
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Seq<T> operator |( DoFailIfAnySeq<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
+            var seq = (Seq<T>)doFailIf.Pipe;
+
+            seq.Option.MatchAny(enm => {
+                                    if (enm.Lower().Any(predicate)) throw doFailIf.Exception;
+                                });
             return seq;
         }
     }

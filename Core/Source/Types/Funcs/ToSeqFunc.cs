@@ -7,7 +7,7 @@ namespace SharpPipe {
     public static partial class Commands {
         public static partial class func {
             public partial class takes<TIn> {
-                public static ToSeqFunc<TIn, TOut> toseq<TOut>( [NotNull] Func<TIn, IEnumerable<TOut>> func ) => new ToSeqFunc<TIn, TOut>(func);
+                public static ToSeqFunc<TIn, TOut> toseq<TOut>( [NotNull] Func<TIn, IEnumerable<TOut>> func ) => new ToSeqFunc<TIn, TOut>(func.Lift());
             }
         }
     }
@@ -20,15 +20,15 @@ namespace SharpPipe {
         /// Inner function
         /// </summary>
         [PublicAPI]
-        [NotNull] public Func<TIn, IEnumerable<TOut>> Func { get; }
-        
+        [NotNull] public Func<Option<TIn>, EnmOption<TOut>> Func { get; }
+
         /// <summary>
         /// Use this operator to invoke the function.
         /// </summary>
-        [CanBeNull] [PublicAPI]
-        public IEnumerable<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue);
+        [CanBeNull] [PublicAPI] public IEnumerable<TOut> this[ [CanBeNull] TIn invalue ] => Func.Lower()(invalue);
+        public EnmOption<TOut> this[ Option<TIn> invalue ] => Func(invalue);
 
-        internal ToSeqFunc([NotNull] Func<TIn, IEnumerable<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+        internal ToSeqFunc([NotNull] Func<Option<TIn>, EnmOption<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
         /// <summary>
         /// Transforms pipe to a sequence using function on the right.

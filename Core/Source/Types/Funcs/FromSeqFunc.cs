@@ -11,7 +11,14 @@ namespace SharpPipe {
                 /// <summary>
                 /// Creates a function converting a sequence to a pipe.
                 /// </summary>
-                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<IEnumerable<TIn>, TOut> func ) => new FromSeqFunc<TIn, TOut>(func);
+                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<IEnumerable<TIn>, TOut> func )
+                                                    => new FromSeqFunc<TIn, TOut>(func.Lift());
+                
+                /// <summary>
+                /// Creates a function converting a sequence to a pipe.
+                /// </summary>
+                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<EnmOption<TIn>, Option<TOut>> func )
+                                                    => new FromSeqFunc<TIn, TOut>(func);
             }
         }
     }
@@ -24,25 +31,22 @@ namespace SharpPipe {
         /// Inner function
         /// </summary>
         [PublicAPI]
-        [NotNull] public Func<IEnumerable<TIn>, TOut> Func { get; }
+        [NotNull] public Func<EnmOption<TIn>, Option<TOut>> Func { get; }
         
         /// <summary>
         /// Use this operator to invoke the function.
         /// </summary>
         [PublicAPI]
-        public TOut this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func(invalue);
+        public TOut this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func.Lower()(invalue);
+        public Option<TOut> this[ EnmOption<TIn> invalue ] => Func(invalue);
 
-        internal FromSeqFunc([NotNull] Func<IEnumerable<TIn>, TOut> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
-        
+        internal FromSeqFunc([NotNull] Func<EnmOption<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
         /// <summary>
         /// Transforms sequence to a pipe.
         /// </summary>
         public static Pipe<TOut> operator |(Seq<TIn> seq, FromSeqFunc<TIn, TOut> func) {
-            foreach (var value in seq.Option)
-                return start<TOut>.pipe | func[value];
-
-            return Pipe<TOut>.SkipPipe;
+            return start<TOut>.pipe | func[seq.Option];
         }
     }
 }

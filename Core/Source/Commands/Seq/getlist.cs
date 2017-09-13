@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     public static partial class Commands {
@@ -22,11 +23,7 @@ namespace SharpPipe {
         /// Converts pipe contents into List{TOut} and returns
         /// </summary>
         [NotNull]
-        public static List<T> operator |( Seq<T> seq, DoReturnList _ ) {
-            foreach (var value in seq.Option)
-                return value.ToList();
+        public static List<T> operator |( Seq<T> seq, DoReturnList _ ) => (seq | !!get).ToList();
 
-            return new List<T>();
-        }
     }
 }

@@ -42,7 +42,7 @@ namespace SharpPipe {
         public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
             var pipe = (Pipe<T>)doFailIf.Pipe;
             
-            if ( predicate(pipe.Option.ValueOrDefault) )
+            if ( predicate.LiftIn()(pipe.Option) )
                 throw doFailIf.Exception;
             
             return pipe;

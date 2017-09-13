@@ -73,10 +73,10 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_SelectMany() {
-            IEnumerable<string> SelectManyFunc( string str ) => Enumerable.Repeat(str, 3);
+            IEnumerable<string> func( string str ) => Enumerable.Repeat(str, 3);
             
             string result = ABCSeq
-                         | collect | SelectManyFunc
+                         | bind | func
                          | concat  | !get;
             
             Assert.That(result, Is.EqualTo("AAABBBCCC"));

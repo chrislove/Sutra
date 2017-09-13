@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
@@ -9,40 +10,48 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial struct Pipe<T> : IPipe<T> {
-        internal Pipe( Option<T> value )   => Option = value;
-        internal Pipe( [CanBeNull] T value )           => Option = value.ToOption();
+        internal Pipe( Option<T> value )      => Option = value;
+        internal Pipe( [CanBeNull] T value )  => Option = value.ToOption();
 
         internal Option<T> Option { get; }
 
         internal static Pipe<T> SkipPipe => new Pipe<T>(Option<T>.None);
 
-        internal Pipe<TOut> Bind<TOut>([NotNull] Func<T, TOut> func) {
+        internal Pipe<TOut> Map<TOut>([NotNull] Func<T, TOut> func) {
             foreach (var value in Option)
                 return start<TOut>.pipe | func(value);
 
             return Pipe<TOut>.SkipPipe;
         }
         
-        internal Pipe<TOut> Bind<TOut>([NotNull] Func<Option<T>, Option<TOut>> func) => start<TOut>.pipe | func(Option);
+        internal Seq<TOut> Bind<TOut>([NotNull] Func<T, IEnumerable<TOut>> func) {
+            foreach (var value in Option)
+                return start<TOut>.seq | func(value);
+
+            return Seq<TOut>.SkipSeq;
+        }
+        
+        internal Pipe<TOut> Map<TOut>([NotNull] Func<Option<T>, Option<TOut>> func)              => start<TOut>.pipe | func(Option);
+        internal Seq<TOut> Bind<TOut>([NotNull] Func<Option<T>, IEnumerable<Option<TOut>>> func) => start<TOut>.seq  | func(Option);
 
         /// <summary>
         /// Transforms pipe contents using a function on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => pipe.Bind(func);
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<T, T> func ) => pipe.Map(func);
         
         /// <summary>
         /// Transforms pipe contents using a function on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, Func<Option<T>, Option<T>> func ) => pipe.Bind(func);
-        
-        /// <summary>
-        /// Replaces pipe contents with object on the right.
-        /// </summary>
-        public static Pipe<T> operator |( Pipe<T> _, T obj ) => start<T>.pipe | obj;
+        public static Pipe<T> operator |( Pipe<T> pipe, Func<Option<T>, Option<T>> func ) => pipe.Map(func);
 
         /// <summary>
-        /// Replaces pipe contents with option on the right if it has value.
+        /// Converts pipe into sequence and appends object on the right.
         /// </summary>
-        public static Pipe<T> operator |( Pipe<T> pipe, Option<T> option ) => option.HasValue ? new Pipe<T>(option) : pipe;
+        public static Seq<T> operator |( Pipe<T> pipe, T obj ) => pipe | obj.ToOption();
+
+        /// <summary>
+        /// Converts pipe into sequence and appends object on the right.
+        /// </summary>
+        public static Seq<T> operator |( Pipe<T> pipe, Option<T> option ) => start<T>.seq | new [] {pipe.Option, option};
     }
 }

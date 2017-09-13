@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
@@ -35,9 +36,21 @@ namespace SharpPipe {
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
+        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action ) {
+            foreach (var enm in doIterate._seq.Option)
+                return (() => enm.ForEach(action)) | unit;
+
+            return unit;
+        }
+        
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
         public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) {
-            foreach (var value in doIterate._seq.Option)
-                return (() => value.ForEach(action)) | unit;
+            foreach (var enm in doIterate._seq.Option) {
+                Action<Option<T>> liftedAction = i => action(i.ValueOrFail($"{doIterate._seq.T()} | iter"));
+                return (() => enm.ForEach(liftedAction)) | unit;
+            }
 
             return unit;
         }

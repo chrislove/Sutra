@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
@@ -30,40 +29,37 @@ namespace SharpPipe
 		/// Inner function
 		/// </summary>
 		[PublicAPI]
-		[NotNull] public Func<TIn, TOut> Func { get; }
+		[NotNull] public Func<Option<TIn>, Option<TOut>> Func { get; }
 
-		internal PipeFunc([NotNull] Func<TIn, TOut> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+		internal PipeFunc([NotNull] Func<TIn, TOut> func) => Func = option => option.Map(func);
+		internal PipeFunc([NotNull] Func<Option<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
 
 		/// <summary>
 		/// Use this operator to invoke the function.
 		/// </summary>
-		public TOut this[ [CanBeNull] TIn invalue ] => Func(invalue);
+		public TOut this[ [CanBeNull] TIn invalue ] => Func.Lower()(invalue);
+
+		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
 
 		[NotNull]
-		public static implicit operator Func<TIn, TOut>( PipeFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
+		public static implicit operator Func<Option<TIn>, Option<TOut>>( PipeFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
 		public static implicit operator PipeFunc<TIn, TOut>( [NotNull] Func<TIn, TOut> func ) => Commands.func.takes<TIn>.from(func);
-		
-		
+
+
 		/// <summary>
 		/// Transforms a pipe.
 		/// </summary>
-		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) {
-			foreach (var value in pipe.Option)
-				return start<TOut>.pipe | func[value];
-
-			return Pipe<TOut>.SkipPipe;
-		}
+		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) => pipe.Map(func.Func);
 
 		/// <summary>
-		/// Transforms a sequence.
+		/// Transforms every value in a sequence.
 		/// </summary>
-		public static Seq<TOut> operator |( Seq<TIn> seq, PipeFunc<TIn, TOut> func ) {
-			foreach (var value in seq.Option) {
-				TOut Selector( TIn i ) => func.Func(i).To<TOut>(seq, func);
-				return start<TOut>.seq | value.Select((Func<TIn, TOut>) Selector);
-			}
-			
-			return Seq<TOut>.SkipSeq;
-		}
+		public static Seq<TOut> operator |( Seq<TIn> seq, PipeFunc<TIn, TOut> func ) => seq.Map(v => v.Select(func.Func));
+
+		/*
+		public static Pipe<TOut> operator |( DoBind<TOut> doBind, PipeFunc<TIn, TOut> func ) {
+			return doBind._seq.Map(enm => enm.SelectMany(func.Func));
+			//return doBind._seq | (enm => enm.SelectMany(func.Func));
+		}*/
 	}
 }
