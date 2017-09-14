@@ -23,9 +23,15 @@ namespace SharpPipe
 
     public interface ISimpleOption : IOption { }
 
-    public interface ISeqOption : IOption, IEnumerable<IEnumerable<IOption>> { }
+    public interface ISeqOption : IOption, IEnumerable<IEnumerable<IOption>>
+    {
+        Option<IEnumerable<object>> Lower();
+    }
 
     public interface ISimpleOption<T> : IOption<T>, ISimpleOption { }
 
-    public interface ISeqOption<T> : IOption<IEnumerable<Option<T>>>, ISeqOption { }
+    public interface ISeqOption<T> : IOption<IEnumerable<Option<T>>>, ISeqOption
+    {
+        Option<IEnumerable<T>> Lower();
+    }
 }

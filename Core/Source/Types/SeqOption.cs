@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace SharpPipe
+{
     /// <summary>
     /// Shortcut for Option{IEnumerable{Option{T}}}
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [PublicAPI]
-    public struct SeqOption<T> : ISeqOption<T>, IOptionValue<IEnumerable<Option<T>>> {
+    public struct SeqOption<T> : ISeqOption<T>, IOptionValue<IEnumerable<Option<T>>>
+    {
         public bool HasValue { get; }
 
         [CanBeNull] IEnumerable<Option<T>> IOptionValue<IEnumerable<Option<T>>>.Value => _value;
@@ -18,42 +20,49 @@ namespace SharpPipe {
 
         private readonly IEnumerable<Option<T>> _value;
 
-        public SeqOption( [CanBeNull] IEnumerable<IOption> enm ) {
-            _value   = enm.Cast<Option<T>>();
-            HasValue = enm != null;
-        }
-        
-        public SeqOption( [CanBeNull] IEnumerable<Option<T>> enm ) {
-            _value   = enm;
-            HasValue = enm != null;
-        }
-        
-        public SeqOption( [CanBeNull] IEnumerable<T> enm ) {
-            _value   = enm.Select(i => i.ToOption());
-            HasValue = enm != null;
-        }
+        public SeqOption( [CanBeNull] IEnumerable<IOption> enm )
+            {
+                _value = enm.Cast<Option<T>>();
+                HasValue = enm != null;
+            }
 
-        public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func ) {
-            foreach (var enm in this)
-                return func(enm).ToSeqOption();
+        public SeqOption( [CanBeNull] IEnumerable<Option<T>> enm )
+            {
+                _value = enm;
+                HasValue = enm != null;
+            }
 
-            return SeqOption<U>.None;
-        }
+        public SeqOption( [CanBeNull] IEnumerable<T> enm )
+            {
+                _value = enm.Select(i => i.ToOption());
+                HasValue = enm != null;
+            }
+
+        public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func )
+            {
+                foreach (var enm in this)
+                    return func(enm).ToSeqOption();
+
+                return SeqOption<U>.None;
+            }
 
         [Pure]
-        public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<IOption>, IEnumerable<Option<U>>> func ) {
-            foreach (var enm in this)
-                return func(enm.ToIOption()).ToSeqOption();
+        public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<IOption>, IEnumerable<Option<U>>> func )
+            {
+                foreach (var enm in this)
+                    return func(enm.ToIOption()).ToSeqOption();
 
-            return SeqOption<U>.None;
-        }
+                return SeqOption<U>.None;
+            }
 
-        public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<T>, IEnumerable<U>> func ) {
-            foreach (var enm in this)
-                return func( enm.Lower() ).ToSeqOption();
+        public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<T>, IEnumerable<U>> func )
+            {
+                foreach (var enm in this)
+                    foreach (IEnumerable<T> lowered in enm.Lower())
+                        return func(lowered).ToSeqOption();
 
-            return SeqOption<U>.None;
-        }
+                return SeqOption<U>.None;
+            }
 
 
         /// <summary>
@@ -66,7 +75,7 @@ namespace SharpPipe {
 
                 return Option<U>.None;
             }
-        
+
         /// <summary>
         /// Folds the inner enumerable into a single option.
         /// </summary>
@@ -79,25 +88,31 @@ namespace SharpPipe {
             }
 
 
+        public Option<IEnumerable<Option<T>>> ToOption() => HasValue ? _value.ToOption() : Option<IEnumerable<Option<T>>>.None;
+        public Option<IEnumerable<IOption>> ToIOption() => HasValue ? _value.Cast<IOption>().ToOption() : Option<IEnumerable<IOption>>.None;
 
-        public Option<IEnumerable<Option<T>>> ToOption()  => HasValue ? _value.ToOption() : Option<IEnumerable<Option<T>>>.None;
-        public Option<IEnumerable<IOption>>   ToIOption() => HasValue ? _value.Cast<IOption>().ToOption() : Option<IEnumerable<IOption>>.None;
 
-        
         //public SeqOption<U> Map<U>( Func<T, U> func, U defaultValue ) => this.Match(func, defaultValue).Return();
 
         [Pure]
-        public Option<IEnumerable<T>> Lower() {
-            foreach (var enm in this) {
-                if (enm.Any(i => !i.HasValue))
-                    return Option<IEnumerable<T>>.None;
+        Option<IEnumerable<object>> ISeqOption.Lower()
+            {
+                foreach (var enm in Lower())
+                    return enm.Cast<object>().ToOption();
 
-                return enm.Select(v => v._value()).ToOption();
+                return Option<IEnumerable<object>>.None;
             }
 
-            return Option<IEnumerable<T>>.None;
-        }
-        
+
+        [Pure]
+        public Option<IEnumerable<T>> Lower()
+            {
+                foreach (var enm in this)
+                    return enm.Lower();
+
+                return Option<IEnumerable<T>>.None;
+            }
+
         [NotNull]
         [Pure]
         public IEnumerable<T> UnsafeLower() => this.Lower().ValueOrFail($"{this.T()}.UnsafeLower()");
@@ -106,9 +121,11 @@ namespace SharpPipe {
         public static SeqOption<T> None => new SeqOption<T>();
 
         #region Boilerplate
-        public IEnumerator<IEnumerable<Option<T>>> GetEnumerator() {
-            if (HasValue) yield return _value;
-        }
+
+        public IEnumerator<IEnumerable<Option<T>>> GetEnumerator()
+            {
+                if (HasValue) yield return _value;
+            }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -116,24 +133,29 @@ namespace SharpPipe {
             {
                 if (HasValue) yield return _value.Cast<IOption>();
             }
-        
 
-        public override int GetHashCode() {
-            unchecked {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ HasValue.GetHashCode();
+
+        public override int GetHashCode()
+            {
+                unchecked
+                    {
+                        return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ HasValue.GetHashCode();
+                    }
             }
-        }
 
         public bool Equals( SeqOption<T> other ) => Equals(_value, other._value) && HasValue == other.HasValue;
 
-        public bool Equals( IOption<IEnumerable<Option<T>>> other ) {
-            return Equals(_value, other._value() ) && HasValue == other.HasValue;
-        }
+        public bool Equals( IOption<IEnumerable<Option<T>>> other )
+            {
+                return Equals(_value, other._value()) && HasValue == other.HasValue;
+            }
 
-        public override bool Equals( object obj ) {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is SeqOption<T> && Equals((SeqOption<T>) obj);
-        }
+        public override bool Equals( object obj )
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                return obj is SeqOption<T> && Equals((SeqOption<T>) obj);
+            }
+
         #endregion
-    } 
+    }
 }

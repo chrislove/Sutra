@@ -35,8 +35,19 @@ namespace SharpPipe
         [Pure]
         public static IEnumerable<T> SelectNotEmpty<T>( [CanBeNull] this IEnumerable<IOption> enm ) 
             => enm?.Where(i => i.HasValue).Select(i => i.ValueOrFail()).Cast<T>();
+        
+        /// <summary>
+        /// Returns an empty option if at least one of the sequence values is empty.
+        /// </summary>
+        [Pure]
+        public static Option<IEnumerable<T>> Lower<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
+            {
+                if (enm.Any(i => !i.HasValue))
+                    return Option<IEnumerable<T>>.None;
 
-
+                return enm.Select(v => v.ValueOrFail()).ToOption();
+            }
+        
         [Pure]
         public static SeqOption<T> Return<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
             {

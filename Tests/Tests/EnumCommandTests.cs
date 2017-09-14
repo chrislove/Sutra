@@ -39,6 +39,7 @@ namespace SharpPipe.Tests {
         public void Test_Where() {
             string result = ABCSeq
                          | where | notequals("B")
+                         | where | (i => !i.Contains("B"))
                          | concat | !get;
             
             Assert.That(result, Is.EqualTo("AC"));
@@ -134,7 +135,7 @@ namespace SharpPipe.Tests {
                 void TestDelegate()
                     {
                         Seq<string> pipe = ABCSeq
-                                           | where | (i => !isEmpty)
+                                           | where | ( (string i) => !isEmpty)
                                            | fail | when | isempty;
                     }
 

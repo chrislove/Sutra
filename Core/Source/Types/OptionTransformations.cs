@@ -18,11 +18,5 @@ namespace SharpPipe {
         
         [NotNull]
         [Pure] public static Func<Option<T>, Option<U>> Map<T, U>   ( [CanBeNull] this Func<T, U> func ) => i => i.Map(func);
-
-        /// <summary>
-        /// Lowers every value of the enumerable to T
-        /// </summary>
-        [NotNull]
-        [Pure] public static IEnumerable<T> Lower<T>( [NotNull] this IEnumerable<Option<T>> enm ) => enm.Select(i => i.ValueOrFail());
     }
 }
