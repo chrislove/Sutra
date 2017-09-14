@@ -55,7 +55,7 @@ namespace SharpPipe.Tests {
         public void Test_NullInput_Fail_Throws() {
             void TestDelegate() {
                 var pipe = start.str.pipe
-                           | (string) null
+                           | null
                            | fail | when | isempty;
             }
 

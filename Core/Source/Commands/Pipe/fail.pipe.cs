@@ -40,19 +40,6 @@ namespace SharpPipe
     {
         internal DoFailIfPipe( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
 
-        /*
-        /// <summary>
-        /// Throws if predicate on the right evaluates to true.
-        /// </summary>
-        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
-            var pipe = (Pipe<T>)doFailIf.Pipe;
-            
-            if ( pipe.Option.Map(predicate).ValueOr(false) )
-                throw doFailIf.Exception;
-            
-            return pipe;
-        }*/
-
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
         /// </summary>
@@ -60,12 +47,27 @@ namespace SharpPipe
             {
                 var pipe = (Pipe<T>) doFailIf.Pipe;
 
-                Func<Exception> excFactory = () => predicate.TryGetException() ?? doFailIf.Exception;
+	            Exception ExcFactory() => predicate.TryGetException() ?? doFailIf.Exception;
 
-                if (predicate(pipe.Option)) throw excFactory();
+	            if (predicate(pipe.Option)) throw ExcFactory();
 
                 return pipe;
             }
+        
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
+	        var pipe = (Pipe<T>) doFailIf.Pipe;
+
+	        Exception ExcFactory() => predicate.TryGetException() ?? doFailIf.Exception;
+
+			foreach (var value in pipe.Option)
+				if (predicate(value)) throw ExcFactory();
+
+	        return pipe;
+        }
+        
 
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
