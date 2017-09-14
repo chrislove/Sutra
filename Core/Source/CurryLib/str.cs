@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using JetBrains.Annotations;
-using static SharpPipe.Commands.func.takes<string>;
+using static SharpPipe.FuncFactory.func.takes<string>;
 
 namespace SharpPipe {
     namespace CurryLib {

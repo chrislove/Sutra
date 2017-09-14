@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 
 namespace SharpPipe {
-    public static partial class Commands {
+    public static partial class FuncFactory {
         [PublicAPI]
         public static partial class func {
             [PublicAPI]

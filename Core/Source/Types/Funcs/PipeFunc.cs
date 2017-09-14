@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace SharpPipe
 {
-	public static partial class Commands {
+	public static partial class FuncFactory {
 		/// <summary>
 		/// Pipe factory.
 		/// </summary>
@@ -37,10 +37,22 @@ namespace SharpPipe
 		/// <summary>
 		/// Use this operator to invoke the function.
 		/// </summary>
+		//public TOut this[ [CanBeNull] TIn invalue, TOut defaultOut ] => i => Lower()(i);
 		public Option<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
-
 		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
+
+		public Func<TIn, TOut> Lower( TOut defaultOut )
+			{
+				var @this = this;
+				return i => @this.Func(i.ToOption()).ValueOr(defaultOut);
+			}
 		
+		public Func<Option<TIn>, TOut> LowerOut( TOut defaultOut )
+			{
+				var @this = this;
+				return i => @this.Func(i).ValueOr(defaultOut);
+			}
+
 		/// <summary>
 		/// Returns the contained function.
 		/// </summary>
@@ -49,7 +61,8 @@ namespace SharpPipe
 		
 		[NotNull]
 		public static implicit operator Func<Option<TIn>, Option<TOut>>( PipeFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
-		public static implicit operator PipeFunc<TIn, TOut>( [NotNull] Func<TIn, TOut> func ) => Commands.func.takes<TIn>.from(func);
+		public static implicit operator PipeFunc<TIn, TOut>( [NotNull] Func<TIn, TOut> func ) => new PipeFunc<TIn, TOut>(func);
+		public static implicit operator PipeFunc<TIn, TOut>( [NotNull] Func<Option<TIn>, Option<TOut>> func ) => new PipeFunc<TIn, TOut>(func);
 
 
 		/// <summary>

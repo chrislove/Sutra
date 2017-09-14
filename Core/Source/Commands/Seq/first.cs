@@ -16,6 +16,6 @@ namespace SharpPipe {
     public struct DoFirst {}
     
     public partial struct Seq<T> {
-        public static Pipe<T> operator |( Seq<T> seq, DoFirst _ ) => seq ^ (enm => enm.First());
+        public static Pipe<T> operator |( Seq<T> seq, DoFirst _ ) => seq | (enm => enm.First());
     }
 }

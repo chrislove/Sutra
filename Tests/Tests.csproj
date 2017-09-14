@@ -48,11 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\SeqCommandAddTests.cs" />
+    <Compile Include="Tests\PipeFailTests.cs" />
+    <Compile Include="Tests\PipeFuncInteroperabilityTests.cs" />
     <Compile Include="Tests\SeqCommandTests.cs" />
     <Compile Include="Tests\SeqPipeTests.cs" />
     <Compile Include="Tests\ConversionTests.cs" />
-    <Compile Include="Tests\IfTests.cs" />
+    <Compile Include="Tests\WhenTests.cs" />
     <Compile Include="Tests\OptionPipeTests.cs" />
     <Compile Include="Tests\PipeTests.cs" />
     <Compile Include="Tests\FailTests.cs" />

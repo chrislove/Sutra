@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 using SharpPipe.CurryLib;
 using static SharpPipe.Commands;
+using static SharpPipe.FuncFactory;
 
 namespace SharpPipe.Tests  {
 	[TestFixture]

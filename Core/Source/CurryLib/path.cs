@@ -1,6 +1,6 @@
 using System.IO;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static SharpPipe.FuncFactory;
 
 namespace SharpPipe {
     namespace CurryLib {

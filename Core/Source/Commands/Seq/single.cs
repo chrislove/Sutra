@@ -17,6 +17,6 @@ namespace SharpPipe {
     
     public partial struct Seq<T> {
         public static Pipe<T> operator |( Seq<T> seq, DoSingle _ )
-            => seq ^ (enm => enm.Single());
+            => seq | (enm => enm.Single());
     }
 }

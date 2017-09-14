@@ -60,7 +60,6 @@
     <Compile Include="Source\Commands\Seq\collect.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />
     <Compile Include="Source\Commands\Seq\fail.seq.cs" />
-    <Compile Include="Source\Commands\not.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\map.cs" />
     <Compile Include="Source\Commands\when.cs" />

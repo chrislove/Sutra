@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
+using static SharpPipe.FuncFactory;
 using static SharpPipe.CurryLib.str;
 
 // ReSharper disable SuggestVarOrType_Elsewhere
@@ -13,7 +13,7 @@ namespace SharpPipe.Tests {
         private static PipeFunc<int, string> ConvertToString => func.integer.from(i => i.ToString());
 
         [Test]
-        public void Test_Pipe_Action() {
+        public void Test_Seq_Action() {
             var pipe = start.integer.seq
                 | add | Enumerable.Range(0, 3)
                 | ConvertToString
@@ -22,20 +22,6 @@ namespace SharpPipe.Tests {
 
             const string expectedOutput = "012";
             Assert.That(WriteOutput, Is.EqualTo(expectedOutput));
-        }
-
-        [Test]
-        public void Test_FuncComposition() {
-            IEnumerable<string> GetSeqA( string i ) => Enumerable.Repeat(i, 2);
-            IEnumerable<string> GetSeqB( string i ) => Enumerable.Repeat(i, 3);
-
-            string enumPipeStr = start.str.seq
-                                 | add | GetSeqA("A")
-                                 | add | GetSeqB("B")
-                                 | concat
-                                 | !get;
-
-            Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
         }
 
         [Test]
@@ -50,7 +36,7 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_Foreach() {
+        public void Test_Iter() {
             var pipe = ABCSeq
                        | iter | write;
 

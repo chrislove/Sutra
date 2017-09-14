@@ -7,9 +7,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptyPipe_DoesntThrow_OnGet() {
             void TestDelegate() {
-                var pipe = start.str.pipe
-                           | (string) null
-                           | get;
+                Option<string> option = start.str.pipe
+                                        | (string) null
+                                        | get;
             }
             
             Assert.That(TestDelegate, Throws.Nothing);
@@ -18,9 +18,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptyPipe_Throws_OnGetValue() {
             void TestDelegate() {
-                var pipe = start.str.pipe
-                           | (string) null
-                           | !get;
+                string str = start.str.pipe
+                             | (string) null
+                             | !get;
             }
             
             Assert.That(TestDelegate, Throws.TypeOf<EmptyOptionException>());
@@ -29,9 +29,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptySeq_DoesntThrow_OnGet() {
             void TestDelegate() {
-                var pipe = start.str.seq
-                           | (IEnumerable<string>) null
-                           | get;
+                SeqOption<string> seq = start.str.seq
+                                        | (IEnumerable<string>) null
+                                        | get;
             }
             
             Assert.That(TestDelegate, Throws.Nothing);
@@ -40,9 +40,9 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptySeq_Throws_OnGetValue() {
             void TestDelegate() {
-                var pipe = start.str.seq
-                           | (IEnumerable<string>) null
-                           | !get;
+                IEnumerable<Option<string>> seq = start.str.seq
+                                                  | (IEnumerable<string>) null
+                                                  | !get;
             }
             
             Assert.That(TestDelegate, Throws.TypeOf<EmptyOptionException>());

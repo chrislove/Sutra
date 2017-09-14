@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public static partial class Commands {
+    public static partial class FuncFactory {
         public static partial class func {
             [PublicAPI]
             public partial class takes<TIn> {

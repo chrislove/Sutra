@@ -82,7 +82,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Transforms sequence into a pipe.
 		/// </summary>
-		[Pure] public static Pipe<T> operator ^(Seq<T> seq, [NotNull] Func<IEnumerable<Option<T>>, Option<T>> func) {
+		[Pure] public static Pipe<T> operator |(Seq<T> seq, [NotNull] Func<IEnumerable<Option<T>>, Option<T>> func) {
 			foreach (var value in seq.Option)
 				return start<T>.pipe | func(value);
 

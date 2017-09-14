@@ -84,7 +84,7 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_Append_NewPipe() {
+        public void Test_Append_Enumerable() {
             string result = start.str.seq | ABCArray
                          | add | "D" | "E" | "F"
                          | concat | !get;
@@ -141,5 +141,20 @@ namespace SharpPipe.Tests {
 
                 ThrowAssert<EmptySequenceException>(TestDelegate, shouldThrow);
         }
+        
+        [Test]
+        public void Test_ADD_IEnumerable() {
+                var defEnumerable = new[] {"D", "E", "F"}.Select(i => i);
+                var xyzPipe       = start.str.seq | new[] {"X", "Y", "Z"};
+
+
+                var result = ABCSeq
+                             | add | defEnumerable
+                             | add | new[] {"G", "H", "I"}
+                             | add | xyzPipe
+                             | concat | !get;
+            
+                Assert.That(result, Is.EqualTo("ABCDEFGHIXYZ"));
+            }
     }
 }

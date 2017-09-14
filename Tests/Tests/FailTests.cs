@@ -11,7 +11,7 @@ namespace SharpPipe.Tests
             {
                 void TestDelegate()
                     {
-                        Seq<string> pipe = ABCSeq
+                        Seq<string> seq = ABCSeq
                                            | add | (string) null
                                            | where | notempty
                                            | fail | when | any(isempty);
@@ -25,7 +25,7 @@ namespace SharpPipe.Tests
             {
                 void TestDelegate()
                     {
-                        Seq<string> pipe = ABCSeq
+                        Seq<string> seq = ABCSeq
                                            | add | (string) null
                                            | failwith("TEST") | when | any(isempty);
                         ;
@@ -39,7 +39,7 @@ namespace SharpPipe.Tests
             {
                 void TestDelegate()
                     {
-                        Seq<string> pipe = ABCSeq
+                        Seq<string> seq = ABCSeq
                                            | add | (string) null
                                            | fail | new PipeUserException("TEST") | when | any(isempty);
                     }
@@ -48,23 +48,11 @@ namespace SharpPipe.Tests
             }
 
         [Test]
-        public void Test_Pipe_Throw_NonConditional()
-            {
-                void TestDelegate()
-                    {
-                        Pipe<string> pipe = TestPipe
-                                            | fail | when | (() => true);
-                    }
-
-                Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
-            }
-
-        [Test]
         public void Test_Seq_Throw_NonConditional()
             {
                 void TestDelegate()
                     {
-                        Seq<string> pipe = ABCSeq
+                        Seq<string> seq = ABCSeq
                                            | fail | when | (() => true);
                     }
 
@@ -77,23 +65,10 @@ namespace SharpPipe.Tests
             {
                 void TestDelegate()
                     {
-                        Seq<string> pipe = ABCSeq
+                        Seq<string> seq = ABCSeq
                                            | fail | when | any(equals(ifInput));
                     }
 
-                ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
-            }
-
-        [TestCase("TE", false)]
-        [TestCase("AB", true)]
-        public void Test_Pipe_When_Throws(string instr, bool shouldThrow)
-            {
-                void TestDelegate()
-                    {
-                        Pipe<string> pipe = TestPipe
-                                            | fail | when | not( str.Contains(instr) );
-                    }
-                
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
             }
     }
