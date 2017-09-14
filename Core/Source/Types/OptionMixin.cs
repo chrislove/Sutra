@@ -25,13 +25,44 @@ namespace SharpPipe {
         [NotNull]
         public static T ValueOr<T>(this IOption<T> option, [NotNull] T alternative ) => option._value() != null && option.HasValue ? option._value() : alternative;
 
-        //[CanBeNull]
-        //public static T ValueOrDefault<T>(this IOption<T> option) => option.ValueOr(default(T));
-        
         [NotNull]
         public static T ValueOrFail<T>(this IOption<T> option) => option._value() != null && option.HasValue ? option._value() : throw EmptyOptionException.For<T>();
 
         [NotNull]
         public static T ValueOrFail<T>(this IOption<T> option, string failMessage ) => option._value() != null && option.HasValue ? option._value() : throw new EmptyOptionException(failMessage);
     }
+    
+    public static class NonGenericOptionMixin {
+        internal static object _value(this IOption option ) => ((IOptionValue) option).BoxedValue;
+        
+        [CanBeNull]
+        public static object Match(this IOption option,  Func<object, object> some, Func<object> none ) => option.HasValue ? some(option._value()) : none();
+        
+        [CanBeNull]
+        public static object Match(this IOption option, Func<object, object> some, object none ) => option.HasValue ? some(option._value()) : none;
+
+        /// <summary>
+        /// Matches any value - whether valid or invalid.
+        /// </summary>
+        [CanBeNull]
+        public static object MatchAny(this IOption option, Func<object, object> func ) => func(option._value());
+        
+        /// <summary>
+        /// Matches any value - whether valid or invalid.
+        /// </summary>
+        public static void MatchAny(this IOption option, Action<object> act ) => act(option._value());
+
+        [NotNull]
+        public static object ValueOr(this IOption option, [NotNull] object alternative ) => option._value() != null && option.HasValue ? option._value() : alternative;
+
+        [NotNull]
+        public static object ValueOrFail( this IOption option ) => option._value() != null && option.HasValue
+                                                                       ? option._value()
+                                                                       : throw new EmptyOptionException("IOption");
+
+        [NotNull]
+        public static object ValueOrFail(this IOption option, string failMessage ) => option._value() != null && option.HasValue ? option._value() : throw new EmptyOptionException(failMessage);
+    }
+    
+    
 }

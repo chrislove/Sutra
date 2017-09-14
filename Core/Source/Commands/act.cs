@@ -10,7 +10,7 @@ namespace SharpPipe {
         /// </summary>
         public static DoAct act => new DoAct();
     }
-    
+
     /// <summary>
     /// Command marker.
     /// </summary>

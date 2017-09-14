@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
@@ -33,7 +34,10 @@ namespace SharpPipe {
 
         internal DoWhere( Seq<T> pipe ) => Seq = pipe;
 
-        public static Seq<T> operator |( DoWhere<T> where, [NotNull] Func<T, bool> predicate )
-                    => where.Seq | (enm => enm.Where(predicate));
+        public static Seq<T> operator |( DoWhere<T> cmd, [NotNull] Func<IOption, bool> predicate )
+        {
+            Func<IEnumerable<IOption>, IEnumerable<Option<T>>> func = enm => enm.Where(predicate).Cast<Option<T>>();
+            return cmd.Seq.Map(func);
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Use this operator to invoke the function.
 		/// </summary>
-		public TOut this[ [CanBeNull] TIn invalue ] => Func.Lower()(invalue);
+		public Option<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
 
 		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
 		

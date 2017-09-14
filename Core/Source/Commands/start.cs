@@ -98,6 +98,6 @@ namespace SharpPipe {
         /// <summary>
         /// Initializes a sequence with enumerable option on the right
         /// </summary>
-        public static Seq<T> operator |( DoStartSeq<T> _, EnmOption<T> option ) => new Seq<T>(option);
+        public static Seq<T> operator |( DoStartSeq<T> _, SeqOption<T> option ) => new Seq<T>(option);
     }
 }

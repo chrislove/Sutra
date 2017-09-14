@@ -56,10 +56,10 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = start.str.pipe
                            | (string) null
-                           | fail | when | isnull;
+                           | fail | when | isempty;
             }
 
-            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+            Assert.That(TestDelegate, Throws.TypeOf<EmptyPipeException>());
         }
     }
 }

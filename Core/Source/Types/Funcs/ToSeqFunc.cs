@@ -7,7 +7,7 @@ namespace SharpPipe {
     public static partial class Commands {
         public static partial class func {
             public partial class takes<TIn> {
-                public static ToSeqFunc<TIn, TOut> toseq<TOut>( [NotNull] Func<TIn, IEnumerable<TOut>> func ) => new ToSeqFunc<TIn, TOut>(func.Lift());
+                public static ToSeqFunc<TIn, TOut> toseq<TOut>( [NotNull] Func<TIn, IEnumerable<TOut>> func ) => new ToSeqFunc<TIn, TOut>(func.ToSeqBind());
             }
         }
     }
@@ -20,32 +20,27 @@ namespace SharpPipe {
         /// Inner function
         /// </summary>
         [PublicAPI]
-        [NotNull] public Func<Option<TIn>, EnmOption<TOut>> Func { get; }
+        [NotNull] public Func<Option<TIn>, SeqOption<TOut>> Func { get; }
 
         /// <summary>
         /// Use this operator to invoke the function.
         /// </summary>
-        [CanBeNull] [PublicAPI] public IEnumerable<TOut> this[ [CanBeNull] TIn invalue ] => Func.Lower()(invalue);
-        public EnmOption<TOut> this[ Option<TIn> invalue ] => Func(invalue);
+        [PublicAPI] public SeqOption<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
+        public SeqOption<TOut> this[ Option<TIn> invalue ] => Func(invalue);
         
-        internal ToSeqFunc([NotNull] Func<Option<TIn>, EnmOption<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+        internal ToSeqFunc([NotNull] Func<Option<TIn>, SeqOption<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
         
         
         /// <summary>
         /// Returns the contained function.
         /// </summary>
         [NotNull]
-        public static Func<Option<TIn>, EnmOption<TOut>> operator !( ToSeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
+        public static Func<Option<TIn>, SeqOption<TOut>> operator !( ToSeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
 
         
         /// <summary>
         /// Transforms pipe to a sequence using function on the right.
         /// </summary>
-        public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) {
-            foreach (var value in pipe.Option)
-                return start<TOut>.seq | func[value];
-
-            return Seq<TOut>.SkipSeq;
-        }
+        public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) => start<TOut>.seq | func[pipe.Option];
     }
 }

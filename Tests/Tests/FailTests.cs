@@ -4,24 +4,12 @@ using static SharpPipe.Commands;
 namespace SharpPipe.Tests {
     public sealed class ThrowTests : TestBase {
         [Test]
-        public void Test_Seq_Null_Throws() {
-            void TestDelegate() {
-                var pipe = ABCSeq
-                           | add
-                           | (string) null
-                           | fail | whenany | isnull;
-            }
-
-            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
-        }
-        
-        [Test]
         public void Test_Null_Filtered_DoesntThrow() {
             void TestDelegate() {
                 var pipe = ABCSeq
                            | add   | (string) null
-                           | where | notnull
-                           | fail  | whenany | isnull;
+                           | where | notempty
+                           | fail  | when | any(isempty);
             }
 
             Assert.That(TestDelegate, Throws.Nothing);
@@ -32,7 +20,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ABCSeq
                            | add  | (string) null
-                           | failwith("TEST") | whenany | isnull;
+                           | failwith("TEST") | when | any(isempty);
                 ;
             }
 
@@ -44,7 +32,7 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 var pipe = ABCSeq
                            | add  | (string) null
-                           | fail | new PipeUserException("TEST") | whenany | isnull;
+                           | fail | new PipeUserException("TEST") | when | any(isempty);
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
@@ -75,7 +63,7 @@ namespace SharpPipe.Tests {
         public void Test_ThrowIf(string ifInput, bool shouldThrow) {
             void TestDelegate() {
                 var pipe = ABCSeq
-                           | fail | whenany | equals(ifInput);
+                           | fail | when | any(equals(ifInput));
             }
             
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);

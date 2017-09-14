@@ -37,5 +37,15 @@ namespace SharpPipe {
 		/// </summary>
 		[NotNull]
 		public static Type T<U>([CanBeNull] this U _) => typeof(U);
+
+		[CanBeNull]
+		public static Type GetFirstGenericArg( [NotNull] this Type type )
+			{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+				if (!type.IsGenericType)
+					throw new SharpPipeException($"Type {type} isn't generic.");
+				
+				return type.GenericTypeArguments[0];
+			}
 	}
 }

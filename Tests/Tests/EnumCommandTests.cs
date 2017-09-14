@@ -21,9 +21,9 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Conversion() {
-            var enumerable = Enumerable.Repeat("A", 3);
+            IEnumerable<string> enumerable = Enumerable.Repeat("A", 3);
 
-            var pipe = start.str.seq
+            Seq<string> pipe = start.str.seq
                        | add | enumerable;
 
             string str        = pipe | concat     | !get;
@@ -106,13 +106,13 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                var pipe = start.str.seq
+                Seq<string> pipe = start.str.seq
                            | add   | ""
                            | where | notequals("")
                            | fail  | when | isempty;
             }
 
-            Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+            Assert.That(TestDelegate, Throws.TypeOf<EmptySequenceException>());
         }
         
         [TestCase(true, new string[0])]
@@ -120,9 +120,9 @@ namespace SharpPipe.Tests {
         [TestCase(false, new []{"A"})]
         public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
             void TestDelegate() {
-                var emptyPipe = start.str.seq
+                Seq<string> emptyPipe = start.str.seq
                                 | add  | testStrings
-                                | fail | when | isnotsingle;
+                                | fail | when | notsingle;
             }
 
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
@@ -131,13 +131,14 @@ namespace SharpPipe.Tests {
         [TestCase(true, true)]
         [TestCase(false, false)]
         public void Test_NotEmpty(bool isEmpty, bool shouldThrow) {
-            void TestDelegate() {
-                var pipe = ABCSeq
-                           | where | (i => !isEmpty)
-                           | notempty;
-            }
+                void TestDelegate()
+                    {
+                        Seq<string> pipe = ABCSeq
+                                           | where | (i => !isEmpty)
+                                           | fail | when | isempty;
+                    }
 
-            ThrowAssert<EmptyPipeException>(TestDelegate, shouldThrow);
+                ThrowAssert<EmptySequenceException>(TestDelegate, shouldThrow);
         }
     }
 }

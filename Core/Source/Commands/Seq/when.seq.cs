@@ -20,16 +20,20 @@ namespace SharpPipe {
         protected internal DoWhenSeq( Seq<T> pipe ) : base(pipe) {}
 
         [NotNull]
-        public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<EnmOption<T>, bool> predicate )
+        public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<SeqOption<T>, bool> predicate )
             => new DoWhenSeqWithPredicate<T>(doWhen, predicate);
-        
+
+        [NotNull]
+        public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<IEnumerable<IOption>, bool> predicate )
+            => doWhen | predicate.ToSeqFold<T, bool>(false);
+
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<IEnumerable<T>, bool> predicate )
-            => new DoWhenSeqWithPredicate<T>(doWhen, predicate.LiftIn());
+            => doWhen | predicate.ToSeqFold(false);
 
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<bool> predicate )
-            => new DoWhenSeqWithPredicate<T>(doWhen, predicate);
+            => doWhen | ( (SeqOption<T> _) => predicate());
     }
 
     /// <summary>
@@ -37,10 +41,10 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoWhenSeqWithPredicate<T> : DoWhenSeq<T> {
-        internal readonly Func<EnmOption<T>, bool> Predicate;
+        internal readonly Func<SeqOption<T>, bool> Predicate;
 
-        internal DoWhenSeqWithPredicate( DoWhenSeq<T> doWhen, Func<EnmOption<T>, bool> predicate ) : base(doWhen) => Predicate = predicate;
-        internal DoWhenSeqWithPredicate( DoWhenSeq<T> doWhen, Func<bool> predicate )                 : base(doWhen) => Predicate = _ => predicate();
+        internal DoWhenSeqWithPredicate( DoWhenSeq<T> doWhen, Func<SeqOption<T>, bool> predicate ) : base(doWhen)   => Predicate = predicate;
+        
         protected internal DoWhenSeqWithPredicate( DoWhenSeqWithPredicate<T> doWhen )                         : base(doWhen) => Predicate = doWhen.Predicate;
 
         [NotNull]
@@ -80,7 +84,7 @@ namespace SharpPipe {
             foreach (var enm in seq.Option) {
                 // ReSharper disable PossibleMultipleEnumeration
                 if (doSelectPipe.Predicate(seq.Option))
-                    return start<T>.seq | enm.Select(func.Lift());
+                    return start<T>.seq | enm.Select(func.Map());
                 // ReSharper restore PossibleMultipleEnumeration
             }
             

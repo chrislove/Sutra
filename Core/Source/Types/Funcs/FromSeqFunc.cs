@@ -12,12 +12,12 @@ namespace SharpPipe {
                 /// Creates a function converting a sequence to a pipe.
                 /// </summary>
                 public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<IEnumerable<TIn>, TOut> func )
-                                                    => new FromSeqFunc<TIn, TOut>(func.Lift());
+                                                    => new FromSeqFunc<TIn, TOut>(func.ToSeqFold());
                 
                 /// <summary>
                 /// Creates a function converting a sequence to a pipe.
                 /// </summary>
-                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<EnmOption<TIn>, Option<TOut>> func )
+                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<SeqOption<TIn>, Option<TOut>> func )
                                                     => new FromSeqFunc<TIn, TOut>(func);
             }
         }
@@ -31,21 +31,22 @@ namespace SharpPipe {
         /// Inner function
         /// </summary>
         [PublicAPI]
-        [NotNull] public Func<EnmOption<TIn>, Option<TOut>> Func { get; }
+        [NotNull] public Func<SeqOption<TIn>, Option<TOut>> Func { get; }
         
         /// <summary>
         /// Use this operator to invoke the function.
         /// </summary>
         [PublicAPI]
-        public TOut this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func.Lower()(invalue);
-        public Option<TOut> this[ EnmOption<TIn> invalue ] => Func(invalue);
-        internal FromSeqFunc([NotNull] Func<EnmOption<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+        public Option<TOut> this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func(invalue.DblReturn());
+        public Option<TOut> this[ SeqOption<TIn> invalue ] => Func(invalue);
+        
+        internal FromSeqFunc([NotNull] Func<SeqOption<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
   
         /// <summary>
         /// Returns the contained function.
         /// </summary>
         [NotNull]
-        public static Func<EnmOption<TIn>, Option<TOut>> operator !( FromSeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
+        public static Func<SeqOption<TIn>, Option<TOut>> operator !( FromSeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;
 
         
         /// <summary>

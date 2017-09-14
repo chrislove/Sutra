@@ -48,7 +48,7 @@ namespace SharpPipe
 		/// <summary>
 		/// Returns sequence contents.
 		/// </summary>
-		public static EnmOption<T> operator |( Seq<T> seq, DoGet _ ) => seq.Option;
+		public static SeqOption<T> operator |( Seq<T> seq, DoGet _ ) => seq.Option;
 		
 		/// <summary>
 		/// Returns sequence contents.

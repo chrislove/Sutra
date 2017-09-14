@@ -6,6 +6,7 @@ using static SharpPipe.Commands;
 
 
 namespace SharpPipe {
+    /*
     public static partial class Commands {
         /// <summary>
         /// Throws an exception if the underlying sequence collection is empty
@@ -24,5 +25,5 @@ namespace SharpPipe {
             var exception = EmptyPipeException.For<Seq<T>>();
             return seq | fail | exception | when | (Func<IEnumerable<T>, bool>) isempty;
         }
-    }
+    }*/
 }

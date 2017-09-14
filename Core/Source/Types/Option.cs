@@ -5,10 +5,11 @@ using JetBrains.Annotations;
 
 namespace SharpPipe {
     [PublicAPI]
-    public struct Option<T> : IOption<T>, IOptionValue<T> {
+    public struct Option<T> : ISimpleOption<T>, IOptionValue<T> {
         public bool HasValue { get; }
 
         [CanBeNull] T IOptionValue<T>.Value => _value;
+        [CanBeNull] object IOptionValue.BoxedValue => _value;
 
         private readonly T _value;
         
@@ -18,7 +19,7 @@ namespace SharpPipe {
         }
 
         public Option<U> Map<U>( Func<T, U> func ) => HasValue ? func(_value).ToOption() : Option<U>.None;
-        public Option<U> Map<U>(Func<T, U> func, U defaultValue ) => this.Match(func, defaultValue).ToOption();
+        public Option<U> Map<U>( Func<T, U> func, U defaultValue ) => this.Match(func, defaultValue).ToOption();
         
         public static Option<T> None => new Option<T>();
         
@@ -29,10 +30,8 @@ namespace SharpPipe {
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         
-        public bool Equals( IOption<T> other ) {
-            return HasValue == other.HasValue && EqualityComparer<T>.Default.Equals(_value, other._value());
-        }
-
+        public bool Equals( IOption<T> other ) => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, other._value());
+        public bool Equals( IOption other )    => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, (T)other._value());
         public bool Equals( T other )          => HasValue == (other != null) && EqualityComparer<T>.Default.Equals(_value, other);
 
         public override bool Equals( object obj ) {
@@ -46,8 +45,11 @@ namespace SharpPipe {
             }
         }
 
-        public static bool operator ==( Option<T> lhs, Option<T> rhs ) => lhs.Equals(rhs);
-        public static bool operator !=( Option<T> lhs, Option<T> rhs ) => !(lhs == rhs);
+        public static bool operator ==( Option<T> lhs, IOption rhs )   => lhs.Equals(rhs);
+        public static bool operator !=( Option<T> lhs, IOption rhs ) => !(lhs == rhs);
+        
+        public static bool operator ==( Option<T> lhs, T rhs ) => lhs.Equals(rhs);
+        public static bool operator !=( Option<T> lhs, T rhs ) => !(lhs == rhs);
         #endregion
     } 
 }
