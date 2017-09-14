@@ -15,8 +15,5 @@ namespace SharpPipe {
         /// </summary>
         [CanBeNull]
         [Pure] public static IEnumerable<Option<T>> Return<T>( [CanBeNull] this IEnumerable<T> enm ) => enm?.Select(i => i.ToOption());
-        
-        [NotNull]
-        [Pure] public static Func<Option<T>, Option<U>> Map<T, U>   ( [CanBeNull] this Func<T, U> func ) => i => i.Map(func);
     }
 }

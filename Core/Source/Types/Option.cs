@@ -31,7 +31,7 @@ namespace SharpPipe {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         
         public bool Equals( IOption<T> other ) => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, other._value());
-        public bool Equals( IOption other )    => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, (T)other._value());
+        public bool Equals( IOption other )    => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, (T)other.BoxedValue());
         public bool Equals( T other )          => HasValue == (other != null) && EqualityComparer<T>.Default.Equals(_value, other);
 
         public override bool Equals( object obj ) {

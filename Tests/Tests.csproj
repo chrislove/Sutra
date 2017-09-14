@@ -48,16 +48,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\PipeFailTests.cs" />
-    <Compile Include="Tests\PipeFuncInteroperabilityTests.cs" />
-    <Compile Include="Tests\SeqCommandTests.cs" />
-    <Compile Include="Tests\SeqPipeTests.cs" />
+    <Compile Include="Tests\Pipe\PipeFailTests.cs" />
+    <Compile Include="Tests\Pipe\PipeFuncInteroperabilityTests.cs" />
+    <Compile Include="Tests\Pipe\PipeSkipTests.cs" />
+    <Compile Include="Tests\Pipe\PipeTests.cs" />
     <Compile Include="Tests\ConversionTests.cs" />
+    <Compile Include="Tests\Seq\SeqCommandTests.cs" />
+    <Compile Include="Tests\Seq\SeqPipeTests.cs" />
+    <Compile Include="Tests\Seq\EmptySeqTests.cs" />
     <Compile Include="Tests\WhenTests.cs" />
     <Compile Include="Tests\OptionPipeTests.cs" />
-    <Compile Include="Tests\PipeTests.cs" />
     <Compile Include="Tests\FailTests.cs" />
-    <Compile Include="Tests\SkipTests.cs" />
     <Compile Include="Util\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>

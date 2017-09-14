@@ -41,17 +41,8 @@ namespace SharpPipe
 		public Option<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
 		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
 
-		public Func<TIn, TOut> Lower( TOut defaultOut )
-			{
-				var @this = this;
-				return i => @this.Func(i.ToOption()).ValueOr(defaultOut);
-			}
-		
-		public Func<Option<TIn>, TOut> LowerOut( TOut defaultOut )
-			{
-				var @this = this;
-				return i => @this.Func(i).ValueOr(defaultOut);
-			}
+		public Func<TIn, TOut> Lower( TOut defaultOut ) => Func.Lower(defaultOut);
+		public Func<Option<TIn>, TOut> LowerOut( TOut defaultOut ) => Func.LowerOut(defaultOut);
 
 		/// <summary>
 		/// Returns the contained function.
@@ -70,11 +61,13 @@ namespace SharpPipe
 		/// </summary>
 		public static Pipe<TOut> operator |( Pipe<TIn> pipe, PipeFunc<TIn, TOut> func ) => pipe.Map(func.Func);
 
+		/*
 		/// <summary>
 		/// Transforms every value in a sequence.
 		/// </summary>
 		public static Seq<TOut> operator |( Seq<TIn> seq, PipeFunc<TIn, TOut> func ) => seq.Map(v => v.Select(func.Func));
-
+*/
+		
 		/*
 		public static Pipe<TOut> operator |( DoBind<TOut> doBind, PipeFunc<TIn, TOut> func ) {
 			return doBind._seq.Map(enm => enm.SelectMany(func.Func));

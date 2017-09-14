@@ -19,16 +19,4 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoMap { }
-
-    public partial struct PipeFunc<TIn, TOut> {
-        /// <summary>
-        /// Projects each element of a sequence into a new form.
-        /// </summary>
-        public static Seq<TOut> operator |( DoMapSeq<TIn> doMap, PipeFunc<TIn, TOut> func ) {
-            foreach (var value in doMap.Seq.Option)
-                return start<TOut>.seq | value.Select(func.Func);
-
-            return Seq<TOut>.SkipSeq;
-        }
-    }
 }

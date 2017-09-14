@@ -25,16 +25,21 @@ namespace SharpPipe
                 return new SeqOption<T>(enm);
             }
 
-        [CanBeNull] [Pure]
+        [Pure] [CanBeNull]
         public static IEnumerable<IOption> ToIOption<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
             {
                 return enm?.Cast<IOption>();
             }
 
-        [ContractAnnotation("null => null; notnull => notnull")]
         [Pure]
-        public static IEnumerable<T> SelectNotEmpty<T>( [CanBeNull] this IEnumerable<IOption> enm ) 
-            => enm?.Where(i => i.HasValue).Select(i => i.ValueOrFail()).Cast<T>();
+        [ContractAnnotation("null => null; notnull => notnull")]
+        public static IEnumerable<T> SelectNotEmpty<T>( [CanBeNull] this IEnumerable<IOption> enm )
+            => enm.Cast<Option<T>>().SelectNotEmpty();
+        
+        [Pure]
+        [ContractAnnotation("null => null; notnull => notnull")]
+        public static IEnumerable<T> SelectNotEmpty<T>( [CanBeNull] this IEnumerable<Option<T>> enm ) 
+            => enm?.Where(i => i.HasValue).Select(i => i.ValueOrFail());
         
         /// <summary>
         /// Returns an empty option if at least one of the sequence values is empty.
@@ -69,37 +74,32 @@ namespace SharpPipe
                 return enm.Return().Return();
             }
 
-        [NotNull]
-        [Pure]
+        [Pure] [NotNull]
         public static Func<Option<T>, SeqOption<U>> ToSeqBind<T, U>( [CanBeNull] this Func<T, IEnumerable<U>> func )
             {
                 return i => i.Map(func).Return();
             }
 
-        [NotNull]
-        [Pure]
+        [Pure] [NotNull]
         public static Func<SeqOption<T>, Option<U>> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func )
             {
                 return seq => seq.Fold(i => func(i).ToOption());
             }
 
 
-        [NotNull]
-        [Pure]
+        [Pure] [NotNull]
         public static Func<SeqOption<T>, U> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func, U defaultU )
             {
                 return seq => func.ToSeqFold<T, U>()(seq).ValueOr(defaultU);
             }
 
-        [NotNull]
-        [Pure]
+        [Pure] [NotNull]
         public static Func<SeqOption<T>, Option<U>> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<T>, U> func )
             {
                 return seq => seq.Fold(i => func(i).ToOption());
             }
 
-        [NotNull]
-        [Pure]
+        [Pure] [NotNull]
         public static Func<SeqOption<T>, U> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<T>, U> func, U defaultU )
             {
                 return seq => func.ToSeqFold()(seq).ValueOr(defaultU);

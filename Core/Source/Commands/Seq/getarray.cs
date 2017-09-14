@@ -6,8 +6,9 @@ using static SharpPipe.Commands;
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
-        /// Converts the contents of sequence into T[] and returns.
+        /// Converts the contents of sequence into T[] and returns. Unsafe.
         /// </summary>
+        /// <exception cref="EmptySequenceException"></exception>
         public static DoReturnArray getarray => new DoReturnArray();
     }
     
@@ -19,9 +20,10 @@ namespace SharpPipe {
 
     public partial struct Seq<T> {
         /// <summary>
-        /// Converts pipe contents into TOut[] and returns.
+        /// Converts pipe contents into TOut[] and returns. Unsafe.
         /// </summary>
+        /// <exception cref="EmptySequenceException"></exception>
         [NotNull]
-        public static T[] operator |( Seq<T> seq, DoReturnArray _ ) => (seq | !!get).ToArray();
+        public static T[] operator |( Seq<T> seq, DoReturnArray _ ) => (seq | !!!get).ToArray();
     }
 }

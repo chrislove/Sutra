@@ -104,6 +104,9 @@ namespace SharpPipe
             }
 
 
+        /// <summary>
+        /// Returns sequence contents if all are non-empty, otherwise none. Safe.
+        /// </summary>
         [Pure]
         public Option<IEnumerable<T>> Lower()
             {

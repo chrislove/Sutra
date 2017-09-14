@@ -41,7 +41,7 @@ namespace SharpPipe {
             => seq =>
                    {
                        foreach (IEnumerable<IOption> enm in seq)
-                           return enm.Cast<Option<T>>().Any<Option<T>>( predicate.LowerOut(false) );
+                           return enm.Cast<Option<T>>().Any( predicate.LowerOut(false) );
 
                        return false; //Empty
                    };

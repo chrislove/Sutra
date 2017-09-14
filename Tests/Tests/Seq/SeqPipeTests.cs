@@ -16,7 +16,7 @@ namespace SharpPipe.Tests {
         public void Test_Seq_Action() {
             var pipe = start.integer.seq
                 | add | Enumerable.Range(0, 3)
-                | ConvertToString
+                | map | ConvertToString
                 | concat
                 | act | write;
 

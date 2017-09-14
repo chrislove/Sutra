@@ -47,12 +47,10 @@ namespace SharpPipe {
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
         public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) {
-            foreach (var enm in doIterate._seq.Option) {
-                Action<Option<T>> liftedAction = i => action(i.ValueOrFail($"{doIterate._seq.T()} | iter"));
-                return (() => enm.ForEach(liftedAction)) | unit;
-            }
+            foreach (var enm in doIterate._seq.Option)
+                return ( () => enm.SelectNotEmpty().ForEach(action) ) | unit;
 
-            return unit;
+                return unit;
         }
     }
 }

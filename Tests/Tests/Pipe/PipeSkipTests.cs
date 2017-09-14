@@ -2,7 +2,7 @@
 using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests {
-    public sealed class SkipTests : TestBase {
+    public sealed class PipeSkipTests : TestBase {
         [Test]
         public void Test_NullInput_ReturnsEmptyOption() {
             var pipe = start.str.pipe
@@ -33,7 +33,7 @@ namespace SharpPipe.Tests {
                        | (i => i + "TEST2")
                        | act | writeoption;
 
-            Assert.That(WriteOutput, Is.EqualTo("!"));
+            Assert.That(WriteOutput, Is.EqualTo("NONE"));
         }
         
         [Test]

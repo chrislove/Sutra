@@ -14,6 +14,10 @@ namespace SharpPipe.Tests {
         
         protected Seq<string>                 ABCSeq      => start.str.seq  | ABCArray;
         protected Pipe<string>                TestPipe    => start.str.pipe | "TEST";
+
+        protected static Seq<string> EmptyTestSeq => start.str.seq
+                                                   | add | (string) null
+                                                   | add | "TEST";
         
         protected string WriteOutput;
 
@@ -21,7 +25,7 @@ namespace SharpPipe.Tests {
         public void BaseSetup() => WriteOutput = "";
 
         [NotNull] protected Action<string> write               => i => WriteOutput += i.To<string>("Write");
-        [NotNull] protected Action<Option<string>> writeoption => i => WriteOutput += i.Match(s => s, "!");
+        [NotNull] protected Action<Option<string>> writeoption => i => WriteOutput += i.ValueOr("NONE");
 
         protected static void ThrowAssert<TException>(TestDelegate testDelegate, bool shouldThrow, [CanBeNull] string message = null) where TException : Exception {
             if (shouldThrow) {

@@ -23,7 +23,7 @@ namespace SharpPipe.Tests {
                              | !get;
             }
             
-            Assert.That(TestDelegate, Throws.TypeOf<EmptyOptionException>());
+            Assert.That(TestDelegate, Throws.TypeOf<EmptyPipeException>());
         }
 
         [Test]
@@ -42,10 +42,10 @@ namespace SharpPipe.Tests {
             void TestDelegate() {
                 IEnumerable<Option<string>> seq = start.str.seq
                                                   | (IEnumerable<string>) null
-                                                  | !get;
+                                                  | !!get;
             }
             
-            Assert.That(TestDelegate, Throws.TypeOf<EmptyOptionException>());
+            Assert.That(TestDelegate, Throws.TypeOf<EmptySequenceException>());
         }
     }
 }
