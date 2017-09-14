@@ -9,7 +9,6 @@ namespace SharpPipe
     {
         public static Unit unit => new Unit();
 
-
         [NotNull] public static Func<IOption, bool> notempty => i => !isempty(i);
 
         [NotNull] public static Func<ISeqOption, bool> issingle
@@ -23,6 +22,7 @@ namespace SharpPipe
         
         [NotNull] public static Func<ISeqOption, bool> notsingle => seq => !issingle(seq);
 
+        public static Func<T, bool> not<T>( Func<T, bool> func ) => i => !func(i);
 
         [NotNull]
         public static Func<IOption, bool> equals<T>( Option<T> obj ) => i => obj == i;

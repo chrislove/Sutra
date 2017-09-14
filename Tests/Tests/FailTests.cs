@@ -84,14 +84,14 @@ namespace SharpPipe.Tests
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
             }
 
-        [TestCase("TE", true)]
-        [TestCase("AB", false)]
+        [TestCase("TE", false)]
+        [TestCase("AB", true)]
         public void Test_Pipe_When_Throws(string instr, bool shouldThrow)
             {
                 void TestDelegate()
                     {
                         Pipe<string> pipe = TestPipe
-                                            | fail | when | str.Contains(instr);
+                                            | fail | when | not( str.Contains(instr) );
                     }
                 
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
