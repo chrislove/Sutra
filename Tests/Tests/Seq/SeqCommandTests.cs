@@ -77,7 +77,7 @@ namespace SharpPipe.Tests {
             IEnumerable<string> func( string str ) => Enumerable.Repeat(str, 3);
             
             string result = ABCSeq
-                         | bind | func
+                         | collect | func
                          | concat  | !get;
             
             Assert.That(result, Is.EqualTo("AAABBBCCC"));

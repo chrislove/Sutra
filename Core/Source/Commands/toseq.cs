@@ -4,8 +4,6 @@ using System.ComponentModel;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
-
-
 namespace SharpPipe {
     public static partial class Commands {
         /// <summary>
@@ -13,10 +11,10 @@ namespace SharpPipe {
         /// </summary>
         public static class to {
             /// <summary>
-            /// Converts Pipe to sequence
+            /// Converts pipe to sequence.
             /// </summary>
             [PublicAPI]
-            public static DoTransformToSeq seq => new DoTransformToSeq();
+            public static DoTransformToSeq<TIn, TOut> seq<TIn, TOut>(Func<TIn, IEnumerable<TOut>> func) => new DoTransformToSeq<TIn, TOut>(func);
         }
     }
     
@@ -24,30 +22,12 @@ namespace SharpPipe {
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoTransformToSeq { }
+    public struct DoTransformToSeq<TIn, TOut> {
+        private readonly ToSeqFunc<TIn, TOut> _func;
 
-    public partial struct Pipe<T> {
-        public static DoTransformToSeq<T> operator |( Pipe<T> pipe, DoTransformToSeq _ )
-            => new DoTransformToSeq<T>( pipe );
-    }
-    
-    /// <summary>
-    /// Command marker.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoTransformToSeq<T> {
-        private readonly Pipe<T> _pipe;
+        internal DoTransformToSeq( [NotNull] Func<TIn, IEnumerable<TOut>> func ) => _func = func ?? throw new ArgumentNullException(nameof(func));
 
-        internal DoTransformToSeq( Pipe<T> pipe ) => _pipe = pipe;
-
-        /// <summary>
-        /// Transforms pipe to sequence using a function on the right.
-        /// </summary>
-        public static Seq<T> operator |( DoTransformToSeq<T> doTransform, [NotNull] Func<T, IEnumerable<T>> func ) {
-            foreach (var value in doTransform._pipe.Option)
-                return start<T>.seq | func(value);
-
-            return Seq<T>.SkipSeq;
-        }
+        public static Seq<TOut> operator |( Pipe<TIn> pipe, DoTransformToSeq<TIn, TOut> toSeq )
+            => start<TOut>.seq | toSeq._func[pipe.Option];
     }
 }

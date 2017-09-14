@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -16,19 +17,21 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_Pipe_ToEnumerable() {
-            IEnumerable<string> converter( string str ) => Enumerable.Range(0, 3).Select(i => str + i);
+            Func<int, IEnumerable<string>> converter = inval => Enumerable.Range(0, 3)
+                                                                        .Select(i => inval + i)
+                                                                        .Select(i => i.ToString());
 
-            string result = start.str.pipe | "IN"
-                            | to.seq | converter
+            string result = start.integer.pipe | 100
+                            | to.seq(converter)
                             | str.join(";") | !get;
             
-            Assert.That(result, Is.EqualTo("IN0;IN1;IN2"));
+            Assert.That(result, Is.EqualTo("100;101;102"));
         }
         
         [Test]
         public void Test_Array_ToEnumerable() {
             string result = start.str.seq | ABCArray
-                            | str.concat | !get;
+                            | str.concat  | !get;
             
             Assert.That(result, Is.EqualTo("ABC"));
         }

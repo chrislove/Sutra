@@ -46,8 +46,6 @@
     <Compile Include="Source\Commands\act.cs" />
     <Compile Include="Source\Commands\any.cs" />
     <Compile Include="Source\Commands\end.cs" />
-    <Compile Include="Source\Commands\ExceptionFactory.cs" />
-    <Compile Include="Source\Commands\FunctionExceptionMixin.cs" />
     <Compile Include="Source\Commands\isempty.cs" />
     <Compile Include="Source\Commands\Pipe\fail.pipe.cs" />
     <Compile Include="Source\Commands\Pipe\when.pipe.cs" />
@@ -57,7 +55,7 @@
     <Compile Include="Source\Commands\Command.cs" />
     <Compile Include="Source\Commands\Seq\notempty.cs" />
     <Compile Include="Source\Commands\Seq\when.seq.cs" />
-    <Compile Include="Source\Commands\Seq\collect.cs" />
+    <Compile Include="Source\Commands\Seq\bind.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />
     <Compile Include="Source\Commands\Seq\fail.seq.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
@@ -78,6 +76,8 @@
     <Compile Include="Source\Exceptions\EmptyOptionException.cs" />
     <Compile Include="Source\Exceptions\EmptyPipeException.cs" />
     <Compile Include="Source\Exceptions\EmptySequenceException.cs" />
+    <Compile Include="Source\Exceptions\ExceptionFactory.cs" />
+    <Compile Include="Source\Exceptions\FunctionExceptionMixin.cs" />
     <Compile Include="Source\Exceptions\NullFunctionException.cs" />
     <Compile Include="Source\Exceptions\NullPipeException.cs" />
     <Compile Include="Source\Exceptions\PipeCommandException.cs" />

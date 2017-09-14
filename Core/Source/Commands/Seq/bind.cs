@@ -19,34 +19,29 @@ namespace SharpPipe {
         /// seq | bind | (i => Enumerable.Repeat(i, 3))
         /// </code>
         /// </example>
-        public static DoBind bind => new DoBind();
+        public static DoCollect collect => new DoCollect();
     }
 
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoBind { }
+    public struct DoCollect { }
     
     public partial struct Seq<T> {
-        public static DoBind<T> operator |( Seq<T> seq, DoBind _ ) => new DoBind<T>(seq);
+        public static DoCollect<T> operator |( Seq<T> seq, DoCollect _ ) => new DoCollect<T>(seq);
     }
-    
-    /*
-    public partial struct Pipe<T> {
-        public static DoBind<T> operator |( Pipe<T> pipe, DoBind _ ) => new DoBind<T>(pipe);
-    }*/
     
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoBind<T> {
-        internal readonly Seq<T> _seq;
+    public struct DoCollect<T> {
+        private readonly Seq<T> _seq;
 
-        internal DoBind( Seq<T> pipe ) => this._seq = pipe;
+        internal DoCollect( Seq<T> seq ) => _seq = seq;
 
-        public static Seq<T> operator |( DoBind<T> doSelect, [NotNull] Func<T, IEnumerable<T>> func )
+        public static Seq<T> operator |( DoCollect<T> doSelect, [NotNull] Func<T, IEnumerable<T>> func )
             => doSelect._seq | (enm => enm.SelectMany(func));
     }
 }
