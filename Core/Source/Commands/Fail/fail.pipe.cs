@@ -25,7 +25,7 @@ namespace SharpPipe
         // PIPE | fail '|' when
         [NotNull]
         public static DoFailIfPipe<T> operator |( DoFailPipe<T> doFail, DoWhen _ )
-            => new DoFailIfPipe<T>(doFail.Pipe, doFail.Exception);
+            => new DoFailIfPipe<T>(doFail.Pipe, doFail.UserException);
 
         [NotNull]
         public static DoFailPipe<T> operator |( DoFailPipe<T> doFail, [NotNull] Exception exc )
@@ -47,9 +47,7 @@ namespace SharpPipe
             {
                 var pipe = (Pipe<T>) doFailIf.Pipe;
 
-	            Exception ExcFactory() => predicate.TryGetException() ?? doFailIf.Exception;
-
-	            if (predicate(pipe.Option)) throw ExcFactory();
+                if (predicate(pipe.Option)) throw doFailIf.GetExceptionFor(predicate);
 
                 return pipe;
             }
@@ -60,10 +58,8 @@ namespace SharpPipe
         public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
 	        var pipe = (Pipe<T>) doFailIf.Pipe;
 
-	        Exception ExcFactory() => predicate.TryGetException() ?? doFailIf.Exception;
-
 			foreach (var value in pipe.Option)
-				if (predicate(value)) throw ExcFactory();
+				if (predicate(value)) throw doFailIf.GetExceptionFor(predicate);
 
 	        return pipe;
         }
@@ -77,7 +73,7 @@ namespace SharpPipe
                 var pipe = (Pipe<T>) doFailIf.Pipe;
 
                 if (predicate())
-                    throw doFailIf.Exception;
+                    throw doFailIf.GetExceptionFor(predicate);
 
                 return pipe;
             }

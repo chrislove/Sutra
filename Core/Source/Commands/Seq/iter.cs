@@ -1,9 +1,7 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
-using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
@@ -58,10 +56,5 @@ namespace SharpPipe
         /// Performs the action on the right for each non-empty element of the sequence.
         /// </summary>
         public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) => doIterate | action.Map();
-
-        /// <summary>
-        /// Performs the action on the right for each non-empty element of the sequence.
-        /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<object> action ) => doIterate | (( T i ) => action(i));
     }
 }

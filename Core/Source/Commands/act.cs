@@ -47,10 +47,5 @@ namespace SharpPipe
         /// Executes the action on the right.
         /// </summary>
         public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) => act.Map()(doAct._pipe.Option);
-
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
-        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<object> act ) => doAct | (( T i ) => act(i));
     }
 }

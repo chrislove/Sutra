@@ -44,12 +44,17 @@ namespace SharpPipe {
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoFail<T> : Command<T> {
-        internal readonly Exception Exception;
+        internal readonly Exception UserException;
+
+        [NotNull]
+        protected internal Exception GetExceptionFor( [CanBeNull] object exceptionSource = null )
+            {
+                return UserException ?? exceptionSource?.TryGetException() ?? new PipeCommandException("fail");
+            }
 
         internal DoFail( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe) {
-            if (exc != null)     Exception = exc;
-            else if (message != null) Exception = new PipeUserException(message);
-            else Exception = new PipeCommandException("fail");
+            if (exc != null)     UserException = exc;
+            else if (message != null) UserException = new PipeUserException(message);
         }
     }
 }

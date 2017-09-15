@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe
@@ -72,11 +71,6 @@ namespace SharpPipe
 
                 return doDebug._seq;
             }
-        
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
-        public static Seq<T> operator |( DoDebugSeq<T> doDebug, Action<object> action ) => doDebug | ( ( T i ) => action(i) );
     }
 
     /// <summary>
@@ -107,10 +101,5 @@ namespace SharpPipe
                 
                 return doDebug._pipe;
             }
-        
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
-        public static Pipe<T> operator |( DoDebugPipe<T> doDebug, [NotNull] Action<object> action ) => doDebug | ( ( T i ) => action(i) );
     }
 }

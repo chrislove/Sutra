@@ -20,12 +20,10 @@ namespace SharpPipe
     {
         internal DoFailSeq( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
 
-        // PIPE | fail '|' when
+        // seq | fail '|' when
         [NotNull]
         public static DoFailIfSeq<T> operator |( DoFailSeq<T> doFail, DoWhen _ )
-            => new DoFailIfSeq<T>(doFail.Pipe, doFail.Exception);
-
-        //[NotNull] public static DoFailIfAnySeq<T> operator |( DoFailSeq<T> doFail, DoWhenAny _ ) => new DoFailIfAnySeq<T>(doFail.Pipe, doFail.Exception);
+            => new DoFailIfSeq<T>(doFail.Pipe, doFail.UserException);
 
         /// <summary>
         /// Attaches exception to the fail command.
@@ -50,9 +48,7 @@ namespace SharpPipe
             {
                 Seq<T> seq = doFailIf.Pipe.ToSeq();
 
-                Func<Exception> excFactory = () => predicate.TryGetException() ?? doFailIf.Exception;
-
-                if (predicate(seq.Option)) throw excFactory();
+                 if (predicate(seq.Option)) throw doFailIf.GetExceptionFor(predicate);
 
                 return seq;
             }
@@ -62,7 +58,7 @@ namespace SharpPipe
         /// </summary>
         public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<bool> predicate )
             {
-                if (predicate()) throw doFailIf.Exception;
+                if (predicate()) throw doFailIf.GetExceptionFor(predicate);
 
                 return doFailIf.Pipe.ToSeq();
             }

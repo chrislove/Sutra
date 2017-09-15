@@ -47,8 +47,10 @@
     <Compile Include="Source\Commands\any.cs" />
     <Compile Include="Source\Commands\dbg.cs" />
     <Compile Include="Source\Commands\end.cs" />
+    <Compile Include="Source\Commands\Fail\fail.cs" />
+    <Compile Include="Source\Commands\Fail\fail.pipe.cs" />
+    <Compile Include="Source\Commands\Fail\fail.seq.cs" />
     <Compile Include="Source\Commands\isempty.cs" />
-    <Compile Include="Source\Commands\Pipe\fail.pipe.cs" />
     <Compile Include="Source\Commands\Pipe\when.pipe.cs" />
     <Compile Include="Source\Commands\Seq\iter.cs" />
     <Compile Include="Source\Commands\start.cs" />
@@ -58,11 +60,9 @@
     <Compile Include="Source\Commands\Seq\when.seq.cs" />
     <Compile Include="Source\Commands\Seq\bind.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />
-    <Compile Include="Source\Commands\Seq\fail.seq.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\map.cs" />
     <Compile Include="Source\Commands\when.cs" />
-    <Compile Include="Source\Commands\fail.cs" />
     <Compile Include="Source\Commands\Seq\add.cs" />
     <Compile Include="Source\Commands\Seq\distinct.cs" />
     <Compile Include="Source\Commands\Seq\map.seq.cs" />

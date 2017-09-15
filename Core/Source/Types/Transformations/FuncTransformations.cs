@@ -41,15 +41,6 @@ namespace SharpPipe.Transformations
                 return i => i.Map(func);
             }
         
-        /// <summary>
-        /// Lifts action to accept Option{T} parameter and return Unit.
-        /// </summary>
-        [Pure] [ContractAnnotation("null => null")]
-        public static Func<Option<T>, Unit> Map<T>( [CanBeNull] this Action<T> act )
-            {
-                return i => i.Match(act.ReturnsUnit(), unit);
-            }
-        
         
         /// <summary>
         /// Lifts unit function to accept SeqOption{T}.
@@ -57,15 +48,35 @@ namespace SharpPipe.Transformations
         [Pure] [ContractAnnotation("null => null")]
         public static Func<SeqOption<T>, Unit> Map<T>( [CanBeNull] this Func<Option<T>, Unit> func )
             {
-                Func<IEnumerable<Option<T>>, Unit> enmFunc = enm => enm.Select(func).Aggregate(( a, b ) => unit);
+                if (func == null) return null;
+                
+                Func<IEnumerable<Option<T>>, Unit> enmFunc = enm => enm.Select(func).Aggregate(unit, ( a, b ) => unit);
                 
                 return seq => enmFunc.Map()(seq).ValueOr(unit);
             }
         
-        public static Func<T, Unit> ReturnsUnit<T>([NotNull] this Action<T> act) => i =>
-                                                                                          {
-                                                                                              act(i);
-                                                                                              return unit;
-                                                                                          };
+        
+        /// <summary>
+        /// Lifts action to accept Option{T} parameter and return Unit.
+        /// </summary>
+        [Pure] [ContractAnnotation("null => null")]
+        public static Func<Option<T>, Unit> Map<T>( [CanBeNull] this Action<T> act )
+            {
+                if (act == null) return null;
+                
+                return i => i.Match(act.ReturnsUnit(), unit);
+            }
+        
+        [Pure] [ContractAnnotation("null => null")]
+        public static Func<T, Unit> ReturnsUnit<T>([CanBeNull] this Action<T> act)
+            {
+                if (act == null) return null;
+                
+                return i =>
+                           {
+                               act(i);
+                               return unit;
+                           };
+            }
     }
 }
