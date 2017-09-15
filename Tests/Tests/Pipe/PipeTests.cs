@@ -60,5 +60,16 @@ namespace SharpPipe.Tests  {
 			
 			Assert.That(combined, Is.EqualTo( Path.Combine(projectDirectory, inPath) ));
 		}
+
+		[Test]
+		public void Test_Or()
+			{
+				string str = start.str.pipe
+				           | (string) null
+				           | or | "ALT"
+				           | !get;
+				
+				Assert.That(str, Is.EqualTo("ALT"));
+			}
 	}
 }

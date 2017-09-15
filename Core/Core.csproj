@@ -45,12 +45,12 @@
     <Compile Include="Source\Annotations.cs" />
     <Compile Include="Source\Commands\act.cs" />
     <Compile Include="Source\Commands\any.cs" />
-    <Compile Include="Source\Commands\dbg.cs" />
     <Compile Include="Source\Commands\end.cs" />
     <Compile Include="Source\Commands\Fail\fail.cs" />
     <Compile Include="Source\Commands\Fail\fail.pipe.cs" />
     <Compile Include="Source\Commands\Fail\fail.seq.cs" />
     <Compile Include="Source\Commands\isempty.cs" />
+    <Compile Include="Source\Commands\Pipe\or.cs" />
     <Compile Include="Source\Commands\Pipe\when.pipe.cs" />
     <Compile Include="Source\Commands\Seq\iter.cs" />
     <Compile Include="Source\Commands\start.cs" />
