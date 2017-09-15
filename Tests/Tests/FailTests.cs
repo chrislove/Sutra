@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using SharpPipe.CurryLib;
 using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests

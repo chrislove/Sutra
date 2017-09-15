@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using SharpPipe.Transformations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests {

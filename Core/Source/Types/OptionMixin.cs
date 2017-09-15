@@ -38,6 +38,9 @@ namespace SharpPipe
         [NotNull]
         public static T ValueOrFail<T>( [NotNull] this IOption<T> option, Func<Exception> exceptionFactory )
             => option._value() != null && option.HasValue ? option._value() : throw exceptionFactory();
+
+        public static U Reduce<T, U>( this IOption<T> option, Func<IOption<T>, U> func )
+            => func(option);
     }
 
     public static class NonGenericOptionMixin

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 
 namespace SharpPipe
 {

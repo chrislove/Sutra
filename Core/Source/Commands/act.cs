@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe
@@ -45,7 +46,7 @@ namespace SharpPipe
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) => doAct._pipe.Option.Match(act.ReturnUnit(), unit);
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) => act.Map()(doAct._pipe.Option);
 
         /// <summary>
         /// Executes the action on the right.

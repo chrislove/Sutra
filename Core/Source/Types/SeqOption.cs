@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 
 namespace SharpPipe
 {
@@ -63,15 +64,14 @@ namespace SharpPipe
 
                 return SeqOption<U>.None;
             }
-
-
+        
         /// <summary>
         /// Folds the inner enumerable into a single option.
         /// </summary>
-        public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<IOption>, Option<U>> func )
+        public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<Option<T>>, Option<U>> func )
             {
                 foreach (var enm in this)
-                    return func(enm.Cast<IOption>());
+                    return func(enm);
 
                 return Option<U>.None;
             }
@@ -79,9 +79,19 @@ namespace SharpPipe
         /// <summary>
         /// Folds the inner enumerable into a single option.
         /// </summary>
+        public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<IOption>, Option<U>> func )
+            {
+                Func<IEnumerable<Option<T>>, Option<U>> transformedFunc = enm => func(enm.Cast<IOption>() );
+                
+                return Reduce( transformedFunc );
+            }
+
+        /// <summary>
+        /// Folds the inner enumerable into a single option.
+        /// </summary>
         public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<T>, Option<U>> func )
             {
-                foreach (var loweredEnm in Lower())
+                foreach (IEnumerable<T> loweredEnm in Lower())
                     return func(loweredEnm);
 
                 return Option<U>.None;

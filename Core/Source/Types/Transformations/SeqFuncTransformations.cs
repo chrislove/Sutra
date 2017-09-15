@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace SharpPipe.Transformations {
     public static class SeqFuncTransformations
     {
         [Pure] [NotNull]
@@ -10,13 +10,19 @@ namespace SharpPipe {
             {
                 return i => i.Map(func).Return();
             }
-
+        
         [Pure] [NotNull]
-        public static Func<SeqOption<T>, Option<U>> Map<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func )
+        public static Func<SeqOption<T>, Option<U>> Map<T, U>( [NotNull] this Func<IEnumerable<Option<T>>, U> func )
             {
                 return seq => seq.Reduce(i => func(i).ToOption());
             }
 
+        
+        [Pure] [NotNull]
+        public static Func<SeqOption<T>, Option<U>> Map<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func )
+            {
+                return Map( func.Cast().InTo<Option<T>>() );
+            }
 
         [Pure] [NotNull]
         public static Func<SeqOption<T>, U> Map<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func, U defaultU )

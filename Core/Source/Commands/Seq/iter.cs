@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe
@@ -35,12 +37,22 @@ namespace SharpPipe
         private readonly Seq<T> _seq;
 
         internal DoIterate( Seq<T> seq ) => _seq = seq;
+        
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Func<Option<T>, Unit> unitFunc )
+            {
+                return unitFunc.Map()(doIterate._seq.Option);
+            }
 
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
         public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action )
-            => doIterate._seq.Option.Match(enm => enm.ForEach(action), unit);
+            {
+                return doIterate | action.ReturnsUnit();
+            }
 
         /// <summary>
         /// Performs the action on the right for each non-empty element of the sequence.

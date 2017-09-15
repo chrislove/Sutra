@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
@@ -44,13 +45,20 @@ namespace SharpPipe
 
         internal DoDebugSeq( Seq<T> seq ) => _seq = seq;
 
+        public static Seq<T> operator |( DoDebugSeq<T> doDebug, [NotNull] Func<Option<T>, Unit> unitFunc )
+            {
+                Unit unit = doDebug._seq | iter | unitFunc;
+
+                return doDebug._seq;
+            }
+
+
         /// <summary>
         /// Performs the action on the right for each element of the sequence, and returns the sequence.
         /// </summary>
         public static Seq<T> operator |( DoDebugSeq<T> doDebug, [NotNull] Action<Option<T>> action )
             {
-                foreach (var enm in doDebug._seq.Option)
-                    enm.ForEach(action);
+                Unit unit = doDebug._seq | iter | action;
 
                 return doDebug._seq;
             }
@@ -60,9 +68,7 @@ namespace SharpPipe
         /// </summary>
         public static Seq<T> operator |( DoDebugSeq<T> doDebug, Action<T> action )
             {
-                foreach (var enm in doDebug._seq.Option)
-                    enm.Select(option => option.ValueOrFail())
-                       .ForEach(action);
+                Unit unit = doDebug._seq | iter | action;
 
                 return doDebug._seq;
             }
@@ -87,7 +93,7 @@ namespace SharpPipe
         /// </summary>
         public static Pipe<T> operator |( DoDebugPipe<T> doDebug, [NotNull] Action<Option<T>> action )
             {
-                action(doDebug._pipe.Option);
+                Unit unit = doDebug._pipe | act | action;
                 
                 return doDebug._pipe;
             }
@@ -97,10 +103,8 @@ namespace SharpPipe
         /// </summary>
         public static Pipe<T> operator |( DoDebugPipe<T> doDebug, [NotNull] Action<T> action )
             {
-                T value = doDebug._pipe.Option.ValueOrFail();
+                Unit unit = doDebug._pipe | act | action;
                 
-                action(value);
-
                 return doDebug._pipe;
             }
         

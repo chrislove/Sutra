@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
+using static SharpPipe.Commands;
 
-namespace SharpPipe
+namespace SharpPipe.Transformations
 {
     internal static class FuncTransformations
     {
@@ -38,38 +41,31 @@ namespace SharpPipe
                 return i => i.Map(func);
             }
         
-        /*
         /// <summary>
-        /// Lifts function to accept and return Option.
+        /// Lifts action to accept Option{T} parameter and return Unit.
         /// </summary>
         [Pure] [ContractAnnotation("null => null")]
-        public static Func<Option<T>, Option<U>> Map<T, U>   ( [CanBeNull] this Func<IEnumerable<T>, U> func )
+        public static Func<Option<T>, Unit> Map<T>( [CanBeNull] this Action<T> act )
             {
-                if (func == null) return null;
-                
-                return i => i.Map(func);
-            }*/
-
-        /// <summary>
-        /// Converts action into function returning Unit.
-        /// </summary>
-        [Pure]
-        [ContractAnnotation("null => null")]
-        public static Func<T, Unit> ReturnUnit<T>( [CanBeNull] this Action<T> act ) => i =>
-                                                                                        {
-                                                                                            act(i);
-                                                                                            return Commands.unit;
-                                                                                        };
-
-        /// <summary>
-        /// Lifts action to accept Option{T} parameter.
-        /// </summary>
-        [Pure] [ContractAnnotation("null => null")]
-        public static Action<Option<T>> Map<T>( [CanBeNull] this Action<T> act )
-            {
-                if (act == null) return null;
-                
-                return i => i.Map(act.ReturnUnit());
+                return i => i.Match(act.ReturnsUnit(), unit);
             }
+        
+        
+        /// <summary>
+        /// Lifts unit function to accept SeqOption{T}.
+        /// </summary>
+        [Pure] [ContractAnnotation("null => null")]
+        public static Func<SeqOption<T>, Unit> Map<T>( [CanBeNull] this Func<Option<T>, Unit> func )
+            {
+                Func<IEnumerable<Option<T>>, Unit> enmFunc = enm => enm.Select(func).Aggregate(( a, b ) => unit);
+                
+                return seq => enmFunc.Map()(seq).ValueOr(unit);
+            }
+        
+        public static Func<T, Unit> ReturnsUnit<T>([NotNull] this Action<T> act) => i =>
+                                                                                          {
+                                                                                              act(i);
+                                                                                              return unit;
+                                                                                          };
     }
 }

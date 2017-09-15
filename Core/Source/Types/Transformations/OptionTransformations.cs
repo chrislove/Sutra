@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
-    internal static class OptionTransformations {
+namespace SharpPipe.Transformations {
+    public static class OptionTransformations {
         /// <summary>
         /// Lifts a value to Option{T}
         /// </summary>

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using static SharpPipe.Commands;
-
-
-
-namespace SharpPipe {
+﻿namespace SharpPipe {
     /*
     public static partial class Commands {
         /// <summary>
