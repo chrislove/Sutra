@@ -41,7 +41,7 @@ namespace SharpPipe
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func )
             {
                 foreach (var enm in this)
-                    return func(enm).ToSeqOption();
+                    return func(enm).Map();
 
                 return SeqOption<U>.None;
             }
@@ -50,7 +50,7 @@ namespace SharpPipe
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<IOption>, IEnumerable<Option<U>>> func )
             {
                 foreach (var enm in this)
-                    return func(enm.ToIOption()).ToSeqOption();
+                    return func(enm.ToIOption()).Map();
 
                 return SeqOption<U>.None;
             }
@@ -59,7 +59,7 @@ namespace SharpPipe
             {
                 foreach (var enm in this)
                     foreach (IEnumerable<T> lowered in enm.Lower())
-                        return func(lowered).ToSeqOption();
+                        return func(lowered).Map();
 
                 return SeqOption<U>.None;
             }
@@ -68,7 +68,7 @@ namespace SharpPipe
         /// <summary>
         /// Folds the inner enumerable into a single option.
         /// </summary>
-        public Option<U> Fold<U>( [NotNull] Func<IEnumerable<IOption>, Option<U>> func )
+        public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<IOption>, Option<U>> func )
             {
                 foreach (var enm in this)
                     return func(enm.Cast<IOption>());
@@ -79,7 +79,7 @@ namespace SharpPipe
         /// <summary>
         /// Folds the inner enumerable into a single option.
         /// </summary>
-        public Option<U> Fold<U>( [NotNull] Func<IEnumerable<T>, Option<U>> func )
+        public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<T>, Option<U>> func )
             {
                 foreach (var loweredEnm in Lower())
                     return func(loweredEnm);
@@ -115,10 +115,6 @@ namespace SharpPipe
 
                 return Option<IEnumerable<T>>.None;
             }
-
-        [NotNull]
-        [Pure]
-        public IEnumerable<T> UnsafeLower() => this.Lower().ValueOrFail($"{this.T()}.UnsafeLower()");
 
 
         public static SeqOption<T> None => new SeqOption<T>();

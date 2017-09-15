@@ -12,7 +12,7 @@ namespace SharpPipe {
                 /// Creates a function converting a sequence to a pipe.
                 /// </summary>
                 public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<IEnumerable<TIn>, TOut> func )
-                                                    => new FromSeqFunc<TIn, TOut>(func.ToSeqFold());
+                                                    => new FromSeqFunc<TIn, TOut>(func.Map());
                 
                 /// <summary>
                 /// Creates a function converting a sequence to a pipe.

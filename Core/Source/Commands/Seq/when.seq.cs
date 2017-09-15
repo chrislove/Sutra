@@ -25,11 +25,11 @@ namespace SharpPipe {
 
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<IEnumerable<IOption>, bool> predicate )
-            => doWhen | predicate.ToSeqFold<T, bool>(false);
+            => doWhen | predicate.Map<T, bool>(false);
 
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<IEnumerable<T>, bool> predicate )
-            => doWhen | predicate.ToSeqFold(false);
+            => doWhen | predicate.Map(false);
 
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<bool> predicate )

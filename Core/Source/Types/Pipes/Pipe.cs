@@ -18,7 +18,7 @@ namespace SharpPipe {
         internal static Pipe<T> SkipPipe => new Pipe<T>(Option<T>.None);
 
         [Pure] internal Pipe<TOut> Map<TOut>([NotNull] Func<T, TOut> func) => start<TOut>.pipe | func.Map()(Option);
-        [Pure] internal Seq<TOut> Bind<TOut>([NotNull] Func<T, IEnumerable<TOut>> func) => start<TOut>.seq | func.ToSeqBind()(Option);
+        [Pure] internal Seq<TOut> Bind<TOut>([NotNull] Func<T, IEnumerable<TOut>> func) => start<TOut>.seq | func.Map()(Option);
 
         [Pure] internal Pipe<TOut> Map<TOut>([NotNull] Func<Option<T>, Option<TOut>> func)              => start<TOut>.pipe | func(Option);
         [Pure] internal Seq<TOut> Bind<TOut>([NotNull] Func<Option<T>, IEnumerable<Option<TOut>>> func) => start<TOut>.seq  | func(Option);

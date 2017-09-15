@@ -3,8 +3,10 @@ using System.ComponentModel;
 using JetBrains.Annotations;
 using static SharpPipe.Commands;
 
-namespace SharpPipe {
-    public static partial class Commands {
+namespace SharpPipe
+{
+    public static partial class Commands
+    {
         /// <summary>
         /// Performs an action on the contents of the pipe.
         /// </summary>
@@ -15,9 +17,10 @@ namespace SharpPipe {
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoAct {}
+    public struct DoAct { }
 
-    public partial struct Pipe<T> {
+    public partial struct Pipe<T>
+    {
         /// <summary>
         /// Sets up pipe action.
         /// </summary>
@@ -27,7 +30,8 @@ namespace SharpPipe {
     /// <summary>
     /// Command marker.
     /// </summary>
-    public struct DoAct<T> {
+    public struct DoAct<T>
+    {
         private readonly Pipe<T> _pipe;
 
         internal DoAct( Pipe<T> pipe ) => _pipe = pipe;
@@ -41,11 +45,11 @@ namespace SharpPipe {
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) {
-            foreach (var value in doAct._pipe.Option)
-                return (() => act(value)) | unit;
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<T> act ) => doAct._pipe.Option.Match(act.ReturnUnit(), unit);
 
-            return unit;
-        }
+        /// <summary>
+        /// Executes the action on the right.
+        /// </summary>
+        public static Unit operator |( DoAct<T> doAct, [NotNull] Action<object> act ) => doAct | (( T i ) => act(i));
     }
 }

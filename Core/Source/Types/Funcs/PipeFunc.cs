@@ -41,7 +41,7 @@ namespace SharpPipe
 		public Option<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
 		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
 
-		public Func<TIn, TOut> Lower( TOut defaultOut ) => Func.Lower(defaultOut);
+		public Func<TIn, TOut> Lower( TOut defaultOut ) => Func.Fold(defaultOut);
 		public Func<Option<TIn>, TOut> LowerOut( TOut defaultOut ) => Func.LowerOut(defaultOut);
 
 		/// <summary>

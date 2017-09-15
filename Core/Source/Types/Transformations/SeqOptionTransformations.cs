@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -11,7 +10,7 @@ namespace SharpPipe
         /// Lifts a value to Option{T}
         /// </summary>
         [Pure]
-        public static SeqOption<T> ToSeqOption<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
+        public static SeqOption<T> Map<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
             {
                 return new SeqOption<T>(enm);
             }
@@ -20,7 +19,7 @@ namespace SharpPipe
         /// Lifts a value to Option{T}
         /// </summary>
         [Pure]
-        public static SeqOption<T> ToSeqOption<T>( [CanBeNull] this IEnumerable<T> enm )
+        public static SeqOption<T> Map<T>( [CanBeNull] this IEnumerable<T> enm )
             {
                 return new SeqOption<T>(enm);
             }
@@ -72,37 +71,6 @@ namespace SharpPipe
         public static SeqOption<T> DblReturn<T>( [CanBeNull] this IEnumerable<T> enm )
             {
                 return enm.Return().Return();
-            }
-
-        [Pure] [NotNull]
-        public static Func<Option<T>, SeqOption<U>> ToSeqBind<T, U>( [CanBeNull] this Func<T, IEnumerable<U>> func )
-            {
-                return i => i.Map(func).Return();
-            }
-
-        [Pure] [NotNull]
-        public static Func<SeqOption<T>, Option<U>> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func )
-            {
-                return seq => seq.Fold(i => func(i).ToOption());
-            }
-
-
-        [Pure] [NotNull]
-        public static Func<SeqOption<T>, U> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func, U defaultU )
-            {
-                return seq => func.ToSeqFold<T, U>()(seq).ValueOr(defaultU);
-            }
-
-        [Pure] [NotNull]
-        public static Func<SeqOption<T>, Option<U>> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<T>, U> func )
-            {
-                return seq => seq.Fold(i => func(i).ToOption());
-            }
-
-        [Pure] [NotNull]
-        public static Func<SeqOption<T>, U> ToSeqFold<T, U>( [NotNull] this Func<IEnumerable<T>, U> func, U defaultU )
-            {
-                return seq => func.ToSeqFold()(seq).ValueOr(defaultU);
             }
     }
 }
