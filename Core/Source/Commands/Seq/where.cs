@@ -39,24 +39,15 @@ namespace SharpPipe
 
         internal DoWhere( Seq<T> pipe ) => Seq = pipe;
 
-        public static Seq<T> operator |( DoWhere<T> cmd, [NotNull] Func<IOption, bool> predicate )
+        public static Seq<T> operator |( DoWhere<T> doWhere, [NotNull] Func<IOption, bool> predicate )
             {
                 Func<IEnumerable<IOption>, IEnumerable<Option<T>>> func = enm => enm.Where(predicate).Cast<Option<T>>();
-                return cmd.Seq.Map(func);
+                return doWhere.Seq.Map(func);
             }
 
-        public static Seq<T> operator |( DoWhere<T> cmd, [NotNull] Func<T, bool> predicate )
+        public static Seq<T> operator |( DoWhere<T> doWhere, [NotNull] Func<T, bool> predicate )
             {
-                Func<IEnumerable<IOption>, IEnumerable<Option<T>>> func =
-                    enm =>
-                        {
-                            foreach (var lowered in enm.Cast<Option<T>>().Lower().Enm)
-                                return lowered.Where(predicate).Return();
-
-                            return enm.Cast<Option<T>>();
-                        };
-                
-                return cmd.Seq.Map(func);
+                return doWhere | predicate.Map().Cast().InTo<IOption>();
             }
     }
 }

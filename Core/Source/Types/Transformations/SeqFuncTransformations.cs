@@ -8,7 +8,7 @@ namespace SharpPipe.Transformations {
         [Pure] [NotNull]
         public static Func<Option<T>, SeqOption<U>> Map<T, U>( [NotNull] this Func<T, IEnumerable<U>> func )
             {
-                return i => i.Map(func).Return();
+                return option => option.Map(func).Return();
             }
         
         [Pure] [NotNull]
@@ -21,7 +21,7 @@ namespace SharpPipe.Transformations {
         [Pure] [NotNull]
         public static Func<SeqOption<T>, Option<U>> Map<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func )
             {
-                return Map( func.Cast().InTo<Option<T>>() );
+                return func.Cast().InTo<Option<T>>().Map();
             }
 
         [Pure] [NotNull]

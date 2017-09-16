@@ -97,21 +97,7 @@ namespace SharpPipe
             }
 
         public Option<IEnumerable<Option<T>>> ToOption() => HasValue ? _value.ToOption() : default;
-        public Option<IEnumerable<IOption>> ToIOption() => HasValue ? _value.Cast<IOption>().ToOption() : default;
-
-
-        //public SeqOption<U> Map<U>( Func<T, U> func, U defaultValue ) => this.Match(func, defaultValue).Return();
-
-        /*
-        [Pure]
-        Option<IEnumerable<object>> ISeqOption.Lower()
-            {
-                foreach (var enm in Lower().Enm)
-                    return enm.Cast<object>().ToOption();
-
-                return default;
-            }
-*/
+        public Option<IEnumerable<IOption>> ToIOption()  => HasValue ? _value.Cast<IOption>().ToOption() : default;
 
         /// <summary>
         /// Returns sequence contents if all are non-empty, otherwise none. Safe.

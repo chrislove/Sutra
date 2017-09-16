@@ -77,6 +77,7 @@
     <Compile Include="Source\Exceptions\EmptyOptionException.cs" />
     <Compile Include="Source\Exceptions\EmptyPipeException.cs" />
     <Compile Include="Source\Exceptions\EmptySequenceException.cs" />
+    <Compile Include="Source\Exceptions\ErrorManager.cs" />
     <Compile Include="Source\Exceptions\ExceptionFactory.cs" />
     <Compile Include="Source\Exceptions\NextException.cs" />
     <Compile Include="Source\Exceptions\NullFunctionException.cs" />
