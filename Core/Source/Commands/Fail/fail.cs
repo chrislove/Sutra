@@ -13,7 +13,7 @@ namespace SharpPipe {
         /// seq  | fail | whenany | equals(1);
         /// seq  | fail | new InvalidOperationException("Invalid Value") | whenany | equals(1);
         /// </code></example>
-        public static DoFail   fail     => new DoFail();
+        public static DoFail   fail     => new DoFail(null);
         
         /// <summary>
         /// Throws an exception with message if the condition on the right is met.
@@ -28,7 +28,10 @@ namespace SharpPipe {
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoFail {}
+    public struct DoFail
+    {
+        public DoFail( [CanBeNull] object obj ) => NextException.Reset();
+    }
 
     /// <summary>
     /// Command marker.
@@ -37,7 +40,11 @@ namespace SharpPipe {
     public struct DoFailWith {
         internal readonly string Message;
 
-        internal DoFailWith( [CanBeNull] string message ) => Message = message;
+        internal DoFailWith( [CanBeNull] string message )
+            {
+                NextException.Reset();
+                Message = message;
+            }
     }
     
     /// <summary>
@@ -50,11 +57,11 @@ namespace SharpPipe {
         [NotNull]
         private Exception GetExceptionFor( [CanBeNull] object exceptionSource = null )
             {
-                foreach (Exception exception in UserException.Enm)
-                    return exception;
-                
-                foreach (Exception exception in exceptionSource.TryGetException().Enm )
-                    return exception;
+                foreach (Exception exc in UserException.Enm)
+                    return exc;
+
+                foreach (Exception exc in NextException.Get().Enm)
+                    return exc;
 
                 return new PipeCommandException("fail");
             }

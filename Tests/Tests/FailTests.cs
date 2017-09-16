@@ -11,9 +11,9 @@ namespace SharpPipe.Tests
                 void TestDelegate()
                     {
                         Seq<string> seq = ABCSeq
-                                           | add | (string) null
+                                           | add   | (string) null
                                            | where | notempty
-                                           | fail | when | any(isempty);
+                                           | fail  | when | any(isempty);
                     }
 
                 Assert.That(TestDelegate, Throws.Nothing);

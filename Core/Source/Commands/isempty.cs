@@ -15,10 +15,9 @@ namespace SharpPipe
             {
                 get
                     {
-                        Func<IOption, bool> func = null;
-                        func = i =>
+                        return i =>
                                    {
-                                       func.AttachException(() => ExceptionFactory.IsEmpty(i));
+                                       NextException.SetFactory( () => ExceptionFactory.IsEmpty(i) );
 
                                        switch (i)
                                            {
@@ -35,8 +34,6 @@ namespace SharpPipe
                                                    throw new SharpPipeException($"isempty not implemented for {i.GetType()}");
                                            }
                                    };
-
-                        return func;
                     }
             }
     }

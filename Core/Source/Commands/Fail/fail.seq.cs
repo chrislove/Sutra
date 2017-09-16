@@ -60,10 +60,7 @@ namespace SharpPipe
         /// </summary>
         public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<bool> predicate )
             {
-                if (predicate())
-                    doFailIf.ThrowExceptionFor(predicate);
-
-                return doFailIf.Pipe.ToSeq();
+                return doFailIf | predicate.Cast().InTo<ISeqOption>();
             }
     }
 }

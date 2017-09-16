@@ -78,7 +78,7 @@
     <Compile Include="Source\Exceptions\EmptyPipeException.cs" />
     <Compile Include="Source\Exceptions\EmptySequenceException.cs" />
     <Compile Include="Source\Exceptions\ExceptionFactory.cs" />
-    <Compile Include="Source\Exceptions\FunctionExceptionMixin.cs" />
+    <Compile Include="Source\Exceptions\NextException.cs" />
     <Compile Include="Source\Exceptions\NullFunctionException.cs" />
     <Compile Include="Source\Exceptions\NullPipeException.cs" />
     <Compile Include="Source\Exceptions\PipeCommandException.cs" />
