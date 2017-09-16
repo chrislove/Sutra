@@ -18,7 +18,7 @@ namespace SharpPipe.Transformations {
             public EnmConverter( [NotNull] Func<IEnumerable<TIn>, TOut> func ) => _func = func ?? throw new ArgumentNullException(nameof(func));
 
             /// <summary>
-            /// Converts function's in parameter to a given type.
+            /// Casts function's in parameter to a given type.
             /// </summary>
             [NotNull]
             public Func<IEnumerable<TTo>, TOut> InTo<TTo>()
@@ -35,7 +35,7 @@ namespace SharpPipe.Transformations {
             public Converter( [NotNull] Func<TIn, TOut> func ) => _func = func ?? throw new ArgumentNullException(nameof(func));
 
             /// <summary>
-            /// Converts function's in parameter to a given type.
+            /// Casts function's in parameter to a given type.
             /// </summary>
             [NotNull]
             public Func<TTo, TOut> InTo<TTo>()

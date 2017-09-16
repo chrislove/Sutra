@@ -6,24 +6,6 @@ namespace SharpPipe.Transformations
 {
     public static class SeqOptionTransformations
     {
-        /// <summary>
-        /// Lifts a value to Option{T}
-        /// </summary>
-        [Pure]
-        public static SeqOption<T> Map<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
-            {
-                return new SeqOption<T>(enm);
-            }
-
-        /// <summary>
-        /// Lifts a value to Option{T}
-        /// </summary>
-        [Pure]
-        public static SeqOption<T> Map<T>( [CanBeNull] this IEnumerable<T> enm )
-            {
-                return new SeqOption<T>(enm);
-            }
-
         [Pure] [CanBeNull]
         public static IEnumerable<IOption> ToIOption<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
             {

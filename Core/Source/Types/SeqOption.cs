@@ -40,26 +40,20 @@ namespace SharpPipe
 
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func )
             {
-                foreach (var enm in this.Enm)
-                    return func(enm).Map();
-
-                return default;
+                return this.Match(func, default).Return();
             }
 
         [Pure]
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<IOption>, IEnumerable<Option<U>>> func )
             {
-                foreach (var enm in this.Enm)
-                    return func(enm.ToIOption()).Map();
-
-                return default;
+                return Map( func.Cast().InTo<Option<T>>() );
             }
 
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<T>, IEnumerable<U>> func )
             {
                 foreach (var enm in this.Enm)
                     foreach (IEnumerable<T> lowered in enm.Lower().Enm)
-                        return func(lowered).Map();
+                        return func(lowered).DblReturn();
 
                 return default;
             }
@@ -69,10 +63,7 @@ namespace SharpPipe
         /// </summary>
         public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<Option<T>>, Option<U>> func )
             {
-                foreach (var enm in this.Enm)
-                    return func(enm);
-
-                return default;
+                return this.Match(func, default(Option<U>));
             }
 
         /// <summary>
@@ -80,9 +71,7 @@ namespace SharpPipe
         /// </summary>
         public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<IOption>, Option<U>> func )
             {
-                Func<IEnumerable<Option<T>>, Option<U>> transformedFunc = enm => func(enm.Cast<IOption>() );
-                
-                return Reduce( transformedFunc );
+                return Reduce( func.Cast().InTo<Option<T>>() );
             }
 
         /// <summary>
@@ -90,10 +79,7 @@ namespace SharpPipe
         /// </summary>
         public Option<U> Reduce<U>( [NotNull] Func<IEnumerable<T>, Option<U>> func )
             {
-                foreach (IEnumerable<T> loweredEnm in Lower().Enm)
-                    return func(loweredEnm);
-
-                return default;
+                return Lower().Match(func, default(Option<U>));
             }
 
         public Option<IEnumerable<Option<T>>> ToOption() => HasValue ? _value.ToOption() : default;
@@ -105,10 +91,7 @@ namespace SharpPipe
         [Pure]
         public Option<IEnumerable<T>> Lower()
             {
-                foreach (var enm in this.Enm)
-                    return enm.Lower();
-
-                return default;
+                return this.Match(enm => enm.Lower(), default(Option<IEnumerable<T>>));
             }
 
 

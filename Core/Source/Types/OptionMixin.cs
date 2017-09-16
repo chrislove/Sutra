@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace SharpPipe
@@ -17,10 +18,20 @@ namespace SharpPipe
                 return option.HasValue ? some(option._value()) : none();
             }
 
-        [NotNull]
-        public static U Match<T, U>( [NotNull] this IOption<T> option, [NotNull] Func<T, U> some, [NotNull] U none )
+        [CanBeNull]
+        public static U Match<T, U>( [NotNull] this IOption<T> option, [NotNull] Func<T, U> some, [CanBeNull] U none )
             {
                 return option.Match(some, () => none);
+            }
+        
+        [CanBeNull]
+        public static IEnumerable<Option<U>> Match<T, U>( [NotNull] this ISeqOption<T> option,
+                                     [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> some, [CanBeNull]  IEnumerable<Option<U>> none )
+            {
+                if (option == null) throw new ArgumentNullException(nameof(option));
+                if (some == null) throw new ArgumentNullException(nameof(some));
+                
+                return option.HasValue ? some(option._value()) : none;
             }
 
         [NotNull]

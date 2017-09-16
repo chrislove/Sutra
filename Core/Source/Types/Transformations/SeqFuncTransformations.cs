@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe.Transformations {
@@ -40,6 +41,18 @@ namespace SharpPipe.Transformations {
         public static Func<SeqOption<T>, U> Map<T, U>( [NotNull] this Func<IEnumerable<T>, U> func, [NotNull] U defaultU )
             {
                 return seq => Map(func)(seq).ValueOr(defaultU);
+            }
+        
+        [Pure] [NotNull]
+        public static Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> Map<T, U>( [NotNull] this Func<Option<T>, Option<U>> func )
+            {
+                return enm => enm.Select(func);
+            }
+        
+        [Pure] [NotNull]
+        public static Func<SeqOption<T>, SeqOption<U>> Map<T, U>( [NotNull] this Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func )
+            {
+                return seq => seq.Match(func, default).Return();
             }
     }
 }

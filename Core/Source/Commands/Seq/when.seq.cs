@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
-using static SharpPipe.Commands;
 
-namespace SharpPipe {
-    public partial struct Seq<T> {
+namespace SharpPipe
+{
+    public partial struct Seq<T>
+    {
         [NotNull]
         public static DoWhenSeq<T> operator |( Seq<T> seq, DoWhen _ ) => new DoWhenSeq<T>(seq);
     }
@@ -16,9 +16,10 @@ namespace SharpPipe {
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoWhenSeq<T> : Command<T> {
-        protected DoWhenSeq( Command<T> doWhen ) : base(doWhen) {}
-        protected internal DoWhenSeq( Seq<T> pipe ) : base(pipe) {}
+    public class DoWhenSeq<T> : Command<T>
+    {
+        protected DoWhenSeq( Command<T> doWhen ) : base(doWhen) { }
+        protected internal DoWhenSeq( Seq<T> pipe ) : base(pipe) { }
 
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<SeqOption<T>, bool> predicate )
@@ -34,54 +35,50 @@ namespace SharpPipe {
 
         [NotNull]
         public static DoWhenSeqWithPredicate<T> operator |( [CanBeNull] DoWhenSeq<T> doWhen, [NotNull] Func<bool> predicate )
-            => doWhen | ( (SeqOption<T> _) => predicate());
+            => doWhen | (( SeqOption<T> _ ) => predicate());
     }
 
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoWhenSeqWithPredicate<T> : DoWhenSeq<T> {
+    public class DoWhenSeqWithPredicate<T> : DoWhenSeq<T>
+    {
         internal readonly Func<SeqOption<T>, bool> Predicate;
 
-        internal DoWhenSeqWithPredicate( DoWhenSeq<T> doWhen, Func<SeqOption<T>, bool> predicate ) : base(doWhen)   => Predicate = predicate;
-        
-        protected internal DoWhenSeqWithPredicate( DoWhenSeqWithPredicate<T> doWhen )                         : base(doWhen) => Predicate = doWhen.Predicate;
+        internal DoWhenSeqWithPredicate( DoWhenSeq<T> doWhen, Func<SeqOption<T>, bool> predicate ) : base(doWhen) => Predicate = predicate;
+
+        protected internal DoWhenSeqWithPredicate( DoWhenSeqWithPredicate<T> doWhen ) : base(doWhen) => Predicate = doWhen.Predicate;
 
         [NotNull]
         public static DoWhenSeqWithPredicateSelect<T> operator |( [CanBeNull] DoWhenSeqWithPredicate<T> doWhen, DoMap _ )
             => new DoWhenSeqWithPredicateSelect<T>(doWhen);
     }
-    
+
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DoWhenSeqWithPredicateSelect<T> : DoWhenSeqWithPredicate<T> {
-        internal DoWhenSeqWithPredicateSelect( [NotNull] DoWhenSeqWithPredicate<T> doWhen ) : base(doWhen) {}
-        
-        public static Seq<T> operator |( [NotNull] DoWhenSeqWithPredicateSelect<T> doSelectPipe, [NotNull] Func<Option<T>, Option<T>> func ) {
-            if (doSelectPipe == null) throw new ArgumentNullException(nameof(doSelectPipe));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+    public class DoWhenSeqWithPredicateSelect<T> : DoWhenSeqWithPredicate<T>
+    {
+        internal DoWhenSeqWithPredicateSelect( [NotNull] DoWhenSeqWithPredicate<T> doWhen ) : base(doWhen) { }
 
-            var seq = (Seq<T>) doSelectPipe.Pipe;
-            
-            if (doSelectPipe.Predicate(seq.Option))
-                return start<T>.seq | seq.Select(func);
-            
-            return seq;
-        }
-        
-        public static Seq<T> operator |( [NotNull] DoWhenSeqWithPredicateSelect<T> doSelectPipe, [NotNull] Func<T, T> func ) {
-            if (doSelectPipe == null) throw new ArgumentNullException(nameof(doSelectPipe));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+        /// <summary>
+        /// Transforms every element of the sequence using function on the right.
+        /// </summary>
+        public static Seq<T> operator |( [NotNull] DoWhenSeqWithPredicateSelect<T> doSelectPipe, [NotNull] Func<Option<T>, Option<T>> func )
+            {
+                if (doSelectPipe == null) throw new ArgumentNullException(nameof(doSelectPipe));
+                if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var seq = (Seq<T>) doSelectPipe.Pipe;
-            
-            if (doSelectPipe.Predicate(seq.Option))
-                return start<T>.seq | seq.Select(func.Map());
-            
-            return seq;
-        }
+                var seq = (Seq<T>) doSelectPipe.Pipe;
+
+                return doSelectPipe.Predicate(seq.Option) ? seq.Option.Map(func.Map()) : seq;
+            }
+
+        public static Seq<T> operator |( [NotNull] DoWhenSeqWithPredicateSelect<T> doSelectPipe, [NotNull] Func<T, T> func )
+            {
+                return doSelectPipe | func.Map();
+            }
     }
 }
