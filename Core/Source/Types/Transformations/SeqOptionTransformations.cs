@@ -29,16 +29,6 @@ namespace SharpPipe.Transformations
             {
                 return enm?.Cast<IOption>();
             }
-
-        [Pure]
-        [ContractAnnotation("null => null; notnull => notnull")]
-        public static IEnumerable<T> SelectNotEmpty<T>( [CanBeNull] this IEnumerable<IOption> enm )
-            => enm.Cast<Option<T>>().SelectNotEmpty();
-        
-        [Pure]
-        [ContractAnnotation("null => null; notnull => notnull")]
-        public static IEnumerable<T> SelectNotEmpty<T>( [CanBeNull] this IEnumerable<Option<T>> enm ) 
-            => enm?.Where(i => i.HasValue).Select(i => i.ValueOrFail());
         
         /// <summary>
         /// Returns an empty option if at least one of the sequence values is empty.
@@ -49,7 +39,7 @@ namespace SharpPipe.Transformations
                 if (enm.Any(i => !i.HasValue))
                     return default;
 
-                return enm.Select(v => v.ValueOrFail()).ToOption();
+                return enm.Select(option => option._value()).ToOption();
             }
         
         [Pure]

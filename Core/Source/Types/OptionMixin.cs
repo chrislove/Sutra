@@ -34,26 +34,6 @@ namespace SharpPipe
         /// <summary>
         /// Returns the contained value or fails.
         /// </summary>
-        /// <exception cref="EmptyOptionException"></exception>
-        [NotNull]
-        public static T ValueOrFail<T>( [NotNull] this IOption<T> option )
-            {
-                return option.ValueOrFail(EmptyOptionException.For<T>);
-            }
-
-        /// <summary>
-        /// Returns the contained value or fails.
-        /// </summary>
-        /// <exception cref="EmptyOptionException"></exception>
-        [NotNull]
-        public static T ValueOrFail<T>( [CanBeNull] this IOption<T> option, string failMessage )
-            {
-                return option.ValueOrFail(() => new EmptyOptionException(failMessage));
-            }
-
-        /// <summary>
-        /// Returns the contained value or fails.
-        /// </summary>
         [NotNull]
         public static T ValueOrFail<T>( [NotNull] this IOption<T> option, [NotNull] Func<Exception> exceptionFactory )
             {
