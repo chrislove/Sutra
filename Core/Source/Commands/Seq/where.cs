@@ -50,7 +50,7 @@ namespace SharpPipe
                 Func<IEnumerable<IOption>, IEnumerable<Option<T>>> func =
                     enm =>
                         {
-                            foreach (var lowered in enm.Cast<Option<T>>().Lower())
+                            foreach (var lowered in enm.Cast<Option<T>>().Lower().Enm)
                                 return lowered.Where(predicate).Return();
 
                             return enm.Cast<Option<T>>();

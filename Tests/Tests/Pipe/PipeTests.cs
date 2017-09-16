@@ -6,70 +6,76 @@ using SharpPipe.CurryLib;
 using static SharpPipe.Commands;
 using static SharpPipe.FuncFactory;
 
-namespace SharpPipe.Tests  {
-	[TestFixture]
-	public sealed class PipeTests : TestBase {
-		[NotNull]
-		private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
+namespace SharpPipe.Tests
+{
+    [TestFixture]
+    public sealed class PipeTests : TestBase
+    {
+        [NotNull]
+        private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
 
-		private static PipeFunc<DateTime, string> getshortdate => func.takes<DateTime>.from(d => d.ToShortDateString());
+        private static PipeFunc<DateTime, string> getshortdate => func.takes<DateTime>.from(d => d.ToShortDateString());
 
-		
-		private static Pipe<string> YesterdayPipe => start<DateTime>.pipe | DateTime.Now
-		                                             | AddDays(-1)
-		                                             | getshortdate
-		                                             | (i => "Yesterday: " + i);
 
-		[Test]
-		public void Test_Pipe_OUT() {
-			var yesterday   = YesterdayPipe | !get;
-			
-			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
-			Assert.That(yesterday, Is.EqualTo(expected));
-		}
-		
-		[Test]
-		public void Test_SharpFunc_Invoke() {
-			var nowDateTime = DateTime.Now;	
-			
-			var pipe = start<DateTime>.pipe | nowDateTime
-			           | when | (i => getshortdate[i] == nowDateTime.ToShortDateString()) | map | (i => nowDateTime)
-			           | !get;
-			
-			Assert.That(pipe, Is.EqualTo(nowDateTime));
-		}
+        private static Pipe<string> YesterdayPipe => start<DateTime>.pipe | DateTime.Now
+                                                     | AddDays(-1)
+                                                     | getshortdate
+                                                     | (i => "Yesterday: " + i);
 
-		[Test]
-		public void Test_Act() {
-			var pipe = YesterdayPipe
-			           | act | write;
-			
-			string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
-			Assert.That(WriteOutput, Is.EqualTo(expected) );
-		}
+        [Test]
+        public void Test_Pipe_OUT()
+            {
+                string yesterday = YesterdayPipe | !get;
 
-		[Test]
-		public void Test_Path() {
-			const string projectDirectory = @"C:\Project";
-			const string inPath = @"Library\Assembly.dll";
+                string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
+                Assert.That(yesterday, Is.EqualTo(expected));
+            }
 
-			string combined = start.str.pipe | inPath
-			                  | path.prepend(projectDirectory)
-			                  | path.getfullpath
-			                  | !get;
-			
-			Assert.That(combined, Is.EqualTo( Path.Combine(projectDirectory, inPath) ));
-		}
+        [Test]
+        public void Test_SharpFunc_Invoke()
+            {
+                DateTime nowDateTime = DateTime.Now;
 
-		[Test]
-		public void Test_Or()
-			{
-				string str = start.str.pipe
-				           | (string) null
-				           | or | "ALT"
-				           | !get;
-				
-				Assert.That(str, Is.EqualTo("ALT"));
-			}
-	}
+                DateTime pipe = start<DateTime>.pipe | nowDateTime
+                                | when | (i => getshortdate[i] == nowDateTime.ToShortDateString()) | map | (i => nowDateTime)
+                                | !get;
+
+                Assert.That(pipe, Is.EqualTo(nowDateTime));
+            }
+
+        [Test]
+        public void Test_Act()
+            {
+                Unit pipe = YesterdayPipe
+                           | act | write;
+
+                string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
+                Assert.That(WriteOutput, Is.EqualTo(expected));
+            }
+
+        [Test]
+        public void Test_Path()
+            {
+                const string projectDirectory = @"C:\Project";
+                const string inPath = @"Library\Assembly.dll";
+
+                string combined = start.str.pipe | inPath
+                                  | path.prepend(projectDirectory)
+                                  | path.getfullpath
+                                  | !get;
+
+                Assert.That(combined, Is.EqualTo(Path.Combine(projectDirectory, inPath)));
+            }
+
+        [Test]
+        public void Test_Or()
+            {
+                string str = start.str.pipe
+                             | (string) null
+                             | or | "ALT"
+                             | !get;
+
+                Assert.That(str, Is.EqualTo("ALT"));
+            }
+    }
 }

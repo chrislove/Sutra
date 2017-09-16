@@ -1,7 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using static SharpPipe.Commands;
-
 
 
 namespace SharpPipe {
@@ -20,14 +19,8 @@ namespace SharpPipe {
     
     public partial struct Seq<T> {
         /// <summary>
-        /// Pipe forward operator.
+        /// Selects distinct values from the sequence.
         /// </summary>
-        public static Seq<T> operator |( Seq<T> seq, DoDistinct _ ) {
-            foreach (var value in seq.Option) {
-                return start<T>.seq | value.Distinct();
-            }
-
-            return SkipSeq;
-        }
+        public static Seq<T> operator |( Seq<T> seq, DoDistinct _ ) => seq.Option.Map( ( IEnumerable<Option<T>> enm ) => enm?.Distinct() );
     }
 }

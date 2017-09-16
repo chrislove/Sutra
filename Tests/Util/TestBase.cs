@@ -15,9 +15,10 @@ namespace SharpPipe.Tests {
         protected Seq<string>                 ABCSeq      => start.str.seq  | ABCArray;
         protected Pipe<string>                TestPipe    => start.str.pipe | "TEST";
 
-        protected static Seq<string> EmptyTestSeq => start.str.seq
-                                                   | add | (string) null
-                                                   | add | "TEST";
+        protected static Seq<string> EmptyAndTestSeq => start.str.seq
+                                                        | add | (string) null
+                                                        | fail| when | isempty
+                                                        | add | "TEST";
         
         protected string WriteOutput;
 

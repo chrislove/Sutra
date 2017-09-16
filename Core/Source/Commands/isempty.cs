@@ -26,7 +26,7 @@ namespace SharpPipe
                                                    return !option.HasValue;
 
                                                case ISeqOption seq:
-                                                   foreach (IEnumerable<IOption> enm in seq)
+                                                   foreach (IEnumerable<IOption> enm in seq.Enm)
                                                        return !enm.Any();
 
                                                    return !seq.HasValue;

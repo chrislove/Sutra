@@ -66,12 +66,8 @@ namespace SharpPipe {
 
             var seq = (Seq<T>) doSelectPipe.Pipe;
             
-            foreach (var enm in seq.Option) {
-                // ReSharper disable PossibleMultipleEnumeration
-                if (doSelectPipe.Predicate(seq.Option))
-                    return start<T>.seq | enm.Select(func);
-                // ReSharper restore PossibleMultipleEnumeration
-            }
+            if (doSelectPipe.Predicate(seq.Option))
+                return start<T>.seq | seq.Select(func);
             
             return seq;
         }
@@ -82,12 +78,8 @@ namespace SharpPipe {
 
             var seq = (Seq<T>) doSelectPipe.Pipe;
             
-            foreach (var enm in seq.Option) {
-                // ReSharper disable PossibleMultipleEnumeration
-                if (doSelectPipe.Predicate(seq.Option))
-                    return start<T>.seq | enm.Select(func.Map());
-                // ReSharper restore PossibleMultipleEnumeration
-            }
+            if (doSelectPipe.Predicate(seq.Option))
+                return start<T>.seq | seq.Select(func.Map());
             
             return seq;
         }

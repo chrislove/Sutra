@@ -47,7 +47,7 @@ namespace SharpPipe.Transformations
         public static Option<IEnumerable<T>> Lower<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
             {
                 if (enm.Any(i => !i.HasValue))
-                    return Option<IEnumerable<T>>.None;
+                    return default;
 
                 return enm.Select(v => v.ValueOrFail()).ToOption();
             }
@@ -61,7 +61,7 @@ namespace SharpPipe.Transformations
         [Pure]
         public static SeqOption<T> Return<T>( this Option<IEnumerable<T>> enm )
             {
-                return enm.Match(i => new SeqOption<T>(i.Return()), SeqOption<T>.None);
+                return enm.Match(i => new SeqOption<T>(i), default(SeqOption<T>));
             }
 
         /// <summary>

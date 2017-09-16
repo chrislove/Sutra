@@ -11,7 +11,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_NoneValue_ReturnsEmptyOption()
             {
-                Option<IEnumerable<string>> option = EmptyTestSeq
+                Option<IEnumerable<string>> option = EmptyAndTestSeq
                                                      | !get;
 
                 Assert.That(!option.HasValue);
@@ -22,7 +22,7 @@ namespace SharpPipe.Tests
             {
                 void TestDelegate()
                     {
-                        IEnumerable<Option<string>> enm = EmptyTestSeq
+                        IEnumerable<Option<string>> enm = EmptyAndTestSeq
                                                           | !!get;
                     }
 
@@ -34,7 +34,7 @@ namespace SharpPipe.Tests
             {
                 void TestDelegate()
                     {
-                        IEnumerable<string> enm = EmptyTestSeq
+                        IEnumerable<string> enm = EmptyAndTestSeq
                                                           | !!!get;
 
 	                    var list = enm.ToList();	// Needed to make sure that the iterator is called.
@@ -46,7 +46,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_NoneValue_SkipsEmptyIter()
             {
-                Unit pipe = EmptyTestSeq
+                Unit pipe = EmptyAndTestSeq
                            | iter | write;
 
                 Assert.That(WriteOutput, Is.EqualTo("TEST"));
@@ -55,20 +55,20 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_NoneValue_DoesntSkipOptionIterAction()
             {
-                Unit pipe = EmptyTestSeq
+                Unit pipe = EmptyAndTestSeq
                            | iter | writeoption;
 
                 Assert.That(WriteOutput, Is.EqualTo("NONETEST"));
             }
 
         [Test]
-        public void Test_NoneValue_DoesntSkipOptionIterFunc()
+        public void Test_NoneValue_DoesntSkipIter_OptionFunc()
             {
                 Option<string> Func( Option<string> str )
                     => str.Match(i => i, "NONE").ToOption();
 
-                Unit pipe = EmptyTestSeq
-                           | map | Func
+                Unit pipe = EmptyAndTestSeq
+                           | map  | Func
                            | iter | writeoption;
 
                 Assert.That(WriteOutput, Is.EqualTo("NONETEST"));

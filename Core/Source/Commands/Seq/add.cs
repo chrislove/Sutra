@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
@@ -21,10 +22,7 @@ namespace SharpPipe {
     }
 
     public partial struct DoStartSeq<T> {
-        /// <summary>
-        /// Starts a new sequence.
-        /// </summary>
-        public static DoAdd<T> operator |( DoStartSeq<T> cmd, DoAdd _ ) => new DoAdd<T>( Seq<T>.Empty );
+        public static DoAdd<T> operator |( DoStartSeq<T> cmd, DoAdd _ ) => new DoAdd<T>( new Seq<T>(Enumerable.Empty<Option<T>>()) );
     }
 
     /// <summary>
@@ -49,11 +47,6 @@ namespace SharpPipe {
         /// <summary>
         /// Pipe forward operator, concatenates two sequences and returns a new sequence.
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> doAdd, Seq<T> seq ) {
-            foreach (var value in seq.Option)
-                return doAdd._seq | value;
-
-            return Seq<T>.SkipSeq;
-        }
+        public static Seq<T> operator |( DoAdd<T> doAdd, Seq<T> seq ) => doAdd._seq | seq;
     }
 }

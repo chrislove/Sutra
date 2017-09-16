@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace SharpPipe {
@@ -46,6 +47,11 @@ namespace SharpPipe {
 					throw new SharpPipeException($"Type {type} isn't generic.");
 				
 				return type.GenericTypeArguments[0];
+			}
+
+		public static IEnumerable<T> Yield<T>(this T inobj )
+			{
+				yield return inobj;
 			}
 	}
 }

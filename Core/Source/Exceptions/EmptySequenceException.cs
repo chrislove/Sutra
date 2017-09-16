@@ -9,6 +9,6 @@ namespace SharpPipe {
         public static EmptySequenceException For<TPipe>() => For(typeof(TPipe));
         
         [NotNull]
-        public static EmptySequenceException For(Type type) => new EmptySequenceException($"The sequence of type {type} is empty.");
+        public static EmptySequenceException For(Type type) => new EmptySequenceException($"Seq<{type}> is empty.");
     }
 }

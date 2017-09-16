@@ -77,7 +77,7 @@ namespace SharpPipe {
             
             var pipe = (Pipe<T>) doSelectPipe.Pipe;
             
-            foreach (var value in pipe.Option) {
+            foreach (var value in pipe.Option.Enm) {
                 if (doSelectPipe.Predicate(value))
                     return start<T>.pipe | func(value);
             }

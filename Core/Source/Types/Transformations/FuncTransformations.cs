@@ -11,10 +11,10 @@ namespace SharpPipe.Transformations
         /// <summary>
         /// Lowers function to accept and return non-option values.
         /// </summary>
-        [Pure] [ContractAnnotation("func:null => null")]
-        public static Func<TIn, TOut> Fold<TIn, TOut>([CanBeNull] this Func<Option<TIn>, Option<TOut>> func, [CanBeNull] TOut defaultOut )
+        [Pure] [NotNull]
+        public static Func<TIn, TOut> Fold<TIn, TOut>([CanBeNull] this Func<Option<TIn>, Option<TOut>> func, [NotNull] TOut defaultOut )
             {
-                if (func == null) return null;
+                if (func == null) return i => defaultOut;
                 
                 return i => func(i.ToOption()).ValueOr(defaultOut);
             }
@@ -22,34 +22,39 @@ namespace SharpPipe.Transformations
         /// <summary>
         /// Lowers the output of a function to return non-option values.
         /// </summary>
-        [Pure] [ContractAnnotation("func:null => null")] 
-        public static Func<Option<TIn>, TOut> LowerOut<TIn, TOut>([CanBeNull] this Func<Option<TIn>, Option<TOut>> func, [CanBeNull] TOut defaultOut )
+        [Pure] [NotNull]
+        public static Func<Option<TIn>, TOut> LowerOut<TIn, TOut>([CanBeNull] this Func<Option<TIn>, Option<TOut>> func, [NotNull] TOut defaultOut )
             {
-                if (func == null) return null;
-
+                if (func == null) return i => defaultOut;
+                
                 return i => func(i).ValueOr(defaultOut);
             }
         
         /// <summary>
         /// Lifts function to accept and return Option.
         /// </summary>
-        [Pure] [ContractAnnotation("null => null")]
+        [Pure] [NotNull]
         public static Func<Option<T>, Option<U>> Map<T, U>   ( [CanBeNull] this Func<T, U> func )
             {
-                if (func == null) return null;
-                
                 return i => i.Map(func);
+            }
+        
+        /// <summary>
+        /// Lifts predicate to accept option. Predicate will return false for none.
+        /// </summary>
+        [Pure] [NotNull]
+        public static Func<Option<T>, bool> Map<T>( [CanBeNull] this Func<T, bool> predicate )
+            {
+                return i => i.Map(predicate).ValueOr(false);
             }
         
         
         /// <summary>
         /// Lifts unit function to accept SeqOption{T}.
         /// </summary>
-        [Pure] [ContractAnnotation("null => null")]
+        [Pure] [NotNull]
         public static Func<SeqOption<T>, Unit> Map<T>( [CanBeNull] this Func<Option<T>, Unit> func )
             {
-                if (func == null) return null;
-                
                 Func<IEnumerable<Option<T>>, Unit> enmFunc = enm => enm.Select(func).Aggregate(unit, ( a, b ) => unit);
                 
                 return seq => enmFunc.Map()(seq).ValueOr(unit);

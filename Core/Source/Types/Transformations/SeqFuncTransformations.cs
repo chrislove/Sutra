@@ -6,7 +6,7 @@ namespace SharpPipe.Transformations {
     public static class SeqFuncTransformations
     {
         [Pure] [NotNull]
-        public static Func<Option<T>, SeqOption<U>> Map<T, U>( [CanBeNull] this Func<T, IEnumerable<U>> func )
+        public static Func<Option<T>, SeqOption<U>> Map<T, U>( [NotNull] this Func<T, IEnumerable<U>> func )
             {
                 return i => i.Map(func).Return();
             }
@@ -25,7 +25,7 @@ namespace SharpPipe.Transformations {
             }
 
         [Pure] [NotNull]
-        public static Func<SeqOption<T>, U> Map<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func, U defaultU )
+        public static Func<SeqOption<T>, U> Map<T, U>( [NotNull] this Func<IEnumerable<IOption>, U> func, [NotNull] U defaultU )
             {
                 return seq => func.Map<T, U>()(seq).ValueOr(defaultU);
             }
@@ -37,7 +37,7 @@ namespace SharpPipe.Transformations {
             }
 
         [Pure] [NotNull]
-        public static Func<SeqOption<T>, U> Map<T, U>( [NotNull] this Func<IEnumerable<T>, U> func, U defaultU )
+        public static Func<SeqOption<T>, U> Map<T, U>( [NotNull] this Func<IEnumerable<T>, U> func, [NotNull] U defaultU )
             {
                 return seq => Map(func)(seq).ValueOr(defaultU);
             }

@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
 
@@ -19,17 +19,23 @@ namespace SharpPipe {
             HasValue = value != null;
         }
 
-        public Option<U> Map<U>( Func<T, U> func ) => HasValue ? func(_value).ToOption() : Option<U>.None;
-        public Option<U> Map<U>( Func<T, U> func, U defaultValue ) => this.Match(func, defaultValue).ToOption();
-        
-        public static Option<T> None => new Option<T>();
-        
-        #region Boilerplate
-        public IEnumerator<T> GetEnumerator() {
-            if (HasValue) yield return _value;
-        }
+        public Option<U> Map<U>( [NotNull] Func<T, U> func )
+            {
+                if (!HasValue) return default;
+                
+                return func(_value).ToOption();
+            }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public Option<U> Map<U>( [NotNull] Func<T, U> func, U defaultValue )
+            {
+                return this.Match(func, defaultValue).ToOption();
+            }
+
+        public IEnumerable<T> Enm => HasValue ? _value.Yield() : Enumerable.Empty<T>();
+        IEnumerable<object> ISimpleOption.Enm => Enm.Cast<object>();
+
+
+        #region Boilerplate
         
         public bool Equals( IOption<T> other ) => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, other._value());
         public bool Equals( IOption other )    => HasValue == other.HasValue  && EqualityComparer<T>.Default.Equals(_value, (T)other.BoxedValue());

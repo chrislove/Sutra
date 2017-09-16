@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 
 namespace SharpPipe
 {
@@ -11,7 +12,7 @@ namespace SharpPipe
         public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFail _ ) => new DoFailPipe<T>(pipe);
 
         [NotNull]
-        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, null, failWith.Message);
+        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, default, failWith.Message);
     }
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace SharpPipe
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoFailPipe<T> : DoFail<T>
     {
-        internal DoFailPipe( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailPipe( [NotNull] IPipe<T> pipe, Option<Exception> exc = default, string message = null ) : base(pipe, exc, message) { }
 
         // PIPE | fail '|' when
         [NotNull]
@@ -29,7 +30,7 @@ namespace SharpPipe
 
         [NotNull]
         public static DoFailPipe<T> operator |( DoFailPipe<T> doFail, [NotNull] Exception exc )
-            => new DoFailIfPipe<T>(doFail.Pipe, exc);
+            => new DoFailIfPipe<T>(doFail.Pipe, exc.ToOption());
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ namespace SharpPipe
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DoFailIfPipe<T> : DoFailPipe<T>
     {
-        internal DoFailIfPipe( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailIfPipe( [NotNull] IPipe<T> pipe, Option<Exception> exc = default, string message = null ) : base(pipe, exc, message) { }
 
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
@@ -47,7 +48,8 @@ namespace SharpPipe
             {
                 var pipe = (Pipe<T>) doFailIf.Pipe;
 
-                if (predicate(pipe.Option)) throw doFailIf.GetExceptionFor(predicate);
+                if (predicate(pipe.Option))
+                    doFailIf.ThrowExceptionFor(predicate);
 
                 return pipe;
             }
@@ -55,14 +57,23 @@ namespace SharpPipe
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
         /// </summary>
-        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate ) {
-	        var pipe = (Pipe<T>) doFailIf.Pipe;
+        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<Option<T>, bool> predicate )
+            {
+                var pipe = (Pipe<T>) doFailIf.Pipe;
 
-			foreach (var value in pipe.Option)
-				if (predicate(value)) throw doFailIf.GetExceptionFor(predicate);
+                if (predicate(pipe.Option))
+                    doFailIf.ThrowExceptionFor(predicate);
 
-	        return pipe;
-        }
+                return pipe;
+            }
+        
+        /// <summary>
+        /// Throws if predicate on the right evaluates to true.
+        /// </summary>
+        public static Pipe<T> operator |( DoFailIfPipe<T> doFailIf, [NotNull] Func<T, bool> predicate )
+            {
+                return doFailIf | predicate.Map();
+            }
         
 
         /// <summary>
@@ -73,7 +84,7 @@ namespace SharpPipe
                 var pipe = (Pipe<T>) doFailIf.Pipe;
 
                 if (predicate())
-                    throw doFailIf.GetExceptionFor(predicate);
+                    doFailIf.ThrowExceptionFor(predicate);
 
                 return pipe;
             }

@@ -22,7 +22,7 @@ namespace SharpPipe {
         /// </summary>
         public static Seq<T> operator |( DoMapSeq<T> doMap, [NotNull] Func<T, T> func )
             => doMap.Seq | (enm => enm.Select(func));
-
+        
         /// <summary>
         /// Sequence select operator.
         /// </summary>

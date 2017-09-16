@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 
 namespace SharpPipe {
     /// <summary>
@@ -72,7 +73,7 @@ namespace SharpPipe {
         /// <summary>
         /// Initializes a pipe with object on the right
         /// </summary>
-        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] T obj )   => new Pipe<T>(obj);
+        public static Pipe<T> operator |( DoStartPipe<T> _, [NotNull] T obj )   => new Pipe<T>(obj.ToOption());
         
         /// <summary>
         /// Initializes a pipe with option on the right

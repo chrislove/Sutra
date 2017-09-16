@@ -9,6 +9,6 @@ namespace SharpPipe {
         public static EmptyPipeException For<TPipe>() => For(typeof(TPipe));
         
         [NotNull]
-        public static EmptyPipeException For(Type type) => new EmptyPipeException($"The pipe of type {type} is empty.");
+        public static EmptyPipeException For(Type type) => new EmptyPipeException($"Pipe<{type}> is empty.");
     }
 }

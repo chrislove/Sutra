@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -13,7 +14,7 @@ namespace SharpPipe
         [NotNull] public static Func<ISeqOption, bool> issingle
             => seq =>
                    {
-                       foreach (var enm in seq)
+                       foreach (IEnumerable<IOption> enm in seq.Enm)
                            return enm.Count() == 1;
 
                        return false;    //Empty
@@ -24,7 +25,7 @@ namespace SharpPipe
         public static Func<T, bool> not<T>( Func<T, bool> func ) => i => !func(i);
 
         public static PipeFunc<T, bool> not<T>( PipeFunc<T, bool> func )
-            => new PipeFunc<T, bool>( opt => opt.HasValue ? func[opt].Map(i => !i) : Option<bool>.None );
+            => new PipeFunc<T, bool>( opt => opt.HasValue ? func[opt].Map(i => !i) : default );
 
         [NotNull]
         public static Func<IOption, bool> equals<T>( Option<T> obj ) => i => obj == i;

@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace SharpPipe
 {
@@ -14,24 +14,30 @@ namespace SharpPipe
         T Value { get; }
     }
 
-    public interface IOption : IEnumerable
+    public interface IOption
     {
         bool HasValue { get; }
     }
 
-    public interface IOption<T> : IOption, IEnumerable<T>, IEquatable<IOption<T>> { }
+    public interface IOption<T> : IOption, IEquatable<IOption<T>> { }
 
-    public interface ISimpleOption : IOption { }
-
-    public interface ISeqOption : IOption, IEnumerable<IEnumerable<IOption>>
+    public interface ISimpleOption : IOption
     {
-        Option<IEnumerable<object>> Lower();
+        [NotNull] [ItemNotNull] IEnumerable<object> Enm { get; }
     }
 
-    public interface ISimpleOption<T> : IOption<T>, ISimpleOption { }
+    public interface ISeqOption : IOption
+    {
+        [NotNull] [ItemNotNull] IEnumerable<IEnumerable<IOption>> Enm { get; }
+    }
+
+    public interface ISimpleOption<T> : IOption<T>, ISimpleOption
+    {
+        [NotNull] [ItemNotNull] new IEnumerable<T> Enm { get; }
+    }
 
     public interface ISeqOption<T> : IOption<IEnumerable<Option<T>>>, ISeqOption
     {
-        Option<IEnumerable<T>> Lower();
+        [NotNull] [ItemNotNull] new IEnumerable<IEnumerable<Option<T>>> Enm { get; }
     }
 }

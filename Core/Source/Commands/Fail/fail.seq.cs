@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
+using SharpPipe.Transformations;
 
 namespace SharpPipe
 {
@@ -9,7 +10,7 @@ namespace SharpPipe
         [NotNull]
         public static DoFailSeq<T> operator |( Seq<T> seq, DoFail _ ) => new DoFailSeq<T>(seq);
 
-        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, null, failWith.Message);
+        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, default, failWith.Message);
     }
 
     /// <summary>
@@ -18,7 +19,7 @@ namespace SharpPipe
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoFailSeq<T> : DoFail<T>
     {
-        internal DoFailSeq( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailSeq( [NotNull] IPipe<T> pipe, Option<Exception> exc = default, string message = null ) : base(pipe, exc, message) { }
 
         // seq | fail '|' when
         [NotNull]
@@ -30,7 +31,7 @@ namespace SharpPipe
         /// </summary>
         [NotNull]
         public static DoFailSeq<T> operator |( DoFailSeq<T> doFail, [NotNull] Exception exception )
-            => new DoFailSeq<T>(doFail.Pipe, exception);
+            => new DoFailSeq<T>(doFail.Pipe, exception.ToOption());
     }
 
     /// <summary>
@@ -39,7 +40,7 @@ namespace SharpPipe
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoFailIfSeq<T> : DoFailSeq<T>
     {
-        internal DoFailIfSeq( [NotNull] IPipe<T> pipe, Exception exc = null, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailIfSeq( [NotNull] IPipe<T> pipe, Option<Exception> exc, string message = null ) : base(pipe, exc, message) { }
 
         /// <summary>
         /// Throws if predicate on the right evaluates to true.
@@ -48,7 +49,8 @@ namespace SharpPipe
             {
                 Seq<T> seq = doFailIf.Pipe.ToSeq();
 
-                 if (predicate(seq.Option)) throw doFailIf.GetExceptionFor(predicate);
+                 if (predicate(seq.Option))
+                     doFailIf.ThrowExceptionFor(predicate);
 
                 return seq;
             }
@@ -58,7 +60,8 @@ namespace SharpPipe
         /// </summary>
         public static Seq<T> operator |( DoFailIfSeq<T> doFailIf, [NotNull] Func<bool> predicate )
             {
-                if (predicate()) throw doFailIf.GetExceptionFor(predicate);
+                if (predicate())
+                    doFailIf.ThrowExceptionFor(predicate);
 
                 return doFailIf.Pipe.ToSeq();
             }

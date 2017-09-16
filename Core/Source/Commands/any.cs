@@ -13,7 +13,7 @@ namespace SharpPipe {
         public static Func<ISeqOption, bool> any( Func<IOption, bool> predicate )
             => seq =>
                    {
-                       foreach (IEnumerable<IOption> enm in seq)
+                       foreach (IEnumerable<IOption> enm in seq.Enm)
                            return enm.Any(predicate);
 
                        return false; //Empty
@@ -40,7 +40,7 @@ namespace SharpPipe {
         public static Func<ISeqOption, bool> any<T>( PipeFunc<T, bool> predicate )
             => seq =>
                    {
-                       foreach (IEnumerable<IOption> enm in seq)
+                       foreach (IEnumerable<IOption> enm in seq.Enm)
                            return enm.Cast<Option<T>>().Any( predicate.LowerOut(false) );
 
                        return false; //Empty
