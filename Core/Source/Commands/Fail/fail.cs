@@ -37,14 +37,35 @@ namespace SharpPipe {
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoFailWith {
-        internal readonly string Message;
+    public struct DoFailWith
+    {
+        /// <summary>
+        /// This identifier will be replaced with the pipe contents.
+        /// </summary>
+        private const string PipeStringIdentifier = "$pipe";
+        private const string SeqStringIdentifier  = "$seq";
+        
+        private readonly string _message;
 
         internal DoFailWith( [CanBeNull] string message )
             {
                 NextException.Reset();
-                Message = message;
+                _message = message;
             }
+
+        internal string GetMessageFor<T>( Pipe<T> pipe )
+            {
+                foreach (T value in pipe.Option.Enm)
+                    return _message.Replace(PipeStringIdentifier, value.ToString());
+
+                return _message.Replace(PipeStringIdentifier, pipe.GetType().GetFriendlyName());
+            }
+
+        internal string GetMessageFor<T>( Seq<T> seq )
+            {
+                return _message.Replace(SeqStringIdentifier, seq.GetType().GetFriendlyName());
+            }
+
     }
     
     /// <summary>

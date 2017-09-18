@@ -7,6 +7,7 @@ namespace SharpPipe
     public static class OptionMixin
     {
         internal static T _value<T>( this IOption<T> option ) => ((IOptionValue<T>) option).Value;
+        internal static object BoxedValue( this IOption option ) => ((IOptionValue) option).BoxedValue;
 
         [CanBeNull]
         public static U Match<T, U>( [NotNull] this IOption<T> option, [NotNull] Func<T, U> some, [NotNull] Func<U> none )
@@ -53,10 +54,5 @@ namespace SharpPipe
                 
                 return option._value() != null && option.HasValue ? option._value() : throw exceptionFactory();
             }
-    }
-
-    public static class NonGenericOptionMixin
-    {
-        internal static object BoxedValue( this IOption option ) => ((IOptionValue) option).BoxedValue;
     }
 }

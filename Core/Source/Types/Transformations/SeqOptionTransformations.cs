@@ -6,12 +6,6 @@ namespace SharpPipe.Transformations
 {
     public static class SeqOptionTransformations
     {
-        [Pure] [CanBeNull]
-        public static IEnumerable<IOption> ToIOption<T>( [CanBeNull] this IEnumerable<Option<T>> enm )
-            {
-                return enm?.Cast<IOption>();
-            }
-        
         /// <summary>
         /// Returns an empty option if at least one of the sequence values is empty.
         /// </summary>
@@ -34,15 +28,6 @@ namespace SharpPipe.Transformations
         public static SeqOption<T> Return<T>( this Option<IEnumerable<T>> enm )
             {
                 return enm.Match(i => new SeqOption<T>(i), default(SeqOption<T>));
-            }
-
-        /// <summary>
-        /// Lifts every value of the enumerable to Option{T}
-        /// </summary>
-        [Pure]
-        public static SeqOption<T> DblReturn<T>( [CanBeNull] this IEnumerable<T> enm )
-            {
-                return enm.Return().Return();
             }
     }
 }

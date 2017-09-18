@@ -32,5 +32,17 @@ namespace SharpPipe.Tests
                 
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
             }
+        
+        [Test]
+        public void Test_Pipe_Throw_WithMessage()
+            {
+                void TestDelegate()
+                    {
+                        Pipe<string> pipe = TestPipe
+                                            | failwith("Fail: $pipe") | when | (() => true);
+                    }
+
+                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("Fail: TEST"));
+            }
     }
 }

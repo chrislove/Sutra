@@ -12,7 +12,7 @@ namespace SharpPipe
         public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFail _ ) => new DoFailPipe<T>(pipe);
 
         [NotNull]
-        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, default, failWith.Message);
+        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, default, failWith.GetMessageFor(pipe));
     }
 
     /// <summary>

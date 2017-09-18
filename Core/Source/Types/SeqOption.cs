@@ -51,9 +51,9 @@ namespace SharpPipe
 
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<T>, IEnumerable<U>> func )
             {
-                foreach (var enm in this.Enm)
+                foreach (IEnumerable<Option<T>> enm in this.Enm)
                     foreach (IEnumerable<T> lowered in enm.Lower().Enm)
-                        return func(lowered).DblReturn();
+                        return func(lowered).Return().Return();
 
                 return default;
             }
@@ -118,7 +118,7 @@ namespace SharpPipe
         public override bool Equals( object obj )
             {
                 if (ReferenceEquals(null, obj)) return false;
-                return obj is SeqOption<T> && Equals((SeqOption<T>) obj);
+                return obj is SeqOption<T> option && Equals(option);
             }
 
         #endregion

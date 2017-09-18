@@ -10,7 +10,7 @@ namespace SharpPipe
         [NotNull]
         public static DoFailSeq<T> operator |( Seq<T> seq, DoFail _ ) => new DoFailSeq<T>(seq);
 
-        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, default, failWith.Message);
+        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, default, failWith.GetMessageFor(seq));
     }
 
     /// <summary>

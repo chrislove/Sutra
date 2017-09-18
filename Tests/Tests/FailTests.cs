@@ -26,11 +26,10 @@ namespace SharpPipe.Tests
                     {
                         Seq<string> seq = ABCSeq
                                            | add | (string) null
-                                           | failwith("TEST") | when | any(isempty);
-                        ;
+                                           | failwith("fail $seq") | when | any(isempty);
                     }
 
-                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
+                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("fail Seq<String>"));
             }
 
         [Test]

@@ -21,9 +21,7 @@ namespace SharpPipe {
 
         public Option<U> Map<U>( [NotNull] Func<T, U> func )
             {
-                if (!HasValue) return default;
-                
-                return func(_value).ToOption();
+                return HasValue ? func(_value).ToOption() : default;
             }
 
         public Option<U> Map<U>( [NotNull] Func<T, U> func, U defaultValue )
