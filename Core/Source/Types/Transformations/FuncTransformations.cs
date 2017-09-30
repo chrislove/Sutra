@@ -23,7 +23,7 @@ namespace SharpPipe.Transformations
         /// Lowers the output of a function to return non-option values.
         /// </summary>
         [Pure] [NotNull]
-        public static Func<Option<TIn>, TOut> LowerOut<TIn, TOut>([CanBeNull] this Func<Option<TIn>, Option<TOut>> func, [NotNull] TOut defaultOut )
+        public static Func<Option<TIn>, TOut> ValueOr<TIn, TOut>([CanBeNull] this Func<Option<TIn>, Option<TOut>> func, [NotNull] TOut defaultOut )
             {
                 if (func == null) return i => defaultOut;
                 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
 
@@ -21,12 +20,10 @@ namespace SharpPipe
 		/// <summary>
 		/// Use this operator to invoke the function.
 		/// </summary>
-		//public TOut this[ [CanBeNull] TIn invalue, TOut defaultOut ] => i => Lower()(i);
 		public Option<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
 		public Option<TOut> this[ Option<TIn> invalue ] => Func(invalue);
 
-		public Func<TIn, TOut> Lower( TOut defaultOut ) => Func.Fold(defaultOut);
-		public Func<Option<TIn>, TOut> LowerOut( TOut defaultOut ) => Func.LowerOut(defaultOut);
+		public Func<Option<TIn>, TOut> ValueOr( TOut defaultOut ) => Func.ValueOr(defaultOut);
 
 		/// <summary>
 		/// Returns the contained function.

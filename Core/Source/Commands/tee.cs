@@ -40,12 +40,22 @@ namespace SharpPipe
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoTee<T> doTee, [NotNull] Action<Option<T>> act ) => (() => act(doTee._pipe.Option)) | unit;
-
+        public static Unit operator |( DoTee<T> doTee, [NotNull] Action<Option<T>> act ) => act.ReturnsUnit()(doTee._pipe.Option);
 
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoTee<T> doTee, [NotNull] Action<T> act ) => act.Map()(doTee._pipe.Option);
+        public static Unit operator |( DoTee<T> doTee, [NotNull] Action<T> act ) => doTee | act.Map();
+        
+        /// <summary>
+        /// Executes the action on the right.
+        /// </summary>
+        public static Unit operator |( DoTee<T> doTee, [NotNull] Func<Option<T>, Unit> func ) => func(doTee._pipe.Option);
+
+        /// <summary>
+        /// Executes the action on the right.
+        /// </summary>
+        public static Unit operator |( DoTee<T> doTee, [NotNull] Func<T, Unit> func ) => doTee | func.Map().ValueOr(unit);
+
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
@@ -39,18 +40,17 @@ namespace SharpPipe
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Func<Option<T>, Unit> unitFunc )
-            {
-                return unitFunc.Map()(doIterate._seq.Option);
-            }
+        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Func<Option<T>, Unit> unitFunc ) => unitFunc.Map()(doIterate._seq.Option);
 
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action )
-            {
-                return doIterate | action.ReturnsUnit();
-            }
+        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Func<T, Unit> unitFunc ) => doIterate | unitFunc.Map().ValueOr(unit);
+
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action ) => doIterate | action.ReturnsUnit();
 
         /// <summary>
         /// Performs the action on the right for each non-empty element of the sequence.

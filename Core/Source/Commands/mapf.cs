@@ -18,7 +18,7 @@ namespace SharpPipe {
 
         public DoBind( [NotNull] Func<TIn, TOut> func ) => _func = func.Map();
 
-        public static Pipe<TOut> operator |( Pipe<TIn> pipe, DoBind<TIn, TOut> doBind ) => pipe.Map(doBind._func);
-        public static Seq<TOut> operator |( Seq<TIn> seq, DoBind<TIn, TOut> doBind )    => seq.Map( enm => enm.Select(doBind._func) );
+        public static Pipe<TOut> operator |( Pipe<TIn> pipe, DoBind<TIn, TOut> doBind )  => pipe.Map(doBind._func);
+        public static Seq<TOut>  operator |( Seq<TIn> seq, DoBind<TIn, TOut> doBind )    => seq.Map( enm => enm.Select(doBind._func) );
     }
 }
