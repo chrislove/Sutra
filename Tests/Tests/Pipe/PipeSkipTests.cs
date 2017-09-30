@@ -20,7 +20,7 @@ namespace SharpPipe.Tests {
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
-                       | act | write;
+                       | tee | write;
 
             Assert.That(WriteOutput, Is.EqualTo(""));
         }
@@ -31,7 +31,7 @@ namespace SharpPipe.Tests {
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
-                       | act | writeoption;
+                       | tee | writeoption;
 
             Assert.That(WriteOutput, Is.EqualTo("NONE"));
         }
@@ -45,7 +45,7 @@ namespace SharpPipe.Tests {
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
                        | Func
-                       | act | writeoption;
+                       | tee | writeoption;
 
             Assert.That(WriteOutput, Is.EqualTo("NONE"));
         }

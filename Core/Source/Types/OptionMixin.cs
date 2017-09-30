@@ -26,6 +26,12 @@ namespace SharpPipe
             }
         
         [CanBeNull]
+        public static U Match<T, U>( [NotNull] this IOption<T> option, [NotNull] Func<T, U> some, [NotNull] Exception noneException )
+            {
+                return option.Match(some, () => throw noneException);
+            }
+        
+        [CanBeNull]
         public static IEnumerable<Option<U>> Match<T, U>( [NotNull] this ISeqOption<T> option,
                                      [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> some, [CanBeNull]  IEnumerable<Option<U>> none )
             {

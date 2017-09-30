@@ -1,26 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
 
 namespace SharpPipe
 {
-	public static partial class FuncFactory {
-		/// <summary>
-		/// Pipe factory.
-		/// </summary>
-		public static partial class func {
-			/// <summary>
-			/// Specifies the input value of a function.
-			/// </summary>
-			public partial class takes<TIn> {
-				/// <summary>
-				/// Creates pipe function from a system function.
-				/// </summary>
-				public static PipeFunc<TIn, TOut> from<TOut>( [NotNull] Func<TIn, TOut> func ) => new PipeFunc<TIn, TOut>(func);
-			}
-		}
-	}
-
 	/// <summary>
 	/// Function transforming pipe or sequence value.
 	/// </summary>

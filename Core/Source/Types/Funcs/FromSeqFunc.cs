@@ -5,25 +5,6 @@ using SharpPipe.Transformations;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
-    public static partial class FuncFactory {
-        public static partial class func {
-            [PublicAPI]
-            public partial class takes<TIn> {
-                /// <summary>
-                /// Creates a function converting a sequence to a pipe.
-                /// </summary>
-                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<IEnumerable<TIn>, TOut> func )
-                                                    => new FromSeqFunc<TIn, TOut>(func.Map());
-                
-                /// <summary>
-                /// Creates a function converting a sequence to a pipe.
-                /// </summary>
-                public static FromSeqFunc<TIn, TOut> FromSeq<TOut>( [NotNull] Func<SeqOption<TIn>, Option<TOut>> func )
-                                                    => new FromSeqFunc<TIn, TOut>(func);
-            }
-        }
-    }
-
     /// <summary>
     /// Function transforming sequence to a pipe.
     /// </summary>

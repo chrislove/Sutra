@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using JetBrains.Annotations;
-using static SharpPipe.FuncFactory.func.takes<string>;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     namespace CurryLib {
@@ -12,7 +12,7 @@ namespace SharpPipe {
             public static Func<string, bool> Equals( string strB ) => str => str.Equals(strB);
             public static Func<string, bool> Equals( string value, StringComparison comparisonType ) => str => str.Equals(value, comparisonType);
 
-            public static PipeFunc<string, int> Length => from( str => str.Length );
+            public static PipeFunc<string, int> Length => fun( str => str.Length );
             public static Func<string, int> CompareTo( string strB ) => str => str.CompareTo(strB);
             
             
@@ -79,7 +79,7 @@ namespace SharpPipe {
 
             
 
-            public static ToSeqFunc<string, char> ToCharArray() => toseq( str => str.ToCharArray() );
+            public static ToSeqFunc<string, char> ToCharArray() => toseq(str => str.ToCharArray() );
             public static ToSeqFunc<string, char> ToCharArray( int startIndex, int length ) => toseq( str => str.ToCharArray(startIndex, length) );
 
             public static ToSeqFunc<string, string> Split( params char[] separator ) => toseq( str => str.Split(separator) );
@@ -93,8 +93,8 @@ namespace SharpPipe {
             public static ToSeqFunc<string, string> Split( string[] separator, int count, StringSplitOptions options )
                 => toseq(str => str.Split(separator, count, options));
             
-            public static FromSeqFunc<string, string> join( [NotNull] string separator ) => FromSeq(e => string.Join(separator, e));
-            public static FromSeqFunc<string, string> concat => FromSeq(string.Concat);
+            public static FromSeqFunc<string, string> join( [NotNull] string separator ) => fromseq<string>.fun(e => string.Join(separator, e));
+            public static FromSeqFunc<string, string> concat => fromseq<string>.fun(string.Concat);
         }
     }
 }

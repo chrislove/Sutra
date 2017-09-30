@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 using SharpPipe.CurryLib;
 using static SharpPipe.Commands;
-using static SharpPipe.FuncFactory;
 
 namespace SharpPipe.Tests
 {
@@ -14,7 +13,7 @@ namespace SharpPipe.Tests
         [NotNull]
         private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
 
-        private static PipeFunc<DateTime, string> getshortdate => func.takes<DateTime>.from(d => d.ToShortDateString());
+        private static PipeFunc<DateTime, string> getshortdate => fun((DateTime d) => d.ToShortDateString());
 
 
         private static Pipe<string> YesterdayPipe => start<DateTime>.pipe | DateTime.Now
@@ -47,7 +46,7 @@ namespace SharpPipe.Tests
         public void Test_Act()
             {
                 Unit pipe = YesterdayPipe
-                           | act | write;
+                           | tee | write;
 
                 string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
                 Assert.That(WriteOutput, Is.EqualTo(expected));
@@ -76,6 +75,19 @@ namespace SharpPipe.Tests
                              | !get;
 
                 Assert.That(str, Is.EqualTo("ALT"));
+            }
+
+        [Test]
+        public void Test_Bind()
+            {
+                Func<int, string> toStringFunc = i => i.ToString();
+
+                string str = start.integer.pipe
+                             | 10
+                             | mapf(toStringFunc)
+                             | !get;
+
+                Assert.That(str, Is.EqualTo("10"));
             }
     }
 }

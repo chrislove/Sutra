@@ -1,6 +1,6 @@
 using System.IO;
 using JetBrains.Annotations;
-using static SharpPipe.FuncFactory;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     namespace CurryLib {
@@ -9,25 +9,25 @@ namespace SharpPipe {
             /// <summary>
             /// Uses Path.Combine to append path.
             /// </summary>
-            public static PipeFunc<string, string> append( string append )  => func.str.from( instr => Path.Combine(instr, append) );
+            public static PipeFunc<string, string> append( string append )  => fun(instr => Path.Combine(instr, append) );
             
             /// <summary>
             /// Uses Path.Combine to prepend path.
             /// </summary>
-            public static PipeFunc<string, string> prepend( string prepend ) => func.str.from( instr => Path.Combine(prepend, instr) );
+            public static PipeFunc<string, string> prepend( string prepend ) => fun(instr => Path.Combine(prepend, instr) );
 
 
-            public static PipeFunc<string, string> changeextension(string extension) => func.str.from( path => Path.ChangeExtension(path, extension) );
+            public static PipeFunc<string, string> changeextension(string extension) => fun(path => Path.ChangeExtension(path, extension) );
 
-            public static PipeFunc<string, string> getdirectoryname => func.str.from(Path.GetDirectoryName);
-            public static PipeFunc<string, string> getextension => func.str.from(Path.GetExtension);
-            public static PipeFunc<string, string> getfullpath => func.str.from(Path.GetFullPath);
-            public static PipeFunc<string, string> getfilename => func.str.from(Path.GetFileName);
-            public static PipeFunc<string, string> getfilenamewithoutextension => func.str.from(Path.GetFileNameWithoutExtension);
-            public static PipeFunc<string, string> getpathroot => func.str.from(Path.GetPathRoot);
+            public static PipeFunc<string, string> getdirectoryname => fun(Path.GetDirectoryName);
+            public static PipeFunc<string, string> getextension => fun(Path.GetExtension);
+            public static PipeFunc<string, string> getfullpath => fun(Path.GetFullPath);
+            public static PipeFunc<string, string> getfilename => fun(Path.GetFileName);
+            public static PipeFunc<string, string> getfilenamewithoutextension => fun(Path.GetFileNameWithoutExtension);
+            public static PipeFunc<string, string> getpathroot => fun(Path.GetPathRoot);
             
-            public static PipeFunc<string, bool> hasextension => func.str.from(Path.HasExtension);
-            public static PipeFunc<string, bool> ispathrooted => func.str.from(Path.IsPathRooted);
+            public static PipeFunc<string, bool> hasextension => fun(Path.HasExtension);
+            public static PipeFunc<string, bool> ispathrooted => fun(Path.IsPathRooted);
 
             public static char[] getinvalidpathchars => Path.GetInvalidPathChars();
             public static char[] getinvalidfilenamechars => Path.GetInvalidFileNameChars();

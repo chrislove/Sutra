@@ -4,7 +4,7 @@ using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests
 {
-    public class PipeFailTests : TestBase
+    public sealed class PipeFailTests : TestBase
     {
         [Test]
         public void Test_Pipe_Throw_NonConditional()
@@ -17,22 +17,21 @@ namespace SharpPipe.Tests
 
                 Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
             }
-        
-        
+
 
         [TestCase("TE", false)]
         [TestCase("AB", true)]
-        public void Test_Pipe_When_Throws(string instr, bool shouldThrow)
+        public void Test_Pipe_When_Throws( string instr, bool shouldThrow )
             {
                 void TestDelegate()
                     {
                         Pipe<string> pipe = TestPipe
-                                            | fail | when | not( str.Contains(instr) );
+                                            | fail | when | not(str.Contains(instr));
                     }
-                
+
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
             }
-        
+
         [Test]
         public void Test_Pipe_Throw_WithMessage()
             {
@@ -44,5 +43,20 @@ namespace SharpPipe.Tests
 
                 Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("Fail: TEST"));
             }
+
+        /*
+        [Test]
+        public void Test_Or_WithTwoPipesFail()
+        {
+            var pipeA = start.str.pipe
+                        | 
+            
+            string str = start.str.pipe
+                         | (string) null
+                         | or | "ALT"
+                         | !get;
+    
+            Assert.That(str, Is.EqualTo("ALT"));
+        }*/
     }
 }

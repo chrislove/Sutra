@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.FuncFactory;
 using static SharpPipe.CurryLib.str;
 
 // ReSharper disable SuggestVarOrType_Elsewhere
@@ -10,15 +9,15 @@ using static SharpPipe.CurryLib.str;
 namespace SharpPipe.Tests {
     [TestFixture]
     public sealed class SequenceTests : TestBase {
-        private static PipeFunc<int, string> ConvertToString => func.integer.from(i => i.ToString());
+        private static PipeFunc<int, string> ConvertToString => fun((int i) => i.ToString());
 
         [Test]
         public void Test_Seq_Action() {
-            var pipe = start.integer.seq
-                | add | Enumerable.Range(0, 3)
-                | map | ConvertToString
-                | concat
-                | act | write;
+                Unit pipe = start.integer.seq
+                            | add | Enumerable.Range(0, 3)
+                            | map | ConvertToString
+                            | concat
+                            | tee | write;
 
             const string expectedOutput = "012";
             Assert.That(WriteOutput, Is.EqualTo(expectedOutput));
@@ -37,8 +36,8 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Iter() {
-            var pipe = ABCSeq
-                       | iter | write;
+            Unit pipe = ABCSeq
+                        | iter | write;
 
             Assert.That(WriteOutput, Is.EqualTo("ABC"));
         }

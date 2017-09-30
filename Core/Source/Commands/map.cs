@@ -7,7 +7,7 @@ namespace SharpPipe {
         /// Equivalent to Select() in LINQ.
         /// </summary>
         /// <example><code>
-        /// seq | sel | (i => i + 1)
+        /// seq | map | (i => i + 1)
         /// </code></example>
         public static DoMap map => new DoMap();
     }

@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Annotations.cs" />
-    <Compile Include="Source\Commands\act.cs" />
+    <Compile Include="Source\Commands\tee.cs" />
     <Compile Include="Source\Commands\any.cs" />
+    <Compile Include="Source\Commands\fun.cs" />
+    <Compile Include="Source\Commands\mapf.cs" />
     <Compile Include="Source\Commands\end.cs" />
     <Compile Include="Source\Commands\Fail\fail.cs" />
     <Compile Include="Source\Commands\Fail\fail.pipe.cs" />
@@ -58,7 +60,7 @@
     <Compile Include="Source\Commands\Command.cs" />
     <Compile Include="Source\Commands\Seq\notempty.cs" />
     <Compile Include="Source\Commands\Seq\when.seq.cs" />
-    <Compile Include="Source\Commands\Seq\bind.cs" />
+    <Compile Include="Source\Commands\Seq\collect.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />
     <Compile Include="Source\Commands\Predicates.cs" />
     <Compile Include="Source\Commands\map.cs" />
@@ -86,7 +88,6 @@
     <Compile Include="Source\Exceptions\PipeUserException.cs" />
     <Compile Include="Source\Exceptions\SharpPipeException.cs" />
     <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
-    <Compile Include="Source\Types\Funcs\Aliases.cs" />
     <Compile Include="Source\Types\Funcs\FromSeqFunc.cs" />
     <Compile Include="Source\Types\Funcs\PipeFunc.cs" />
     <Compile Include="Source\Types\Funcs\SeqFunc.cs" />
