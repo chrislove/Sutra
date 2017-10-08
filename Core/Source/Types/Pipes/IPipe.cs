@@ -1,5 +1,6 @@
 namespace SharpPipe {
-    public interface IPipe<T> {}
+    public interface IPipe {}
+    public interface IPipe<T> : IPipe {}
 
     internal static class PipeExtensions
     {

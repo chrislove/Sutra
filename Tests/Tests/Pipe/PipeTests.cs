@@ -45,7 +45,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_Act()
             {
-                Unit pipe = YesterdayPipe
+                var pipe = YesterdayPipe
                            | tee | write;
 
                 string expected = "Yesterday: " + DateTime.Now.AddDays(-1).ToShortDateString();
@@ -71,14 +71,14 @@ namespace SharpPipe.Tests
             {
                 string str = start.str.pipe
                              | (string) null
-                             | or | "ALT"
+                             | or("ALT")
                              | !get;
 
                 Assert.That(str, Is.EqualTo("ALT"));
             }
 
         [Test]
-        public void Test_Bind()
+        public void Test_Mapf()
             {
                 Func<int, string> toStringFunc = i => i.ToString();
 
@@ -88,6 +88,38 @@ namespace SharpPipe.Tests
                              | !get;
 
                 Assert.That(str, Is.EqualTo("10"));
+            }
+
+        [Test]
+        public void Test_Where()
+            {
+                Option<string> option = start.str.pipe
+                                        | "TEST"
+                                        | where | (i => i == "ABC")
+                                        | get;
+                
+                Assert.That(!option.HasValue);
+            }
+        
+        [Test]
+        public void Test_EmptyString_Is_EmptyPipe()
+            {
+                Option<string> option = start.str.pipe
+                                        | ""
+                                        | get;
+                
+                Assert.That(!option.HasValue);
+            }
+    
+        [Test]
+        public void Test_Put()
+            {
+                int value = start.str.pipe
+                            | "A"
+                            | put(0)
+                            | !get;
+                
+                Assert.That(value, Is.EqualTo(0));
             }
     }
 }

@@ -12,29 +12,24 @@ namespace SharpPipe
         /// </summary>
         /// <exception cref="EmptyPipeException"></exception>
         [NotNull] public static Func<IOption, bool> isempty
-            {
-                get
-                    {
-                        return i =>
-                                   {
-                                       NextException.SetFactory( () => ExceptionFactory.IsEmpty(i) );
+            => i =>
+                   {
+                       NextException.SetFactory(() => ExceptionFactory.IsEmpty(i));
 
-                                       switch (i)
-                                           {
-                                               case ISimpleOption option:
-                                                   return !option.HasValue;
+                       switch (i)
+                           {
+                               case ISimpleOption option:
+                                   return !option.HasValue;
 
-                                               case ISeqOption seq:
-                                                   foreach (IEnumerable<IOption> enm in seq.Enm)
-                                                       return !enm.Any();
+                               case ISeqOption seq:
+                                   foreach (IEnumerable<IOption> enm in seq.Enm)
+                                       return !enm.Any();
 
-                                                   return !seq.HasValue;
+                                   return !seq.HasValue;
 
-                                               default:
-                                                   throw new SharpPipeException($"isempty not implemented for {i.GetType()}");
-                                           }
-                                   };
-                    }
-            }
+                               default:
+                                   throw new SharpPipeException($"isempty not implemented for {i.GetType()}");
+                           }
+                   };
     }
 }

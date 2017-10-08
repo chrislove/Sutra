@@ -2,6 +2,11 @@
 using JetBrains.Annotations;
 
 namespace SharpPipe {
+    public static partial class Commands
+    {
+        public static Unit unit => new Unit();
+    }
+
     public struct Unit {
         /// <summary>
         /// Executes action, and returns Unit
@@ -12,5 +17,20 @@ namespace SharpPipe {
             action();
             return new Unit();
         }
+
+        /// <summary>
+        /// Makes Unit return any value
+        /// </summary>
+        internal T Return<T>( T value ) => value;
+    }
+    
+    public partial struct Pipe<T>
+    {
+        public static Unit operator |( Pipe<T> pipe, Unit unit ) => unit;
+    }
+    
+    public partial struct Seq<T>
+    {
+        public static Unit operator |( Seq<T> pipe, Unit unit ) => unit;
     }
 }

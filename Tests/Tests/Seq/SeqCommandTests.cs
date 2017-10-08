@@ -65,7 +65,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_First() {
-            string result = ABCSeq | add | ABCSeq
+            string result = ABCSeq  | add | ABCSeq
                             | where | equals("B")
                             | first | !get;
             
@@ -107,23 +107,23 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                Seq<string> pipe = start.str.seq
-                           | add   | ""
-                           | where | notequals("")
-                           | fail  | when | isempty;
+                    Seq<string> seq = start.str.seq
+                                      | add | "A"
+                                      | where | notequals("A")
+                                      | fail  | when | isempty;
             }
 
             Assert.That(TestDelegate, Throws.TypeOf<EmptySequenceException>());
         }
         
-        [TestCase(true, new string[0])]
-        [TestCase(true, new []{"A", "B", "C"})]
+        [TestCase(true,  new string[0])]
+        [TestCase(true,  new []{"A", "B", "C"})]
         [TestCase(false, new []{"A"})]
         public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
             void TestDelegate() {
-                Seq<string> emptyPipe = start.str.seq
-                                | add  | testStrings
-                                | fail | when | notsingle;
+                    Seq<string> emptyPipe = start.str.seq
+                                            | add  | testStrings
+                                            | fail | when | notsingle;
             }
 
             ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);

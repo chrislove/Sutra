@@ -15,6 +15,7 @@ namespace SharpPipe
 		[NotNull] private Func<Option<TIn>, Option<TOut>> Func { get; }
 
 		internal PipeFunc([NotNull] Func<TIn, TOut> func) => Func = option => option.Map(func);
+		internal PipeFunc([NotNull] Func<TIn, Option<TOut>> func) => Func = option => option.Map(func).ValueOr(default);
 		internal PipeFunc([NotNull] Func<Option<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
 
 		/// <summary>

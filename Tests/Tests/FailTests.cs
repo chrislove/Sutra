@@ -38,7 +38,7 @@ namespace SharpPipe.Tests
                 void TestDelegate()
                     {
                         Seq<string> seq = ABCSeq
-                                           | add | (string) null
+                                           | add  | (string) null
                                            | fail | new PipeUserException("TEST") | when | any(isempty);
                     }
 

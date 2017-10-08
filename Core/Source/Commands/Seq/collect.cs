@@ -16,7 +16,7 @@ namespace SharpPipe {
         /// </list>
         /// <example>
         /// <code>
-        /// seq | bind | (i => Enumerable.Repeat(i, 3))
+        /// seq | collect | (i => Enumerable.Repeat(i, 3))
         /// </code>
         /// </example>
         public static DoCollect collect => new DoCollect();

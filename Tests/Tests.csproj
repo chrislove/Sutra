@@ -54,7 +54,7 @@
     <Compile Include="Tests\Pipe\PipeTests.cs" />
     <Compile Include="Tests\ConversionTests.cs" />
     <Compile Include="Tests\Seq\SeqCommandTests.cs" />
-    <Compile Include="Tests\Seq\SeqPipeTests.cs" />
+    <Compile Include="Tests\Seq\SeqTests.cs" />
     <Compile Include="Tests\Seq\EmptySeqTests.cs" />
     <Compile Include="Tests\WhenTests.cs" />
     <Compile Include="Tests\OptionPipeTests.cs" />

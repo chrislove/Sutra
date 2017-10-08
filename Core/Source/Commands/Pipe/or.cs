@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using JetBrains.Annotations;
 using SharpPipe.Transformations;
 
 namespace SharpPipe {
@@ -8,36 +7,25 @@ namespace SharpPipe {
         /// <summary>
         /// If the pipe is empty replaces contents of the pipe with object on the right.
         /// </summary>
-        public static DoOr or => new DoOr();
+        public static DoOr<T> or<T>(Option<T> alternative) => new DoOr<T>(alternative);
+        public static DoOr<T> or<T>(T alternative) => new DoOr<T>(alternative.ToOption());
     }
-
-    /// <summary>
-    /// Command marker.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoOr { }
-    
-    public partial struct Pipe<T> {
-        public static DoOr<T> operator |( Pipe<T> pipe, DoOr _ ) => new DoOr<T>(pipe);
-    }
-    
     
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoOr<T> {
-        private readonly Pipe<T> _pipe;
+    public struct DoOr<T>
+    {
+        private readonly Option<T> _alternative;
+        
+        public DoOr( Option<T> alternative ) => _alternative = alternative;
 
-        public DoOr( Pipe<T> pipe ) => _pipe = pipe;
-
-        public static Pipe<T> operator |( DoOr<T> doOr, Option<T> alternative )
+        public static Pipe<T> operator |( Pipe<T> pipe, DoOr<T> doOr )
             {
-                Func<Option<T>, Option<T>> func = i => i.HasValue ? i : alternative;
+                Func<Option<T>, Option<T>> func = i => i.HasValue ? i : doOr._alternative;
 
-                return doOr._pipe.Map(func);
+                return pipe.Map(func);
             }
-
-        public static Pipe<T> operator |( DoOr<T> doOr, [CanBeNull] T alternative ) => doOr | alternative.ToOption();
     }
 }

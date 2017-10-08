@@ -26,26 +26,57 @@ namespace SharpPipe
         /// <summary>
         /// Converts pipe contents into TOut[]
         /// </summary>
-        public static DoWhere<T> operator |( Seq<T> seq, DoWhere _ ) => new DoWhere<T>(seq);
+        public static DoWhereSeq<T> operator |( Seq<T> seq, DoWhere _ ) => new DoWhereSeq<T>(seq);
+    }
+    
+    public partial struct Pipe<T>
+    {
+        /// <summary>
+        /// Converts pipe contents into TOut[]
+        /// </summary>
+        public static DoWherePipe<T> operator |( Pipe<T> pipe, DoWhere _ ) => new DoWherePipe<T>(pipe);
     }
 
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoWhere<T>
+    public struct DoWhereSeq<T>
     {
-        private readonly Seq<T> Seq;
+        private readonly Seq<T> _seq;
 
-        internal DoWhere( Seq<T> pipe ) => Seq = pipe;
+        internal DoWhereSeq( Seq<T> pipe ) => _seq = pipe;
 
-        public static Seq<T> operator |( DoWhere<T> doWhere, [NotNull] Func<IOption, bool> predicate )
+        public static Seq<T> operator |( DoWhereSeq<T> doWhere, [NotNull] Func<IOption, bool> predicate )
             {
                 Func<IEnumerable<IOption>, IEnumerable<Option<T>>> func = enm => enm.Where(predicate).Cast<Option<T>>();
-                return doWhere.Seq.Map(func);
+                return doWhere._seq.Map(func);
             }
 
-        public static Seq<T> operator |( DoWhere<T> doWhere, [NotNull] Func<T, bool> predicate )
+        public static Seq<T> operator |( DoWhereSeq<T> doWhere, [NotNull] Func<T, bool> predicate )
+            {
+                return doWhere | predicate.Map().Cast().InTo<IOption>();
+            }
+    }
+    
+    /// <summary>
+    /// Command marker.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public struct DoWherePipe<T>
+    {
+        private readonly Pipe<T> _pipe;
+
+        internal DoWherePipe( Pipe<T> pipe ) => _pipe = pipe;
+
+        public static Pipe<T> operator |( DoWherePipe<T> doWhere, [NotNull] Func<IOption, bool> predicate )
+            {
+                Func<Option<T>, Option<T>> func = option => predicate(option) ? option : default;
+                
+                return doWhere._pipe.Map(func);
+            }
+
+        public static Pipe<T> operator |( DoWherePipe<T> doWhere, [NotNull] Func<T, bool> predicate )
             {
                 return doWhere | predicate.Map().Cast().InTo<IOption>();
             }

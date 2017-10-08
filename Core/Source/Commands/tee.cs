@@ -36,26 +36,26 @@ namespace SharpPipe
         private readonly Pipe<T> _pipe;
 
         internal DoTee( Pipe<T> pipe ) => _pipe = pipe;
-
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
-        public static Unit operator |( DoTee<T> doTee, [NotNull] Action<Option<T>> act ) => act.ReturnsUnit()(doTee._pipe.Option);
-
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
-        public static Unit operator |( DoTee<T> doTee, [NotNull] Action<T> act ) => doTee | act.Map();
         
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoTee<T> doTee, [NotNull] Func<Option<T>, Unit> func ) => func(doTee._pipe.Option);
+        public static Pipe<T> operator |( DoTee<T> doTee, [NotNull] Func<Option<T>, Unit> func ) => func(doTee._pipe.Option).Return(doTee._pipe);
 
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Unit operator |( DoTee<T> doTee, [NotNull] Func<T, Unit> func ) => doTee | func.Map().ValueOr(unit);
+        //public static Pipe<T> operator |( DoTee<T> doTee, [NotNull] Func<T, Unit> func ) => doTee | func.Map().ValueOr(unit);
+
+        /// <summary>
+        /// Executes the action on the right.
+        /// </summary>
+        public static Pipe<T> operator |( DoTee<T> doTee, [NotNull] Action<Option<T>> act ) => doTee | act.ReturnsUnit();
+
+        /// <summary>
+        /// Executes the action on the right.
+        /// </summary>
+        public static Pipe<T> operator |( DoTee<T> doTee, [NotNull] Action<T> act ) => doTee | act.Map();
 
     }
 }

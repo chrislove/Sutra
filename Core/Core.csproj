@@ -58,7 +58,6 @@
     <Compile Include="Source\Commands\start.cs" />
     <Compile Include="Source\Commands\toseq.cs" />
     <Compile Include="Source\Commands\Command.cs" />
-    <Compile Include="Source\Commands\Seq\notempty.cs" />
     <Compile Include="Source\Commands\Seq\when.seq.cs" />
     <Compile Include="Source\Commands\Seq\collect.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />
@@ -94,6 +93,7 @@
     <Compile Include="Source\Types\Funcs\ToSeqFunc.cs" />
     <Compile Include="Source\Types\IOption.cs" />
     <Compile Include="Source\Types\Option.cs" />
+    <Compile Include="Source\Types\put.cs" />
     <Compile Include="Source\Types\SeqOption.cs" />
     <Compile Include="Source\Types\OptionMixin.cs" />
     <Compile Include="Source\Types\Pipes\IPipe.cs" />

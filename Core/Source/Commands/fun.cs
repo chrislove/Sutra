@@ -14,6 +14,13 @@ namespace SharpPipe
         public static PipeFunc<float, TOut>   fun<TOut>( Func<float, TOut> func )   => fun<float, TOut>(func);
         public static PipeFunc<double, TOut>  fun<TOut>( Func<double, TOut> func )  => fun<double, TOut>(func);
         
+        public static PipeFunc<TIn, TOut>     fun<TIn, TOut>(Func<TIn, Option<TOut>> func)  => new PipeFunc<TIn, TOut>(func);
+        public static PipeFunc<string, TOut>  fun<TOut>( Func<string, Option<TOut>> func )  => fun<string, TOut>(func);
+        public static PipeFunc<int, TOut>     fun<TOut>( Func<int, Option<TOut>> func )     => fun<int, TOut>(func);
+        public static PipeFunc<bool, TOut>    fun<TOut>( Func<bool, Option<TOut>> func )    => fun<bool, TOut>(func);
+        public static PipeFunc<float, TOut>   fun<TOut>( Func<float, Option<TOut>> func )   => fun<float, TOut>(func);
+        public static PipeFunc<double, TOut>  fun<TOut>( Func<double, Option<TOut>> func )  => fun<double, TOut>(func);
+        
         public static PipeFunc<TIn, TOut>     fun<TIn, TOut>(Func<Option<TIn>, Option<TOut>> func)  => new PipeFunc<TIn, TOut>(func);
         public static PipeFunc<string, TOut>  fun<TOut>( Func<Option<string>, Option<TOut>> func )  => fun<string, TOut>(func);
         public static PipeFunc<int, TOut>     fun<TOut>( Func<Option<int>, Option<TOut>> func )     => fun<int, TOut>(func);

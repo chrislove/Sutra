@@ -40,21 +40,21 @@ namespace SharpPipe
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Func<Option<T>, Unit> unitFunc ) => unitFunc.Map()(doIterate._seq.Option);
+        public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Func<Option<T>, Unit> unitFunc ) => unitFunc.Map()(doIterate._seq.Option).Return(doIterate._seq);
 
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Func<T, Unit> unitFunc ) => doIterate | unitFunc.Map().ValueOr(unit);
+        public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Func<T, Unit> unitFunc ) => doIterate | unitFunc.Map().ValueOr(unit);
 
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action ) => doIterate | action.ReturnsUnit();
+        public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action ) => doIterate | action.ReturnsUnit();
 
         /// <summary>
         /// Performs the action on the right for each non-empty element of the sequence.
         /// </summary>
-        public static Unit operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) => doIterate | action.Map();
+        public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) => doIterate | action.Map();
     }
 }

@@ -7,8 +7,6 @@ namespace SharpPipe
 {
     public static partial class Commands
     {
-        public static Unit unit => new Unit();
-
         [NotNull] public static Func<IOption, bool> notempty => i => !isempty(i);
 
         [NotNull] public static Func<ISeqOption, bool> issingle

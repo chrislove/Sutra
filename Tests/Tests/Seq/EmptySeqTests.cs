@@ -46,7 +46,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_NoneValue_SkipsEmptyIter()
             {
-                Unit pipe = EmptyAndTestSeq
+                var pipe = EmptyAndTestSeq
                            | iter | write;
 
                 Assert.That(WriteOutput, Is.EqualTo("TEST"));
@@ -55,7 +55,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_NoneValue_DoesntSkipOptionIterAction()
             {
-                Unit pipe = EmptyAndTestSeq
+                var pipe = EmptyAndTestSeq
                            | iter | writeoption;
 
                 Assert.That(WriteOutput, Is.EqualTo("NONETEST"));
@@ -67,7 +67,7 @@ namespace SharpPipe.Tests
                 Option<string> Func( Option<string> str )
                     => str.Match(i => i, "NONE").ToOption();
 
-                Unit pipe = EmptyAndTestSeq
+                var pipe = EmptyAndTestSeq
                            | map  | Func
                            | iter | writeoption;
 

@@ -11,9 +11,7 @@ namespace SharpPipe {
         internal Command( [NotNull] IPipe<T> pipe ) => Pipe = pipe ?? throw new ArgumentNullException(nameof(pipe));
         
         internal Command( [NotNull] Command<T> copyFrom ) {
-            if (copyFrom == null) throw new ArgumentNullException(nameof(copyFrom));
-            
-            Pipe = copyFrom.Pipe;
+                Pipe = copyFrom.Pipe ?? throw new ArgumentNullException(nameof(copyFrom));
         }
     }
 }
