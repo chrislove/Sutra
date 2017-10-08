@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
@@ -73,7 +74,7 @@ namespace SharpPipe.Tests {
         }
         
         [Test]
-        public void Test_SelectMany() {
+        public void Test_Collect() {
             IEnumerable<string> func( string str ) => Enumerable.Repeat(str, 3);
             
             string result = ABCSeq
@@ -81,6 +82,29 @@ namespace SharpPipe.Tests {
                          | concat  | !get;
             
             Assert.That(result, Is.EqualTo("AAABBBCCC"));
+        }
+        
+        [Test]
+        public void Test_Collectf_NoEmpty() {
+            Func<int, IEnumerable<string>> func = i => Enumerable.Repeat(i.ToString(), 3);
+            
+            string result = start.integer.seq | Enumerable.Range(0, 3)
+                         | collectf(func)
+                         | concat  | !get;
+            
+            Assert.That(result, Is.EqualTo("000111222"));
+        }
+        
+        [Test]
+        public void Test_Collectf_HasEmpty() {
+            Func<int, IEnumerable<string>> func = i => Enumerable.Repeat(i.ToString(), 3);
+            
+            var result = start.integer.seq | Enumerable.Range(0, 3)
+                            | add | default(Option<int>)
+                            | collectf(func)
+                            | concat | get;
+            
+            Assert.That(!result.HasValue);
         }
         
         [Test]

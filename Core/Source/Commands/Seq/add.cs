@@ -43,6 +43,11 @@ namespace SharpPipe {
         /// Pipe forward operator, adds a new value to a sequence.
         /// </summary>
         public static Seq<T> operator |( DoAdd<T> doAdd, [CanBeNull] T obj ) => doAdd._seq | obj;
+        
+        /// <summary>
+        /// Pipe forward operator, adds a new value to a sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoAdd<T> doAdd, Option<T> obj ) => doAdd._seq | obj;
 
         /// <summary>
         /// Pipe forward operator, concatenates two sequences and returns a new sequence.

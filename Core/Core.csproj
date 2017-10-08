@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Annotations.cs" />
+    <Compile Include="Source\Commands\Seq\collectf.cs" />
     <Compile Include="Source\Commands\tee.cs" />
     <Compile Include="Source\Commands\any.cs" />
     <Compile Include="Source\Commands\fun.cs" />

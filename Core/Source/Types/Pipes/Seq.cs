@@ -39,6 +39,16 @@ namespace SharpPipe
 
                 return seq | obj.Yield();
             }
+        
+        /// <summary>
+        /// Appends a single object to sequence.
+        /// </summary>
+        [Pure]
+        public static Seq<T> operator |( Seq<T> seq, Option<T> obj )
+            {
+
+                return seq | obj.Yield();
+            }
 
         /// <summary>
         /// Appends an enumerable to sequence.
