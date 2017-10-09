@@ -10,7 +10,7 @@ namespace SharpPipe.Tests {
     public sealed class ConversionTests : TestBase {
         [Test]
         public void Test_List_ToPipe() {
-            string result = start.str.seq | ABCList | str.concat | !get;
+            string result = start.seq | ABCList | str.concat | !get;
             
             Assert.That(result, Is.EqualTo("ABC"));
         }
@@ -21,7 +21,7 @@ namespace SharpPipe.Tests {
                                                                         .Select(i => inval + i)
                                                                         .Select(i => i.ToString());
 
-            string result = start.integer.pipe | 100
+            string result = start.pipe | 100
                             | to.seq(converter)
                             | str.join(";") | !get;
             
@@ -30,7 +30,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_Array_ToEnumerable() {
-            string result = start.str.seq | ABCArray
+            string result = start.seq | ABCArray
                             | str.concat  | !get;
             
             Assert.That(result, Is.EqualTo("ABC"));

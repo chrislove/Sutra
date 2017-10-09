@@ -5,7 +5,7 @@ namespace SharpPipe.Tests {
     public sealed class PipeSkipTests : TestBase {
         [Test]
         public void Test_NullInput_ReturnsEmptyOption() {
-            var pipe = start.str.pipe
+            var pipe = start.pipe
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
@@ -16,7 +16,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_NullInput_SkipsAction() {
-            var pipe = start.str.pipe
+            var pipe = start.pipe
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
@@ -27,7 +27,7 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_NullInput_DoesntSkipOptionAction() {
-            var pipe = start.str.pipe
+            var pipe = start.pipe
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
@@ -40,7 +40,7 @@ namespace SharpPipe.Tests {
         public void Test_NullInput_DoesntSkipOptionFunc() {
                 Option<string> Func( Option<string> option ) => option.Map(i => i, "NONE");
 
-                var pipe = start.str.pipe
+                var pipe = start.pipe
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
@@ -53,7 +53,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_NullInput_Fail_Throws() {
             void TestDelegate() {
-                var pipe = start.str.pipe
+                var pipe = start.pipe
                            | null
                            | fail | when | isempty;
             }

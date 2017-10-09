@@ -18,7 +18,7 @@ namespace SharpPipe.Tests
 
                 void TestDelegate()
                     {
-                        Seq<string> seq = start.str.seq
+                        Seq<string> seq = start.seq
                                           | paths
                                           | fail | when | any( not(path.ispathrooted) );
                     }

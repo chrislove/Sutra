@@ -13,8 +13,8 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_Seq_Action() {
-                var pipe = start.integer.seq
-                            | add | Enumerable.Range(0, 3)
+                var pipe = start.seq
+                            | Enumerable.Range(0, 3)
                             | map | ConvertToString
                             | concat
                             | tee | write;
@@ -25,8 +25,8 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_IEnumerableComposition() {
-            string enumPipeStr = start.str.seq
-                                 | add | Enumerable.Repeat("A", 2)
+            string enumPipeStr = start.seq
+                                 | Enumerable.Repeat("A", 2)
                                  | add | Enumerable.Repeat("B", 3)
                                  | concat
                                  | !get;

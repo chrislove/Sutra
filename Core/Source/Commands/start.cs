@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe {
     /// <summary>
@@ -32,39 +33,62 @@ namespace SharpPipe {
         [PublicAPI]
         public static class start {
             /// <summary>
-            /// Starts a {string} pipe.
+            /// Starts a pipe.
             /// </summary>
-            [PublicAPI]
-            public abstract class str : start<string> {
-                private str() { }
-            }
-
+            public static DoStartPipe pipe => new DoStartPipe();
+            
             /// <summary>
-            /// Starts a {int} pipe.
+            /// Starts a sequence.
             /// </summary>
-            [PublicAPI]
-            public abstract class integer : start<int> {
-                private integer() { }
-            }
-
-            /// <summary>
-            /// Starts a {float} pipe.
-            /// </summary>
-            [PublicAPI]
-            public abstract class flt : start<float> {
-                private flt() { }
-            }
-
-            /// <summary>
-            /// Starts a {double} pipe.
-            /// </summary>
-            [PublicAPI]
-            public abstract class dbl : start<double> {
-                private dbl() { }
-            }
+            public static DoStartSeq seq => new DoStartSeq();
         }
     }
+
+    /// <summary>
+    /// Command marker.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public struct DoStartPipe
+    {
+        public Pipe<T> With<T>( T obj ) => start<T>.pipe | obj;
+        public Pipe<T> With<T>( Option<T> obj ) => start<T>.pipe | obj;
         
+        public static Pipe<string> operator |( DoStartPipe _, [NotNull] string obj ) => start.pipe.With(obj);
+        public static Pipe<string> operator |( DoStartPipe _, Option<string> obj )   => start.pipe.With(obj);
+        
+        public static Pipe<int> operator |( DoStartPipe _, int obj ) => start.pipe.With(obj);
+        public static Pipe<int> operator |( DoStartPipe _, Option<int> obj )   => start.pipe.With(obj);
+        
+        public static Pipe<float> operator |( DoStartPipe _, float obj ) => start.pipe.With(obj);
+        public static Pipe<float> operator |( DoStartPipe _, Option<float> obj )   => start.pipe.With(obj);
+        
+        public static Pipe<double> operator |( DoStartPipe _, double obj ) => start.pipe.With(obj);
+        public static Pipe<double> operator |( DoStartPipe _, Option<double> obj )   => start.pipe.With(obj);
+    }
+
+    /// <summary>
+    /// Command marker.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public struct DoStartSeq
+    {
+        public Seq<T> With<T>( IEnumerable<T> obj ) => start<T>.seq | obj;
+        public Seq<T> With<T>( IEnumerable<Option<T>> obj ) => start<T>.seq | obj;
+        
+        public static Seq<string> operator |( DoStartSeq _, [NotNull] IEnumerable<string> obj ) => start.seq.With(obj);
+        public static Seq<string> operator |( DoStartSeq _, IEnumerable<Option<string>> obj )   => start.seq.With(obj);
+        
+        public static Seq<int> operator |( DoStartSeq _, IEnumerable<int> obj ) => start.seq.With(obj);
+        public static Seq<int> operator |( DoStartSeq _, IEnumerable<Option<int>> obj )   => start.seq.With(obj);
+        
+        public static Seq<float> operator |( DoStartSeq _, IEnumerable<float> obj ) => start.seq.With(obj);
+        public static Seq<float> operator |( DoStartSeq _, IEnumerable<Option<float>> obj )   => start.seq.With(obj);
+        
+        public static Seq<double> operator |( DoStartSeq _, IEnumerable<double> obj ) => start.seq.With(obj);
+        public static Seq<double> operator |( DoStartSeq _, IEnumerable<Option<double>> obj )   => start.seq.With(obj);
+    }
+
+
     /// <summary>
     /// Command marker.
     /// </summary>

@@ -7,7 +7,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptyPipe_DoesntThrow_OnGet() {
             void TestDelegate() {
-                Option<string> option = start.str.pipe
+                Option<string> option = start.pipe
                                         | (string) null
                                         | get;
             }
@@ -18,7 +18,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptyPipe_Throws_OnGetValue() {
             void TestDelegate() {
-                string str = start.str.pipe
+                string str = start.pipe
                              | (string) null
                              | !get;
             }
@@ -29,7 +29,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptySeq_DoesntThrow_OnGet() {
             void TestDelegate() {
-                SeqOption<string> seq = start.str.seq
+                SeqOption<string> seq = start.seq
                                         | (IEnumerable<string>) null
                                         | get;
             }
@@ -40,7 +40,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_EmptySeq_Throws_OnGetValue() {
             void TestDelegate() {
-                IEnumerable<Option<string>> seq = start.str.seq
+                IEnumerable<Option<string>> seq = start.seq
                                                   | (IEnumerable<string>) null
                                                   | !!get;
             }

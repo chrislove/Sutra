@@ -12,10 +12,10 @@ namespace SharpPipe.Tests {
         [NotNull] protected readonly string[] ABCArray = {"A", "B", "C"};
         [NotNull] protected List<string>      ABCList  => ABCArray.ToList();
         
-        protected Seq<string>                 ABCSeq      => start.str.seq  | ABCArray;
-        protected Pipe<string>                TestPipe    => start.str.pipe | "TEST";
+        protected Seq<string>                 ABCSeq      => start.seq  | ABCArray;
+        protected Pipe<string>                TestPipe    => start.pipe | "TEST";
 
-        protected static Seq<string> EmptyAndTestSeq => start.str.seq
+        protected static Seq<string> EmptyAndTestSeq => start<string>.seq
                                                         | add | (string) null
                                                         | fail| when | isempty
                                                         | add | "TEST";

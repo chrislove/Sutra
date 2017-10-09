@@ -9,7 +9,7 @@ namespace SharpPipe.Tests {
     public sealed class SeqCommandTests : TestBase {
         [Test]
         public void Test_Distinct() {
-            string pipeStr = start.str.seq
+            string pipeStr = start<string>.seq
                              | add | Enumerable.Repeat("A", 5)
                              | add | Enumerable.Repeat("B", 10)
                              | add | Enumerable.Repeat("C", 12)
@@ -24,8 +24,8 @@ namespace SharpPipe.Tests {
         public void Test_Conversion() {
             IEnumerable<string> enumerable = Enumerable.Repeat("A", 3);
 
-            Seq<string> pipe = start.str.seq
-                       | add | enumerable;
+            Seq<string> pipe = start<string>.seq
+                               | add | enumerable;
 
             string str        = pipe | concat     | !get;
             List<string> list = pipe | getlist;
@@ -88,9 +88,9 @@ namespace SharpPipe.Tests {
         public void Test_Collectf_NoEmpty() {
             Func<int, IEnumerable<string>> func = i => Enumerable.Repeat(i.ToString(), 3);
             
-            string result = start.integer.seq | Enumerable.Range(0, 3)
-                         | collectf(func)
-                         | concat  | !get;
+            string result = start.seq | Enumerable.Range(0, 3)
+                            | collectf(func)
+                            | concat | !get;
             
             Assert.That(result, Is.EqualTo("000111222"));
         }
@@ -99,19 +99,19 @@ namespace SharpPipe.Tests {
         public void Test_Collectf_HasEmpty() {
             Func<int, IEnumerable<string>> func = i => Enumerable.Repeat(i.ToString(), 3);
             
-            var result = start.integer.seq | Enumerable.Range(0, 3)
-                            | add | default(Option<int>)
-                            | collectf(func)
-                            | concat | get;
+            Option<string> option = start.seq | Enumerable.Range(0, 3)
+                                    | add | default(Option<int>)
+                                    | collectf(func)
+                                    | concat | get;
             
-            Assert.That(!result.HasValue);
+            Assert.That(!option.HasValue);
         }
         
         [Test]
         public void Test_Append_Enumerable() {
-            string result = start.str.seq | ABCArray
-                         | add | "D" | "E" | "F"
-                         | concat | !get;
+            string result = start.seq | ABCArray
+                            | add | "D" | "E" | "F"
+                            | concat | !get;
             
             Assert.That(result, Is.EqualTo("ABCDEF"));
         }
@@ -131,7 +131,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                    Seq<string> seq = start.str.seq
+                    Seq<string> seq = start<string>.seq
                                       | add | "A"
                                       | where | notequals("A")
                                       | fail  | when | isempty;
@@ -145,8 +145,8 @@ namespace SharpPipe.Tests {
         [TestCase(false, new []{"A"})]
         public void Test_IsNotSingle(bool shouldThrow, string[] testStrings) {
             void TestDelegate() {
-                    Seq<string> emptyPipe = start.str.seq
-                                            | add  | testStrings
+                    Seq<string> emptyPipe = start.seq
+                                            | testStrings
                                             | fail | when | notsingle;
             }
 
@@ -169,7 +169,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_ADD_IEnumerable() {
                 var defEnumerable = new[] {"D", "E", "F"}.Select(i => i);
-                var xyzPipe       = start.str.seq | new[] {"X", "Y", "Z"};
+                var xyzPipe       = start.seq | new[] {"X", "Y", "Z"};
 
 
                 var result = ABCSeq

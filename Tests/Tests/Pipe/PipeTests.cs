@@ -58,7 +58,7 @@ namespace SharpPipe.Tests
                 const string projectDirectory = @"C:\Project";
                 const string inPath = @"Library\Assembly.dll";
 
-                string combined = start.str.pipe | inPath
+                string combined = start.pipe | inPath
                                   | path.prepend(projectDirectory)
                                   | path.getfullpath
                                   | !get;
@@ -69,7 +69,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_Or()
             {
-                string str = start.str.pipe
+                string str = start.pipe
                              | (string) null
                              | or("ALT")
                              | !get;
@@ -82,7 +82,7 @@ namespace SharpPipe.Tests
             {
                 Func<int, string> toStringFunc = i => i.ToString();
 
-                string str = start.integer.pipe
+                string str = start.pipe
                              | 10
                              | mapf(toStringFunc)
                              | !get;
@@ -93,7 +93,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_Where()
             {
-                Option<string> option = start.str.pipe
+                Option<string> option = start.pipe
                                         | "TEST"
                                         | where | (i => i == "ABC")
                                         | get;
@@ -104,7 +104,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_EmptyString_Is_EmptyPipe()
             {
-                Option<string> option = start.str.pipe
+                Option<string> option = start.pipe
                                         | ""
                                         | get;
                 
@@ -114,7 +114,7 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_Put()
             {
-                int value = start.str.pipe
+                int value = start.pipe
                             | "A"
                             | put(0)
                             | !get;

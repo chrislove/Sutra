@@ -21,7 +21,7 @@ namespace SharpPipe.Tests {
         [TestCase(@"C:\Test", @"C:\Test")]
         public void Test_Pipe_IfSelect(string inPath, string expected) {
             string OneDirectoryUp(string path) => GetDirectoryName( GetFullPath(Combine(path, @"..\") ) );
-            string result = start.str.pipe
+            string result = start.pipe
                             | inPath
                             | when | EndsWith("Editor") | map | OneDirectoryUp
                             | when | ( () => true )     | map | (i => i)
