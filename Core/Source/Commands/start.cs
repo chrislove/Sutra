@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
@@ -9,24 +10,6 @@ namespace SharpPipe {
     /// A set of pipe command factories.
     /// </summary>
     public static partial class Commands {
-        /// <summary>
-        /// Starts a new pipe of type {T}.
-        /// </summary>
-        [PublicAPI]
-        public abstract class start<T> {
-            internal start() { }
-            
-            /// <summary>
-            /// Starts a pipe.
-            /// </summary>
-            public static DoStartPipe<T> pipe => new DoStartPipe<T>();
-            
-            /// <summary>
-            /// Starts a sequence.
-            /// </summary>
-            public static DoStartSeq<T> seq => new DoStartSeq<T>();
-        }
-
         /// <summary>
         /// Starts a new pipe of built-in type.
         /// </summary>
@@ -50,20 +33,25 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoStartPipe
     {
-        public Pipe<T> With<T>( T obj ) => start<T>.pipe | obj;
-        public Pipe<T> With<T>( Option<T> obj ) => start<T>.pipe | obj;
+        [PublicAPI]public DoStartPipe<T> of<T>() => new DoStartPipe<T>();
         
-        public static Pipe<string> operator |( DoStartPipe _, [NotNull] string obj ) => start.pipe.With(obj);
-        public static Pipe<string> operator |( DoStartPipe _, Option<string> obj )   => start.pipe.With(obj);
+        [PublicAPI] public Pipe<T> with<T>( T obj ) => start.pipe.of<T>() | obj;
+        [PublicAPI] public Pipe<T> with<T>( Option<T> obj ) => start.pipe.of<T>() | obj;
         
-        public static Pipe<int> operator |( DoStartPipe _, int obj ) => start.pipe.With(obj);
-        public static Pipe<int> operator |( DoStartPipe _, Option<int> obj )   => start.pipe.With(obj);
+        public static Pipe<string> operator |( DoStartPipe _, [NotNull] string obj ) => start.pipe.with(obj);
+        public static Pipe<string> operator |( DoStartPipe _, Option<string> obj )   => start.pipe.with(obj);
         
-        public static Pipe<float> operator |( DoStartPipe _, float obj ) => start.pipe.With(obj);
-        public static Pipe<float> operator |( DoStartPipe _, Option<float> obj )   => start.pipe.With(obj);
+        public static Pipe<int> operator |( DoStartPipe _, int obj ) => start.pipe.with(obj);
+        public static Pipe<int> operator |( DoStartPipe _, Option<int> obj )   => start.pipe.with(obj);
         
-        public static Pipe<double> operator |( DoStartPipe _, double obj ) => start.pipe.With(obj);
-        public static Pipe<double> operator |( DoStartPipe _, Option<double> obj )   => start.pipe.With(obj);
+        public static Pipe<float> operator |( DoStartPipe _, float obj ) => start.pipe.with(obj);
+        public static Pipe<float> operator |( DoStartPipe _, Option<float> obj )   => start.pipe.with(obj);
+        
+        public static Pipe<double> operator |( DoStartPipe _, double obj ) => start.pipe.with(obj);
+        public static Pipe<double> operator |( DoStartPipe _, Option<double> obj )   => start.pipe.with(obj);
+        
+        public static Pipe<DateTime> operator |( DoStartPipe _, DateTime obj ) => start.pipe.with(obj);
+        public static Pipe<DateTime> operator |( DoStartPipe _, Option<DateTime> obj )   => start.pipe.with(obj);
     }
 
     /// <summary>
@@ -72,20 +60,25 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoStartSeq
     {
-        public Seq<T> With<T>( IEnumerable<T> obj ) => start<T>.seq | obj;
-        public Seq<T> With<T>( IEnumerable<Option<T>> obj ) => start<T>.seq | obj;
+        [PublicAPI]public DoStartSeq<T> of<T>() => new DoStartSeq<T>();
+
+        [PublicAPI] public Seq<T> with<T>( IEnumerable<T> obj ) => start.seq.of<T>() | obj;
+        [PublicAPI] public Seq<T> with<T>( IEnumerable<Option<T>> obj ) => start.seq.of<T>() | obj;
         
-        public static Seq<string> operator |( DoStartSeq _, [NotNull] IEnumerable<string> obj ) => start.seq.With(obj);
-        public static Seq<string> operator |( DoStartSeq _, IEnumerable<Option<string>> obj )   => start.seq.With(obj);
+        public static Seq<string> operator |( DoStartSeq _, [NotNull] IEnumerable<string> obj ) => start.seq.with(obj);
+        public static Seq<string> operator |( DoStartSeq _, IEnumerable<Option<string>> obj )   => start.seq.with(obj);
         
-        public static Seq<int> operator |( DoStartSeq _, IEnumerable<int> obj ) => start.seq.With(obj);
-        public static Seq<int> operator |( DoStartSeq _, IEnumerable<Option<int>> obj )   => start.seq.With(obj);
+        public static Seq<int> operator |( DoStartSeq _, IEnumerable<int> obj ) => start.seq.with(obj);
+        public static Seq<int> operator |( DoStartSeq _, IEnumerable<Option<int>> obj )   => start.seq.with(obj);
         
-        public static Seq<float> operator |( DoStartSeq _, IEnumerable<float> obj ) => start.seq.With(obj);
-        public static Seq<float> operator |( DoStartSeq _, IEnumerable<Option<float>> obj )   => start.seq.With(obj);
+        public static Seq<float> operator |( DoStartSeq _, IEnumerable<float> obj ) => start.seq.with(obj);
+        public static Seq<float> operator |( DoStartSeq _, IEnumerable<Option<float>> obj )   => start.seq.with(obj);
         
-        public static Seq<double> operator |( DoStartSeq _, IEnumerable<double> obj ) => start.seq.With(obj);
-        public static Seq<double> operator |( DoStartSeq _, IEnumerable<Option<double>> obj )   => start.seq.With(obj);
+        public static Seq<double> operator |( DoStartSeq _, IEnumerable<double> obj ) => start.seq.with(obj);
+        public static Seq<double> operator |( DoStartSeq _, IEnumerable<Option<double>> obj )   => start.seq.with(obj);
+        
+        public static Seq<DateTime> operator |( DoStartSeq _, IEnumerable<DateTime> obj ) => start.seq.with(obj);
+        public static Seq<DateTime> operator |( DoStartSeq _, IEnumerable<Option<DateTime>> obj )   => start.seq.with(obj);
     }
 
 

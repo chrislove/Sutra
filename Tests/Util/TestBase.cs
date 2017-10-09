@@ -15,7 +15,7 @@ namespace SharpPipe.Tests {
         protected Seq<string>                 ABCSeq      => start.seq  | ABCArray;
         protected Pipe<string>                TestPipe    => start.pipe | "TEST";
 
-        protected static Seq<string> EmptyAndTestSeq => start<string>.seq
+        protected static Seq<string> EmptyAndTestSeq => start.seq.of<string>()
                                                         | add | (string) null
                                                         | fail| when | isempty
                                                         | add | "TEST";

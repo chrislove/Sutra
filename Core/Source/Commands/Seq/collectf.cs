@@ -26,7 +26,7 @@ namespace SharpPipe {
             {
                 Func<IEnumerable<Option<TIn>>, SeqOption<TOut>> mapFunc = enm => enm.Select(doCollect._func).Flatten();
                 
-                return start<TOut>.seq | seq.Option.Match( enm => mapFunc(enm), default(SeqOption<TOut>) );
+                return start.seq.of<TOut>() | seq.Option.Match( enm => mapFunc(enm), default(SeqOption<TOut>) );
             }
     }
 }

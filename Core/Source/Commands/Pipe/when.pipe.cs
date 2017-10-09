@@ -79,7 +79,7 @@ namespace SharpPipe {
             
             foreach (var value in pipe.Option.Enm) {
                 if (doSelectPipe.Predicate(value))
-                    return start<T>.pipe | func(value);
+                    return start.pipe.of<T>() | func(value);
             }
             
             return pipe;

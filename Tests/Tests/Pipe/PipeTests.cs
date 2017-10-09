@@ -16,7 +16,7 @@ namespace SharpPipe.Tests
         private static PipeFunc<DateTime, string> getshortdate => fun((DateTime d) => d.ToShortDateString());
 
 
-        private static Pipe<string> YesterdayPipe => start<DateTime>.pipe | DateTime.Now
+        private static Pipe<string> YesterdayPipe => start.pipe | DateTime.Now
                                                      | AddDays(-1)
                                                      | getshortdate
                                                      | (i => "Yesterday: " + i);
@@ -35,7 +35,7 @@ namespace SharpPipe.Tests
             {
                 DateTime nowDateTime = DateTime.Now;
 
-                DateTime pipe = start<DateTime>.pipe | nowDateTime
+                DateTime pipe = start.pipe | nowDateTime
                                 | when | (i => getshortdate[i] == nowDateTime.ToShortDateString()) | map | (i => nowDateTime)
                                 | !get;
 

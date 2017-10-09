@@ -28,6 +28,6 @@ namespace SharpPipe {
         internal DoTransformToSeq( [NotNull] Func<TIn, IEnumerable<TOut>> func ) => _func = func ?? throw new ArgumentNullException(nameof(func));
 
         public static Seq<TOut> operator |( Pipe<TIn> pipe, DoTransformToSeq<TIn, TOut> toSeq )
-            => start<TOut>.seq | toSeq._func[pipe.Option];
+            => start.seq.of<TOut>() | toSeq._func[pipe.Option];
     }
 }

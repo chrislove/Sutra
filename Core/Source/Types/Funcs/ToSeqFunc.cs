@@ -35,7 +35,7 @@ namespace SharpPipe {
         /// <summary>
         /// Transforms pipe to a sequence using function on the right.
         /// </summary>
-        public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) => start<TOut>.seq | func[pipe.Option];
+        public static Seq<TOut> operator |( Pipe<TIn> pipe, ToSeqFunc<TIn, TOut> func ) => start.seq.of<TOut>() | func[pipe.Option];
         
         [NotNull]
         public static implicit operator Func<Option<TIn>, SeqOption<TOut>>( ToSeqFunc<TIn, TOut> pipeFunc ) => pipeFunc.Func;

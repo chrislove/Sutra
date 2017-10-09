@@ -14,6 +14,6 @@ namespace SharpPipe {
  
          public DoPut( T value ) => _value = value;
  
-         public static Pipe<T> operator |( IPipe pipe, DoPut<T> doPut ) => start<T>.pipe | doPut._value;
+         public static Pipe<T> operator |( IPipe pipe, DoPut<T> doPut ) => start.pipe.of<T>() | doPut._value;
      }
  }

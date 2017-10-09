@@ -22,13 +22,13 @@ namespace SharpPipe
         internal Seq( [CanBeNull] IEnumerable<T> enm ) => Option = enm.Return().Return();
 
         [Pure]
-        internal Seq<TOut> Map<TOut>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<TOut>>> func ) => start<TOut>.seq | Option.Map(func);
+        internal Seq<TOut> Map<TOut>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<TOut>>> func ) => start.seq.of<TOut>() | Option.Map(func);
 
         [Pure]
-        internal Seq<TOut> Map<TOut>( [NotNull] Func<IEnumerable<IOption>, IEnumerable<Option<TOut>>> func ) => start<TOut>.seq | Option.Map(func);
+        internal Seq<TOut> Map<TOut>( [NotNull] Func<IEnumerable<IOption>, IEnumerable<Option<TOut>>> func ) => start.seq.of<TOut>() | Option.Map(func);
 
         [Pure]
-        internal Seq<TOut> Map<TOut>( [NotNull] Func<IEnumerable<T>, IEnumerable<TOut>> func ) => start<TOut>.seq | Option.Map(func);
+        internal Seq<TOut> Map<TOut>( [NotNull] Func<IEnumerable<T>, IEnumerable<TOut>> func ) => start.seq.of<TOut>() | Option.Map(func);
 
         /// <summary>
         /// Appends a single object to sequence.
@@ -85,7 +85,7 @@ namespace SharpPipe
         [Pure]
         public static Pipe<T> operator |( Seq<T> seq, [NotNull] Func<IEnumerable<Option<T>>, Option<T>> func ) => func(seq);
 
-        public static implicit operator Seq<T>( SeqOption<T> option ) => start<T>.seq | option;
+        public static implicit operator Seq<T>( SeqOption<T> option ) => start.seq.of<T>() | option;
         
         public IEnumerator<Option<T>> GetEnumerator()
             {

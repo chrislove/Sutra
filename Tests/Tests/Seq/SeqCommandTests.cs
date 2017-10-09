@@ -9,7 +9,7 @@ namespace SharpPipe.Tests {
     public sealed class SeqCommandTests : TestBase {
         [Test]
         public void Test_Distinct() {
-            string pipeStr = start<string>.seq
+            string pipeStr = start.seq.of<string>()
                              | add | Enumerable.Repeat("A", 5)
                              | add | Enumerable.Repeat("B", 10)
                              | add | Enumerable.Repeat("C", 12)
@@ -24,8 +24,7 @@ namespace SharpPipe.Tests {
         public void Test_Conversion() {
             IEnumerable<string> enumerable = Enumerable.Repeat("A", 3);
 
-            Seq<string> pipe = start<string>.seq
-                               | add | enumerable;
+            Seq<string> pipe = start.seq | enumerable;
 
             string str        = pipe | concat     | !get;
             List<string> list = pipe | getlist;
@@ -131,7 +130,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_IfEmpty_Throws() {
             void TestDelegate() {
-                    Seq<string> seq = start<string>.seq
+                    Seq<string> seq = start.seq.of<string>()
                                       | add | "A"
                                       | where | notequals("A")
                                       | fail  | when | isempty;

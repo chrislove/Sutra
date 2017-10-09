@@ -16,8 +16,8 @@ namespace SharpPipe {
 
         internal Option<T> Option { get; }
         
-        [Pure] internal Pipe<TOut> Map<TOut>([NotNull] Func<Option<T>, Option<TOut>> func)              => start<TOut>.pipe | func(Option);
-        [Pure] internal Seq<TOut> Bind<TOut>([NotNull] Func<Option<T>, IEnumerable<Option<TOut>>> func) => start<TOut>.seq  | func(Option);
+        [Pure] internal Pipe<TOut> Map<TOut>([NotNull] Func<Option<T>, Option<TOut>> func)              => start.pipe.of<TOut>() | func(Option);
+        [Pure] internal Seq<TOut> Bind<TOut>([NotNull] Func<Option<T>, IEnumerable<Option<TOut>>> func) => start.seq.of<TOut>()  | func(Option);
 
         /// <summary>
         /// Transforms pipe contents using a function on the right.
@@ -37,8 +37,8 @@ namespace SharpPipe {
         /// <summary>
         /// Converts pipe into sequence and appends object on the right.
         /// </summary>
-        [Pure] public static Seq<T> operator |( Pipe<T> pipe, Option<T> option ) => start<T>.seq | new [] {pipe.Option, option};
+        [Pure] public static Seq<T> operator |( Pipe<T> pipe, Option<T> option ) => start.seq.of<T>() | new [] {pipe.Option, option};
         
-        public static implicit operator Pipe<T>( Option<T> option ) => start<T>.pipe | option;
+        public static implicit operator Pipe<T>( Option<T> option ) => start.pipe.of<T>() | option;
     }
 }

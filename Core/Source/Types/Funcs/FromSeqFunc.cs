@@ -35,7 +35,7 @@ namespace SharpPipe {
         /// Transforms sequence to a pipe.
         /// </summary>
         public static Pipe<TOut> operator |(Seq<TIn> seq, FromSeqFunc<TIn, TOut> func) {
-            return start<TOut>.pipe | func[seq.Option];
+            return start.pipe.of<TOut>() | func[seq.Option];
         }
     }
 }
