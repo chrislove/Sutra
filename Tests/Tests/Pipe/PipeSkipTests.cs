@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using static SharpPipe.Commands;
 
 namespace SharpPipe.Tests {
@@ -38,13 +39,13 @@ namespace SharpPipe.Tests {
         
         [Test]
         public void Test_NullInput_DoesntSkipOptionFunc() {
-                Option<string> Func( Option<string> option ) => option.Map(i => i, "NONE");
+                Func<Option<string>, Option<string>> func = option => option.Map(i => i, "NONE");
 
                 var pipe = start.pipe
                        | (string) null
                        | (i => i + "TEST1")
                        | (i => i + "TEST2")
-                       | Func
+                       | func
                        | tee | writeoption;
 
             Assert.That(WriteOutput, Is.EqualTo("NONE"));

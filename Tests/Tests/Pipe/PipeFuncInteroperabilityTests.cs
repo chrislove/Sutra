@@ -20,7 +20,7 @@ namespace SharpPipe.Tests
                     {
                         Seq<string> seq = start.seq
                                           | paths
-                                          | fail | when | any( not(path.ispathrooted) );
+                                          | fail | when | any( not(pathf.ispathrooted) );
                     }
                 
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);

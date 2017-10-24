@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\OptionTests.cs" />
     <Compile Include="Tests\Pipe\PipeFailTests.cs" />
     <Compile Include="Tests\Pipe\PipeFuncInteroperabilityTests.cs" />
     <Compile Include="Tests\Pipe\PipeSkipTests.cs" />

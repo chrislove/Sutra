@@ -40,6 +40,15 @@ namespace SharpPipe.Transformations
             }
         
         /// <summary>
+        /// Lifts function to accept and return Option.
+        /// </summary>
+        [Pure] [NotNull]
+        public static Func<Option<T>, Unit> Map<T, U>   ( [CanBeNull] this Func<T, Unit> func )
+            {
+                return func.Map().ReturnsUnit();
+            }
+        
+        /// <summary>
         /// Lifts predicate to accept option. Predicate will return false for none.
         /// </summary>
         [Pure] [NotNull]
@@ -58,6 +67,15 @@ namespace SharpPipe.Transformations
                 Func<IEnumerable<Option<T>>, Unit> enmFunc = enm => enm.Select(func).Aggregate(unit, ( a, b ) => unit);
                 
                 return seq => enmFunc.Map()(seq).ValueOr(unit);
+            }
+        
+        /// <summary>
+        /// Converts the Some{T} Func to Option{T} Func.
+        /// </summary>
+        [Pure] [NotNull]
+        public static Func<Option<T>, U> ToOptionFunc<T,U>( [CanBeNull] this Func<Some<T>, U> func )
+            {
+                return i => i.HasValue ? func(i | some) : default;
             }
         
         
@@ -83,5 +101,38 @@ namespace SharpPipe.Transformations
                                return unit;
                            };
             }
+        
+        /// <summary>
+        /// Makes a func discard its output and return Unit.
+        /// </summary>
+        [Pure] [ContractAnnotation("null => null")]
+        public static Func<T, Unit> ReturnsUnit<T,U>([CanBeNull] this Func<T, U> func)
+            {
+                if (func == null) return null;
+                
+                return i =>
+                           {
+                               func(i);
+                               return unit;
+                           };
+            }
+        
+        [Pure] [ContractAnnotation("null => null")]
+        public static Func<Unit> ReturnsUnit([CanBeNull] this Action act)
+            {
+                if (act == null) return null;
+                
+                return () =>
+                           {
+                               act();
+                               return unit;
+                           };
+            }
+        
+        [Pure] [NotNull]
+        public static Action<T> ToAction<T>(this Fun<T, Unit> func) => i => func.Func(i);
+        
+        [Pure] [NotNull]
+        public static Action ToAction(this Fun<Unit> func) => () => func.Func();
     }
 }

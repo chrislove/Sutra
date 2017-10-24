@@ -59,9 +59,33 @@ namespace SharpPipe
         public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Action<Option<T>> action ) => doIterate._seq | iterf | action.ReturnsUnit();
 
         /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterate<T> doIterate, Act<Option<T>> act ) => doIterate._seq | iterf | act.Fun;
+
+
+
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Action<Some<T>> action ) => doIterate._seq | iterf | action.ReturnsUnit();
+
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterate<T> doIterate, Act<Some<T>> act ) => doIterate._seq | iterf | act.Fun;
+
+        
+        
+        /// <summary>
         /// Performs the action on the right for each non-empty element of the sequence.
         /// </summary>
         public static Seq<T> operator |( DoIterate<T> doIterate, [NotNull] Action<T> action ) => doIterate._seq | iterf | action.Map();
+
+        /// <summary>
+        /// Performs the action on the right for each non-empty element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterate<T> doIterate, Act<T> act ) => doIterate._seq | iterf | act.Fun;
     }
     
     /// <summary>
@@ -82,6 +106,33 @@ namespace SharpPipe
         /// <summary>
         /// Performs the action on the right for each element of the sequence.
         /// </summary>
+        public static Seq<T> operator |( DoIterateFunc<T> doIterate, Fun<Option<T>, Unit> fun )
+            => doIterate | fun.Func;
+
+        
+        
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterateFunc<T> doIterate, [NotNull] Func<Some<T>, Unit> unitFunc )
+            => doIterate | unitFunc.ToOptionFunc();
+
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterateFunc<T> doIterate, Fun<Some<T>, Unit> fun )
+            => doIterate | fun.Func;
+        
+
+
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
         public static Seq<T> operator |( DoIterateFunc<T> doIterate, [NotNull] Func<T, Unit> unitFunc ) => doIterate | unitFunc.Map().ValueOr(unit);
+
+        /// <summary>
+        /// Performs the action on the right for each element of the sequence.
+        /// </summary>
+        public static Seq<T> operator |( DoIterateFunc<T> doIterate, Fun<T, Unit> fun ) => doIterate | fun.Func;
     }
 }

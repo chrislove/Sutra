@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
+using static SharpPipe.Commands;
 
 namespace SharpPipe
 {
@@ -24,6 +25,16 @@ namespace SharpPipe
                 if (value is string str)
                     HasValue = !string.IsNullOrEmpty(str);
             }
+        
+        public Option<U> FlatMap<U>([NotNull] Func<T, Option<U>> func )
+            {
+                return Map(func).Match(i => i, none<U>());
+            }
+        
+        public str FlatMap([NotNull] Func<T, str> func )
+            {
+                return Map(func).Match(i => i, str.none);
+            }
 
         public Option<U> Map<U>( [NotNull] Func<T, U> func )
             {
@@ -37,10 +48,40 @@ namespace SharpPipe
 
         public IEnumerable<T> Enm => HasValue ? _value.Yield() : Enumerable.Empty<T>();
         IEnumerable<object> ISimpleOption.Enm => Enm.Cast<object>();
+        
+        /// <summary>
+        /// If A is empty then return B
+        /// </summary>
+        public static Option<T> operator |( Option<T> option, Option<T> alternative ) => option.HasValue ? option : alternative;
+        
+        /// <summary>
+        /// If A is empty then return B
+        /// </summary>
+        public static Option<T> operator |( Option<T> option, T alternative ) => option.HasValue ? option : alternative.ToOption();
 
+        /// <summary>
+        /// Returns the value within the Option. Unsafe.
+        /// </summary>
+        [NotNull]
+        public static T operator |( Option<T> option, DoGet _ ) => option.ValueOrFail( () => throw EmptyOptionException.For<T>() );
+        
+        /// <summary>
+        /// Returns the value within the str or returns the alternative. Safe.
+        /// </summary>
+        [CanBeNull]
+        public static T operator |( Option<T> option, DoGetOr<T> getOr ) => option.HasValue ? option._value : getOr._alternative;
+
+        /// <summary>
+        /// Converts Option{T} to Some{T}. Unsafe.
+        /// </summary>
+        public static Some<T> operator |( Option<T> option, DoToSome _ ) => new Some<T>(option);
 
         #region Boilerplate
 
+        //public override string ToString() => $"Option<{typeof(T)}> [" + (HasValue ? _value.ToString() : "none") + "]";
+        public override string ToString() => throw new InvalidOperationException("Calling Option{T}.ToString() not allowed.");
+
+        
         public bool Equals( IOption<T> other ) => HasValue == other.HasValue && EqualityComparer<T>.Default.Equals(_value, other._value());
         public bool Equals( IOption other ) => HasValue == other.HasValue && EqualityComparer<T>.Default.Equals(_value, (T) other.BoxedValue());
         public bool Equals( T other ) => HasValue == (other != null) && EqualityComparer<T>.Default.Equals(_value, other);
@@ -48,7 +89,7 @@ namespace SharpPipe
         public override bool Equals( object obj )
             {
                 if (ReferenceEquals(null, obj)) return false;
-                return obj is Option<T> && Equals((Option<T>) obj);
+                return obj is Option<T> option && Equals(option);
             }
 
         public override int GetHashCode()
@@ -59,6 +100,8 @@ namespace SharpPipe
                     }
             }
 
+        public static implicit operator Option<T>( T obj ) => obj.ToOption();
+        
         public static bool operator ==( Option<T> lhs, IOption rhs ) => lhs.Equals(rhs);
         public static bool operator !=( Option<T> lhs, IOption rhs ) => !(lhs == rhs);
 

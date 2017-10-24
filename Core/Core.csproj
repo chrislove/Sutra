@@ -43,6 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Annotations.cs" />
+    <Compile Include="Source\Commands\getor.cs" />
+    <Compile Include="Source\Commands\inv.cs" />
+    <Compile Include="Source\Commands\none.cs" />
+    <Compile Include="Source\Commands\opt.cs" />
+    <Compile Include="Source\Commands\some.cs" />
     <Compile Include="Source\Commands\Seq\collectf.cs" />
     <Compile Include="Source\Commands\tee.cs" />
     <Compile Include="Source\Commands\any.cs" />
@@ -74,11 +79,12 @@
     <Compile Include="Source\Commands\Seq\getlist.cs" />
     <Compile Include="Source\Commands\get.cs" />
     <Compile Include="Source\CurryLib\datetime.cs" />
-    <Compile Include="Source\CurryLib\path.cs" />
-    <Compile Include="Source\CurryLib\str.cs" />
+    <Compile Include="Source\CurryLib\pathf.cs" />
+    <Compile Include="Source\CurryLib\strf.cs" />
     <Compile Include="Source\Exceptions\EmptyOptionException.cs" />
     <Compile Include="Source\Exceptions\EmptyPipeException.cs" />
     <Compile Include="Source\Exceptions\EmptySequenceException.cs" />
+    <Compile Include="Source\Exceptions\InvalidInputException.cs" />
     <Compile Include="Source\Exceptions\ErrorManager.cs" />
     <Compile Include="Source\Exceptions\ExceptionFactory.cs" />
     <Compile Include="Source\Exceptions\NextException.cs" />
@@ -100,12 +106,19 @@
     <Compile Include="Source\Types\Pipes\IPipe.cs" />
     <Compile Include="Source\Types\Pipes\Pipe.cs" />
     <Compile Include="Source\Types\Pipes\Seq.cs" />
+    <Compile Include="Source\Types\Some\Act.cs" />
+    <Compile Include="Source\Types\Some\Some.cs" />
+    <Compile Include="Source\Types\Some\Fun.cs" />
+    <Compile Include="Source\Types\Some\SomeExtensions.cs" />
+    <Compile Include="Source\Types\Some\somestr.cs" />
+    <Compile Include="Source\Types\str.cs" />
     <Compile Include="Source\Types\Transformations\FuncConverter.cs" />
     <Compile Include="Source\Types\Transformations\FuncTransformations.cs" />
     <Compile Include="Source\Types\Transformations\OptionTransformations.cs" />
     <Compile Include="Source\Types\Transformations\SeqFuncTransformations.cs" />
     <Compile Include="Source\Types\Transformations\SeqOptionTransformations.cs" />
     <Compile Include="Source\Types\Unit.cs" />
+    <Compile Include="Source\Util\AssertUtil.cs" />
     <Compile Include="Source\Util\FuncExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Util\TypeExtensions.cs" />

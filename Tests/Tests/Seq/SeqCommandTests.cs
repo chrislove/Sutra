@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.CurryLib.str;
+using static SharpPipe.CurryLib.strf;
 
 namespace SharpPipe.Tests {
     public sealed class SeqCommandTests : TestBase {
@@ -57,7 +57,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_Single() {
             string result = ABCSeq
-                            | where  | equals("B")
+                            | where  | Commands.@equals("B")
                             | single | !get;
             
             Assert.That(result, Is.EqualTo("B"));
@@ -66,7 +66,7 @@ namespace SharpPipe.Tests {
         [Test]
         public void Test_First() {
             string result = ABCSeq  | add | ABCSeq
-                            | where | equals("B")
+                            | where | Commands.@equals("B")
                             | first | !get;
             
             Assert.That(result, Is.EqualTo("B"));

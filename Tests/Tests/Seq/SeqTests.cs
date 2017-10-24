@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using static SharpPipe.Commands;
-using static SharpPipe.CurryLib.str;
+using static SharpPipe.CurryLib.strf;
 
 // ReSharper disable SuggestVarOrType_Elsewhere
 // ReSharper disable PossibleMultipleSeqeration

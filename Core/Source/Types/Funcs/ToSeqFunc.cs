@@ -21,8 +21,8 @@ namespace SharpPipe {
         public SeqOption<TOut> this[ [CanBeNull] TIn invalue ] => Func(invalue.ToOption());
         public SeqOption<TOut> this[ Option<TIn> invalue ] => Func(invalue);
         
-        internal ToSeqFunc([NotNull] Func<Option<TIn>, SeqOption<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
-        internal ToSeqFunc([NotNull] Func<TIn, IEnumerable<TOut>> func) => Func = option => option.Map(func).Return();
+        public ToSeqFunc([NotNull] Func<Option<TIn>, SeqOption<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+        public ToSeqFunc([NotNull] Func<TIn, IEnumerable<TOut>> func) => Func = option => option.Map(func).Return();
 
         
         /// <summary>

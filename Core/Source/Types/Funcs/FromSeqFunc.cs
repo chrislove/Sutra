@@ -22,7 +22,7 @@ namespace SharpPipe {
         public Option<TOut> this[ [CanBeNull] IEnumerable<TIn> invalue ] => Func(invalue.Return().Return());
         public Option<TOut> this[ SeqOption<TIn> invalue ] => Func(invalue);
         
-        internal FromSeqFunc([NotNull] Func<SeqOption<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
+        public FromSeqFunc([NotNull] Func<SeqOption<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
   
         /// <summary>
         /// Returns the contained function.

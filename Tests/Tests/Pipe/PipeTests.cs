@@ -59,8 +59,8 @@ namespace SharpPipe.Tests
                 const string inPath = @"Library\Assembly.dll";
 
                 string combined = start.pipe | inPath
-                                  | path.prepend(projectDirectory)
-                                  | path.getfullpath
+                                  | pathf.prepend(projectDirectory)
+                                  | pathf.getfullpath
                                   | !get;
 
                 Assert.That(combined, Is.EqualTo(Path.Combine(projectDirectory, inPath)));

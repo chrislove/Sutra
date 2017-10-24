@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using static System.IO.Path;
 using static SharpPipe.Commands;
-using static SharpPipe.CurryLib.str;
+using static SharpPipe.CurryLib.strf;
 
 namespace SharpPipe.Tests {
     public sealed class IfTests : TestBase {
@@ -23,7 +23,7 @@ namespace SharpPipe.Tests {
             string OneDirectoryUp(string path) => GetDirectoryName( GetFullPath(Combine(path, @"..\") ) );
             string result = start.pipe
                             | inPath
-                            | when | EndsWith("Editor") | map | OneDirectoryUp
+                            | when | endsWith("Editor") | map | OneDirectoryUp
                             | when | ( () => true )     | map | (i => i)
                             | !get;
             

@@ -5,6 +5,7 @@ namespace SharpPipe {
     public static partial class Commands
     {
         public static Unit unit => new Unit();
+        public static Unit _ => new Unit();
     }
 
     public struct Unit {

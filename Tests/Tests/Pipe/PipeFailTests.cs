@@ -26,7 +26,7 @@ namespace SharpPipe.Tests
                 void TestDelegate()
                     {
                         Pipe<string> pipe = TestPipe
-                                            | fail | when | not(str.Contains(instr));
+                                            | fail | when | not(strf.contains(instr));
                     }
 
                 ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);

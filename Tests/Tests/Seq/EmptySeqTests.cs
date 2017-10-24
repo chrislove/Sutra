@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using SharpPipe.Transformations;
@@ -64,11 +65,11 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_NoneValue_DoesntSkipIter_OptionFunc()
             {
-                Option<string> Func( Option<string> str )
+                Func<Option<string>, Option<string>> func = str
                     => str.Match(i => i, "NONE").ToOption();
 
                 var pipe = EmptyAndTestSeq
-                           | map  | Func
+                           | map  | func
                            | iter | writeoption;
 
                 Assert.That(WriteOutput, Is.EqualTo("NONETEST"));

@@ -88,7 +88,7 @@ namespace SharpPipe
         /// </summary>
         /// <exception cref="EmptySequenceException">Thrown when any item within the sequence is none.</exception>
         [NotNull]
-        public static IEnumerable<T> operator |( Seq<T> seq, DoGet3 _ ) => (seq | !!get).Select( o => o.ValueOrFail(EmptySequenceException.For<T>) );
+        public static IEnumerable<T> operator |( Seq<T> seq, DoGet3 _ ) => (seq | !!get).Select(o => o.ValueOrFail(EmptySequenceException.For<T>));
     }
 
     public partial struct Pipe<T>

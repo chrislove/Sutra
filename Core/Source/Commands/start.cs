@@ -41,6 +41,8 @@ namespace SharpPipe {
         public static Pipe<string> operator |( DoStartPipe _, [NotNull] string obj ) => start.pipe.with(obj);
         public static Pipe<string> operator |( DoStartPipe _, Option<string> obj )   => start.pipe.with(obj);
         
+        public static Pipe<str> operator |( DoStartPipe _, str obj ) => start.pipe.with(obj);
+        
         public static Pipe<int> operator |( DoStartPipe _, int obj ) => start.pipe.with(obj);
         public static Pipe<int> operator |( DoStartPipe _, Option<int> obj )   => start.pipe.with(obj);
         
@@ -67,6 +69,8 @@ namespace SharpPipe {
         
         public static Seq<string> operator |( DoStartSeq _, [NotNull] IEnumerable<string> obj ) => start.seq.with(obj);
         public static Seq<string> operator |( DoStartSeq _, IEnumerable<Option<string>> obj )   => start.seq.with(obj);
+        
+        public static Seq<str> operator |( DoStartSeq _, [NotNull] IEnumerable<str> obj ) => start.seq.with(obj);
         
         public static Seq<int> operator |( DoStartSeq _, IEnumerable<int> obj ) => start.seq.with(obj);
         public static Seq<int> operator |( DoStartSeq _, IEnumerable<Option<int>> obj )   => start.seq.with(obj);
