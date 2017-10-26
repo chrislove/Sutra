@@ -24,16 +24,16 @@ namespace SharpPipe {
                 _value = value;
             }
         
-        public Some( Option<T> option )
+        public Some( [NotNull] IOption<T> option )
             {
-                if (!option.HasValue)
+                if (option == null || !option.HasValue)
                     throw new InvalidInputException($"Trying to create Some<{typeof(T)}> from an empty Option.");
 
                 _value = option._value();
             }
         
         [NotNull] [PublicAPI]
-        public T get => _value;
+        public T _ => _value;
 
         public static implicit operator T( Some<T> some ) => some._value;
         public static implicit operator Option<T>( Some<T> some ) => some._value;
@@ -44,7 +44,7 @@ namespace SharpPipe {
         /// Returns the value contained within Some{T}.
         /// </summary>
         [NotNull]
-        public static T operator |( Some<T> a, DoGet _ ) => a.get;
+        public static T operator |( Some<T> a, DoGet _ ) => a._;
 
     }
 }

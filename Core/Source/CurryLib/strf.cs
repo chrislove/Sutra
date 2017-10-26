@@ -74,8 +74,6 @@ namespace SharpPipe {
             public static Func<string, bool> isNullOrEmpty => string.IsNullOrEmpty;
             public static Func<string, bool> isNullOrWhiteSpace => string.IsNullOrWhiteSpace;
 
-            
-
             public static ToSeqFunc<string, char> toCharArray() => toseq(str => str.ToCharArray() );
             public static ToSeqFunc<string, char> toCharArray( int startIndex, int length ) => toseq( str => str.ToCharArray(startIndex, length) );
 

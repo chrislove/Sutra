@@ -107,10 +107,12 @@
     <Compile Include="Source\Types\Pipes\Pipe.cs" />
     <Compile Include="Source\Types\Pipes\Seq.cs" />
     <Compile Include="Source\Types\Some\Act.cs" />
+    <Compile Include="Source\Types\Some\CallerHelper.cs" />
     <Compile Include="Source\Types\Some\Some.cs" />
     <Compile Include="Source\Types\Some\Fun.cs" />
     <Compile Include="Source\Types\Some\SomeExtensions.cs" />
     <Compile Include="Source\Types\Some\somestr.cs" />
+    <Compile Include="Source\Types\Some\SomeStrExtensions.cs" />
     <Compile Include="Source\Types\str.cs" />
     <Compile Include="Source\Types\Transformations\FuncConverter.cs" />
     <Compile Include="Source\Types\Transformations\FuncTransformations.cs" />

@@ -66,11 +66,6 @@ namespace SharpPipe
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Pipe<T> operator |( DoTee<T> doTee, Act<T> act ) => doTee._pipe | teef | act.Fun.Func;
-
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
         public static Pipe<T> operator |( DoTee<T> doTee, [NotNull] Action<T> act ) => doTee._pipe | teef | act.Map();
 
     }
@@ -97,18 +92,6 @@ namespace SharpPipe
         /// <summary>
         /// Executes the action on the right.
         /// </summary>
-        public static Pipe<T> operator |( DoTeeFunc<T> doTee, Fun<T, Unit> fun ) => doTee | fun.Func;
-
-
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
         public static Pipe<T> operator |( DoTeeFunc<T> doTee, [NotNull] Func<Option<T>, Unit> func ) => func(doTee._pipe.Option).Return(doTee._pipe);
-
-        /// <summary>
-        /// Executes the action on the right.
-        /// </summary>
-        public static Pipe<T> operator |( DoTeeFunc<T> doTee, Fun<Option<T>, Unit> fun ) => doTee | fun.Func;
-
     }
 }

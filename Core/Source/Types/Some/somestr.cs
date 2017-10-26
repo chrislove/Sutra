@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using SharpPipe.Transformations;
+using static SharpPipe.CallerHelper;
 using static SharpPipe.Commands;
 
 namespace SharpPipe {
@@ -12,24 +14,30 @@ namespace SharpPipe {
         [NotNull]
         private readonly string _value;
         
-        public somestr( [NotNull] string value )
+        public somestr( [NotNull] string value,
+                        [CanBeNull] [CallerMemberName] string memberName = null,
+                        [CanBeNull] [CallerFilePath] string filePath = null,
+                        [CallerLineNumber] int lineNumber = 0 )
             {
                 if (string.IsNullOrEmpty(value))
-                    throw new InvalidInputException("Trying to create somestr from a null or empty string.");
+                    throw new InvalidInputException($"Trying to create somestr from a null or empty string." + MakeCallerString(memberName, filePath, lineNumber));
                 
                 _value = value;
             }
         
-        public somestr( IOption<string> str )
+        public somestr( IOption<string> str,
+                        [CanBeNull] [CallerMemberName] string memberName = null,
+                        [CanBeNull] [CallerFilePath] string filePath = null,
+                        [CallerLineNumber] int lineNumber = 0 )
             {
                 if (!str.HasValue)
-                    throw new InvalidInputException($"Trying to create somestr from an empty str.");
+                    throw new InvalidInputException($"Trying to create somestr from an empty option." + MakeCallerString(memberName, filePath, lineNumber));
 
                 _value = str._value();
             }
 
         [NotNull] [PublicAPI]
-        public string get => _value;
+        public string _ => _value;
         
         public Option<U> Map<U>( [NotNull] Func<string, U> func )
             {
@@ -51,7 +59,7 @@ namespace SharpPipe {
         public static implicit operator somestr( Some<string> some ) => new somestr(some);
 
         public static somestr operator +( somestr left, [NotNull] string right )  => left + (right | some);
-        public static somestr operator +( somestr left, somestr right ) => left.get + right.get | some;
+        public static somestr operator +( somestr left, somestr right ) => left._ + right._ | some;
         
         /// <summary>
         /// If A is empty then return B

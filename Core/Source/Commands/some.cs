@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace SharpPipe {
     public static partial class Commands
@@ -16,7 +17,7 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoToSome
     {
-        public static somestr operator |( string str, DoToSome _ ) => str.Some();
-        public static somestr operator |( IOption<string> str, DoToSome _ ) => new somestr(str);
+        public static somestr operator |( [NotNull] string str, DoToSome _ ) => str.Some();
+        public static somestr operator |( [NotNull] IOption<string> str, DoToSome _ ) => new somestr(str);
     }
 }

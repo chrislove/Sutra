@@ -26,7 +26,7 @@ namespace SharpPipe.Tests {
         public void BaseSetup() => WriteOutput = "";
 
         [NotNull] protected Action<string> write               => i => WriteOutput += i.To<string>("Write");
-        [NotNull] protected Action<Option<string>> writeoption => i => WriteOutput += i.ValueOr("NONE");
+        protected Act<Option<string>> writeoption => Act.From( (Option<string> i) => WriteOutput += i.ValueOr("NONE"));
 
         protected static void ThrowAssert<TException>(TestDelegate testDelegate, bool shouldThrow, [CanBeNull] string message = null) where TException : Exception {
             if (shouldThrow) {
