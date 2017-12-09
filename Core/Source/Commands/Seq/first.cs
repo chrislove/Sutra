@@ -4,7 +4,7 @@ using System.Linq;
 namespace Sutra {
     public static partial class Commands {
         /// <summary>
-        /// Returns the first item of sequence.
+        /// Returns the first item of a sequence.
         /// </summary>
         public static DoFirst first => new DoFirst();
     }
