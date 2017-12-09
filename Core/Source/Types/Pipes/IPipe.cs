@@ -1,4 +1,4 @@
-namespace SharpPipe {
+namespace Sutra {
     public interface IPipe {}
     public interface IPipe<T> : IPipe {}
 

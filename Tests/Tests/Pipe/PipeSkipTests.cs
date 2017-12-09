@@ -1,8 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using static SharpPipe.Commands;
+using static Sutra.Conditions;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests {
+namespace Sutra.Tests {
     public sealed class PipeSkipTests : TestBase {
         [Test]
         public void Test_NullInput_ReturnsEmptyOption() {

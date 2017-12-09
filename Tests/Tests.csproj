@@ -7,8 +7,8 @@
     <ProjectGuid>{D641A2D4-DF72-4B46-B5CE-78559B637D65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharpPipe.Tests</RootNamespace>
-    <AssemblyName>SharpPipeTests</AssemblyName>
+    <RootNamespace>Sutra.Tests</RootNamespace>
+    <AssemblyName>SutraTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

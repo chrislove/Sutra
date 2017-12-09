@@ -1,8 +1,9 @@
 ﻿using NUnit.Framework;
-using SharpPipe.CurryLib;
-using static SharpPipe.Commands;
+using Sutra.CurryLib;
+using static Sutra.Conditions;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests
+namespace Sutra.Tests
 {
     public sealed class PipeFailTests : TestBase
     {
@@ -15,7 +16,7 @@ namespace SharpPipe.Tests
                                             | fail | when | (() => true);
                     }
 
-                Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+                Assert.That(TestDelegate, Throws.TypeOf<SutraCommandException>());
             }
 
 
@@ -29,7 +30,7 @@ namespace SharpPipe.Tests
                                             | fail | when | not(strf.contains(instr));
                     }
 
-                ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
+                ThrowAssert<SutraCommandException>(TestDelegate, shouldThrow);
             }
 
         [Test]
@@ -41,7 +42,7 @@ namespace SharpPipe.Tests
                                             | failwith("Fail: $pipe") | when | (() => true);
                     }
 
-                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("Fail: TEST"));
+                Assert.That(TestDelegate, Throws.TypeOf<SutraUserException>().With.Message.EqualTo("Fail: TEST"));
             }
 
         /*

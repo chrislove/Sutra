@@ -1,7 +1,7 @@
 
 
 /*
-namespace SharpPipe {
+namespace Sutra {
     public partial class Curry {
         public abstract class DATETIME { }
     }

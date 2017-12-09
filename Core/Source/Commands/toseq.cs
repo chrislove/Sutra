@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
         /// Pipe conversion commands

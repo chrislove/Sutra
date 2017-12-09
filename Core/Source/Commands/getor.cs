@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands
     {
         /// <summary>

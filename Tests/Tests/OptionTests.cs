@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests
+namespace Sutra.Tests
 {
     public sealed class OptionTests : TestBase
     {

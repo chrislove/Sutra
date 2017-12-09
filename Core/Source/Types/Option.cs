@@ -2,19 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
-using static SharpPipe.Commands;
+using Newtonsoft.Json;
+using Sutra.Transformations;
+using static Sutra.Commands;
 
-namespace SharpPipe
+namespace Sutra
 {
     [PublicAPI]
+    [JsonObject(MemberSerialization.OptIn)]
     public struct Option<T> : ISimpleOption<T>, IOptionValue<T>
     {
+        [JsonProperty]
         public bool HasValue { get; }
 
         [CanBeNull] T IOptionValue<T>.Value => _value;
         [CanBeNull] object IOptionValue.BoxedValue => _value;
 
+        [JsonProperty]
         private readonly T _value;
 
         public Option( [CanBeNull] T value )
@@ -45,7 +49,7 @@ namespace SharpPipe
             {
                 return this.Match(func, defaultValue).ToOption();
             }
-
+        
         public IEnumerable<T> Enm => HasValue ? _value.Yield() : Enumerable.Empty<T>();
         IEnumerable<object> ISimpleOption.Enm => Enm.Cast<object>();
         
@@ -58,6 +62,16 @@ namespace SharpPipe
         /// If A is empty then return B
         /// </summary>
         public static Option<T> operator |( Option<T> option, T alternative ) => option.HasValue ? option : alternative.ToOption();
+        
+        /// <summary>
+        /// If A is empty then return B
+        /// </summary>
+        public static Option<T> operator |( Option<T> option, [NotNull] Func<Option<T>> alternativeFunc ) => option.HasValue ? option : alternativeFunc();
+        
+        /// <summary>
+        /// If A is empty then return B
+        /// </summary>
+        public static Option<T> operator |( Option<T> option, [NotNull] Func<T> alternativeFunc ) => option.HasValue ? option : alternativeFunc().ToOption();
 
         /// <summary>
         /// Returns the value within the Option. Unsafe.
@@ -79,6 +93,8 @@ namespace SharpPipe
         #region Boilerplate
 
         //public override string ToString() => $"Option<{typeof(T)}> [" + (HasValue ? _value.ToString() : "none") + "]";
+        
+        [Obsolete]
         public override string ToString() => throw new InvalidOperationException("Calling Option{T}.ToString() not allowed.");
 
         

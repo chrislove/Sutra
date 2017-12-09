@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     public static class SomeStrExtensions
     {
         public static bool Equals( this somestr str, somestr strB ) => str._.Equals(strB);

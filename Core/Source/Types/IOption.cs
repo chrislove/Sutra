@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace SharpPipe
+namespace Sutra
 {
     internal interface IOptionValue
     {

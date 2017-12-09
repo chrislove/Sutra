@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
         /// Projects each element of a sequence and flattens the resulting sequences into one sequence.

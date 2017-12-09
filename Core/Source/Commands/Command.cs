@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class Command<T> {
         [NotNull]

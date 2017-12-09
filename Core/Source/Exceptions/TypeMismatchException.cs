@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace SharpPipe {
-	internal sealed class TypeMismatchException : SharpPipeException {
+namespace Sutra {
+	internal sealed class TypeMismatchException : SutraException {
 		public TypeMismatchException( string message ) : base(message) {}
 
 		public TypeMismatchException( Type fromType, Type toType, string context)

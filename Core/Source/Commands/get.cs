@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe
+namespace Sutra
 {
     [PublicAPI]
     public static partial class Commands
@@ -33,6 +33,11 @@ namespace SharpPipe
         /// <exception cref="EmptyPipeException"></exception>
         /// <exception cref="EmptySequenceException"></exception>
         public static DoGet1 operator !( DoGet _ ) => new DoGet1();
+        
+        /// <summary>
+        /// Returns pipe contents.
+        /// </summary>
+        public static str operator |( Pipe<string> pipe, DoGet _ ) => pipe.Option;
     }
 
     /// <summary>

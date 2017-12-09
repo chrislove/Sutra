@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe.Transformations
+namespace Sutra.Transformations
 {
     internal static class FuncTransformations
     {

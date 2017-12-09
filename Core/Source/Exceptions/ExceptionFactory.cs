@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     internal static class ExceptionFactory
     {
         [NotNull]
@@ -15,7 +15,7 @@ namespace SharpPipe {
                 if (typeof(ISeqOption).IsAssignableFrom(objType))
                     return EmptySequenceException.For(objType.GetFirstGenericArg());
 
-                throw new SharpPipeException($"ExceptionFactory.IsEmpty not implemented for {objType}");
+                throw new SutraException($"ExceptionFactory.IsEmpty not implemented for {objType}");
             }
     }
 }

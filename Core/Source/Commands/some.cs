@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands
     {
         /// <summary>
@@ -17,7 +17,7 @@ namespace SharpPipe {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public struct DoToSome
     {
-        public static somestr operator |( [NotNull] string str, DoToSome _ ) => str.Some();
+        public static somestr operator |( [NotNull] string str, DoToSome _ ) => str.ToSome();
         public static somestr operator |( [NotNull] IOption<string> str, DoToSome _ ) => new somestr(str);
     }
 }

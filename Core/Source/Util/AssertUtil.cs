@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     [PublicAPI]
     internal static class AssertUtil
     {

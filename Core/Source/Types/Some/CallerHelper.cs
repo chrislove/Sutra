@@ -1,4 +1,4 @@
-﻿namespace SharpPipe {
+﻿namespace Sutra {
     public static class CallerHelper
     {
         public static somestr MakeCallerString( string memberName, string filePath, int lineNumber )

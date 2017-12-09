@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests {
+namespace Sutra.Tests {
     public sealed class OptionPipeTests : TestBase {
         [Test]
         public void Test_EmptyPipe_DoesntThrow_OnGet() {
             void TestDelegate() {
-                Option<string> option = start.pipe
-                                        | (string) null
-                                        | get;
+                str str = start.pipe
+                          | (string) null
+                          | get;
             }
             
             Assert.That(TestDelegate, Throws.Nothing);

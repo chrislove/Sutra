@@ -3,55 +3,55 @@ using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
-        /// Adds a single item to sequence.
+        /// Appends new items to a sequence.
         /// </summary>
-        public static DoAdd add => new DoAdd();
+        public static DoAppend append => new DoAppend();
     }
     
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoAdd { }
+    public struct DoAppend { }
 
     public partial struct Seq<T> {
-        public static DoAdd<T> operator |( Seq<T> seq, DoAdd _ ) => new DoAdd<T>( seq );
+        public static DoAppend<T> operator |( Seq<T> seq, DoAppend _ ) => new DoAppend<T>( seq );
     }
 
     public partial struct DoStartSeq<T> {
-        public static DoAdd<T> operator |( DoStartSeq<T> cmd, DoAdd _ ) => new DoAdd<T>( new Seq<T>(Enumerable.Empty<Option<T>>()) );
+        public static DoAppend<T> operator |( DoStartSeq<T> cmd, DoAppend _ ) => new DoAppend<T>( new Seq<T>(Enumerable.Empty<Option<T>>()) );
     }
 
     /// <summary>
     /// Command marker.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct DoAdd<T> {
+    public struct DoAppend<T> {
         private readonly Seq<T> _seq;
 
-        internal DoAdd( Seq<T> seq ) => _seq = seq;
+        internal DoAppend( Seq<T> seq ) => _seq = seq;
 
         /// <summary>
         /// Pipe forward operator, concatenates sequence with IEnumerable{T} and returns a new sequence.
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> doAdd, [CanBeNull] IEnumerable<T> enm ) => doAdd._seq | enm;
+        public static Seq<T> operator |( DoAppend<T> doAppend, [CanBeNull] IEnumerable<T> enm ) => doAppend._seq | enm;
 
         /// <summary>
         /// Pipe forward operator, adds a new value to a sequence.
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> doAdd, [CanBeNull] T obj ) => doAdd._seq | obj;
+        public static Seq<T> operator |( DoAppend<T> doAppend, [CanBeNull] T obj ) => doAppend._seq | obj;
         
         /// <summary>
         /// Pipe forward operator, adds a new value to a sequence.
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> doAdd, Option<T> obj ) => doAdd._seq | obj;
+        public static Seq<T> operator |( DoAppend<T> doAppend, Option<T> obj ) => doAppend._seq | obj;
 
         /// <summary>
         /// Pipe forward operator, concatenates two sequences and returns a new sequence.
         /// </summary>
-        public static Seq<T> operator |( DoAdd<T> doAdd, Seq<T> seq ) => doAdd._seq | seq;
+        public static Seq<T> operator |( DoAppend<T> doAppend, Seq<T> seq ) => doAppend._seq | seq;
     }
 }

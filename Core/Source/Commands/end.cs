@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
         /// Signals a command to end.

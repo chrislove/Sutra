@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using SharpPipe.Transformations;
-using static SharpPipe.Commands;
+using Sutra.Transformations;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests
+namespace Sutra.Tests
 {
     public sealed class EmptySeqTests : TestBase
     {

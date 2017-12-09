@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe.Transformations {
+namespace Sutra.Transformations {
     internal static class FuncConverter
     {
         public static EnmConverter<TIn, TOut> Cast<TIn, TOut>( this Func<IEnumerable<TIn>, TOut> func ) => new EnmConverter<TIn, TOut>(func);

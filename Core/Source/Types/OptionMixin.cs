@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
-using static SharpPipe.Commands;
+using Sutra.Transformations;
+using static Sutra.Commands;
 
-namespace SharpPipe
+namespace Sutra
 {
     public static class OptionExtensions
     {

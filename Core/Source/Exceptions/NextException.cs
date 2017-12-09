@@ -1,8 +1,8 @@
 using System;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe
+namespace Sutra
 {
     internal static class NextException
     {

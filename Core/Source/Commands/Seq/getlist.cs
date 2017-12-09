@@ -2,12 +2,12 @@
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
-        /// Converts the contents of sequence into List{T} and returns. Unsafe.
+        /// Converts the contents of a sequence into List{T} and returns. Unsafe.
         /// </summary>
         /// <exception cref="EmptySequenceException"></exception>
         public static DoReturnList getlist => new DoReturnList();
@@ -21,7 +21,7 @@ namespace SharpPipe {
 
     public partial struct Seq<T> {
         /// <summary>
-        /// Converts pipe contents into List{TOut} and returns. Unsafe.
+        /// Converts the contents of a sequence into List{T} and returns. Unsafe.
         /// </summary>
         /// <exception cref="EmptySequenceException"></exception>
         [NotNull]

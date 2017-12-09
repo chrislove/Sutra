@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands
     {
         public static Unit unit => new Unit();

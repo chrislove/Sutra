@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     internal sealed class EmptyOptionException : Exception {
         internal EmptyOptionException( [CanBeNull] string message ) : base(message) {}
 

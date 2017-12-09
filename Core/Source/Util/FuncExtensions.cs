@@ -2,7 +2,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe
+namespace Sutra
 {
     internal static class FuncExtensions
     {

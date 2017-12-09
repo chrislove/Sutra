@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe
+namespace Sutra
 {
     public static partial class Commands
     {
         /// <summary>
-        /// Filters contents of Sequence
+        /// Filters a sequence or a pipe.
         /// </summary>
         public static DoWhere where => new DoWhere();
     }

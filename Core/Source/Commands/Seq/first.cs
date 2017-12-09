@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
         /// Returns the first item of sequence.

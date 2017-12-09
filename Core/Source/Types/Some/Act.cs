@@ -1,9 +1,9 @@
 ﻿using System;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
-using static SharpPipe.Commands;
+using Sutra.Transformations;
+using static Sutra.Commands;
 
-namespace SharpPipe
+namespace Sutra
 {
     public partial struct Act
     {
@@ -12,7 +12,7 @@ namespace SharpPipe
         public static Act<T> From<T>(Action<T> act) => new Act<T>(act.ReturnsUnit());
         
         public static Act From(Fun<Unit> fun) => new Act(fun);
-        public static Act From(Func<Unit> fun) => new Act(SharpPipe.Fun.From(fun));
+        public static Act From(Func<Unit> fun) => new Act(Sutra.Fun.From(fun));
         public static Act From(Action act) => Act.From(act.ReturnsUnit());
     }
     
@@ -54,11 +54,11 @@ namespace SharpPipe
 
         [PublicAPI]
         public Unit Invoke() => Fun.Func();
-        
+
         /// <summary>
         /// Use this operator to invoke the function.
         /// </summary>
-        public Unit this[ Unit _ ] => Fun | inv;
+        public Unit this[ Unit _ ] => Fun[_];
 
         public Act( Fun<Unit> fun )
             {
@@ -67,11 +67,6 @@ namespace SharpPipe
 
                 Fun = fun;
             }
-
-        /// <summary>
-        /// Executes the action.
-        /// </summary>
-        public static Unit operator |( Act act, DoInvoke _ ) => act.Fun | inv;
 
         public static implicit operator Action( Act act ) => act.Fun.ToAction();
     }

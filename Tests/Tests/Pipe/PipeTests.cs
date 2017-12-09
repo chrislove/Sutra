@@ -2,10 +2,10 @@
 using System.IO;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using SharpPipe.CurryLib;
-using static SharpPipe.Commands;
+using Sutra.CurryLib;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests
+namespace Sutra.Tests
 {
     [TestFixture]
     public sealed class PipeTests : TestBase
@@ -13,16 +13,16 @@ namespace SharpPipe.Tests
         [NotNull]
         private static Func<DateTime, DateTime> AddDays( int days ) => d => d.AddDays(days);
 
-        private static PipeFunc<DateTime, string> getshortdate => fun((DateTime d) => d.ToShortDateString());
+        private static PipeFunc<DateTime, string> getShortDate => fun((DateTime d) => d.ToShortDateString());
 
 
         private static Pipe<string> YesterdayPipe => start.pipe | DateTime.Now
                                                      | AddDays(-1)
-                                                     | getshortdate
+                                                     | getShortDate
                                                      | (i => "Yesterday: " + i);
 
         [Test]
-        public void Test_Pipe_OUT()
+        public void Test_Get()
             {
                 string yesterday = YesterdayPipe | !get;
 
@@ -36,7 +36,7 @@ namespace SharpPipe.Tests
                 DateTime nowDateTime = DateTime.Now;
 
                 DateTime pipe = start.pipe | nowDateTime
-                                | when | (i => getshortdate[i] == nowDateTime.ToShortDateString()) | map | (i => nowDateTime)
+                                | when | (i => getShortDate[i] == nowDateTime.ToShortDateString()) | map | (i => nowDateTime)
                                 | !get;
 
                 Assert.That(pipe, Is.EqualTo(nowDateTime));
@@ -93,20 +93,20 @@ namespace SharpPipe.Tests
         [Test]
         public void Test_Where()
             {
-                Option<string> option = start.pipe
-                                        | "TEST"
-                                        | where | (i => i == "ABC")
-                                        | get;
+                str str = start.pipe
+                          | "TEST"
+                          | where | (i => i == "ABC")
+                          | get;
                 
-                Assert.That(!option.HasValue);
+                Assert.That(!str.HasValue);
             }
         
         [Test]
         public void Test_EmptyString_Is_EmptyPipe()
             {
-                Option<string> option = start.pipe
-                                        | ""
-                                        | get;
+                str option = start.pipe
+                             | ""
+                             | get;
                 
                 Assert.That(!option.HasValue);
             }

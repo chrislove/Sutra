@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
-using static SharpPipe.Commands;
+using Sutra.Transformations;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands
     {
+        /// <summary>
+        /// Projects each element of a sequence and flattens the resulting sequences into one sequence. Equivalent to SelectMany() in LINQ.
+        /// </summary>
         public static DoCollect<TIn, TOut> collectf<TIn, TOut>( Func<TIn, IEnumerable<TOut>> func ) => collectf(func.Map());
+        
+        /// <summary>
+        /// Projects each element of a sequence and flattens the resulting sequences into one sequence. Equivalent to SelectMany() in LINQ.
+        /// </summary>
         public static DoCollect<TIn, TOut> collectf<TIn, TOut>( Func<Option<TIn>, SeqOption<TOut>> func) => new DoCollect<TIn, TOut>(func);
     }
 

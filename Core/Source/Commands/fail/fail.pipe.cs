@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe
+namespace Sutra
 {
     public partial struct Pipe<T>
     {

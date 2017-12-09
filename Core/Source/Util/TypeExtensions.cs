@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
 	internal static class TypeExtensions {
 		/// <summary>
 		/// Casts object to a given type.
@@ -67,7 +67,7 @@ namespace SharpPipe {
 			{
 			if (type == null) throw new ArgumentNullException(nameof(type));
 				if (!type.IsGenericType)
-					throw new SharpPipeException($"Type {type} isn't generic.");
+					throw new SutraException($"Type {type} isn't generic.");
 				
 				return type.GenericTypeArguments[0];
 			}

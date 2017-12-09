@@ -1,9 +1,10 @@
 ﻿using System;
+using JetBrains.Annotations;
 
-namespace SharpPipe
+namespace Sutra
 {
     public class InvalidInputException : Exception
     {
-        public InvalidInputException(string message) { }
+        public InvalidInputException([CanBeNull] string message) : base(message) { }
     }
 }

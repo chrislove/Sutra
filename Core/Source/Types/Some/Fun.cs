@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
+namespace Sutra {
     /// <summary>
     /// A Func that is guaranteed to be non-null.
     /// </summary>
@@ -27,12 +27,6 @@ namespace SharpPipe {
         /// Use this operator to invoke the function.
         /// </summary>
         public T this[ Unit _ ] => Func();
-
-        /// <summary>
-        /// Executes the function and returns the value.
-        /// </summary>
-        [CanBeNull]
-        public static T operator |( Fun<T> fun, DoInvoke _ ) => fun.Func();
         
         public Fun( [NotNull] Func<T> func )
             {

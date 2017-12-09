@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe.Transformations
+namespace Sutra.Transformations
 {
     public static class SeqOptionTransformations
     {

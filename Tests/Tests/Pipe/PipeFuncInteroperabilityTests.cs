@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using SharpPipe.CurryLib;
-using static SharpPipe.Commands;
+using Sutra.CurryLib;
+using static Sutra.Commands;
+using static Sutra.Conditions;
 
-namespace SharpPipe.Tests
+namespace Sutra.Tests
 {
     public sealed class PqipeFuncInteroperabilityTests : TestBase
     {
@@ -23,7 +24,7 @@ namespace SharpPipe.Tests
                                           | fail | when | any( not(pathf.ispathrooted) );
                     }
                 
-                ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
+                ThrowAssert<SutraCommandException>(TestDelegate, shouldThrow);
             }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace SharpPipe {
-    internal sealed class EmptyPipeException : SharpPipeException {
+namespace Sutra {
+    internal sealed class EmptyPipeException : SutraException {
         public EmptyPipeException( string message ) : base(message) {}
 
         [NotNull]

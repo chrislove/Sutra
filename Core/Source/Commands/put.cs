@@ -1,6 +1,6 @@
-﻿using static SharpPipe.Commands;
+﻿using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands
     {
         /// <summary>

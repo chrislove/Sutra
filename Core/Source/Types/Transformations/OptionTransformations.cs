@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace SharpPipe.Transformations {
+namespace Sutra.Transformations {
     public static class OptionTransformations {
         /// <summary>
         /// Lifts a value to Option{T}
         /// </summary>
         [Pure] public static Option<T>    ToOption<T>              ([CanBeNull] this T obj) => new Option<T>(obj);
-        
+
+        [Pure]
+        public static Option<T> ToOption<T>( [CanBeNull] this T? obj ) where T : struct => obj.HasValue ? new Option<T>(obj.Value) : default;
+
         /// <summary>
         /// Lifts every value of the enumerable to Option{T}
         /// </summary>

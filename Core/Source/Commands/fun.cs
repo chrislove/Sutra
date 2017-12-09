@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe
+namespace Sutra
 {
     public static partial class Commands
     {

@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using NUnit.Framework;
+using Sutra.CurryLib;
 using static System.IO.Path;
-using static SharpPipe.Commands;
-using static SharpPipe.CurryLib.strf;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests {
+namespace Sutra.Tests {
     public sealed class IfTests : TestBase {
         [TestCase("B", "[A][B][C]")]
         [TestCase("D", "ABC")]
@@ -12,7 +12,7 @@ namespace SharpPipe.Tests {
             string result = ABCSeq
                             | when | (e => e.Contains(contains)) | map | (i => $"[{i}]")
                             | when | ( () => true ) | map | (i => i + "")
-                            | concat | !get;
+                            | strf.concat | !get;
             
             Assert.That(result, Is.EqualTo(expected));
         }
@@ -23,7 +23,7 @@ namespace SharpPipe.Tests {
             string OneDirectoryUp(string path) => GetDirectoryName( GetFullPath(Combine(path, @"..\") ) );
             string result = start.pipe
                             | inPath
-                            | when | endsWith("Editor") | map | OneDirectoryUp
+                            | when | strf.endsWith("Editor") | map | OneDirectoryUp
                             | when | ( () => true )     | map | (i => i)
                             | !get;
             

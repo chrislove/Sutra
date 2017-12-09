@@ -1,7 +1,8 @@
 using NUnit.Framework;
-using static SharpPipe.Commands;
+using static Sutra.Conditions;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests
+namespace Sutra.Tests
 {
     public sealed class ThrowTests : TestBase
     {
@@ -11,7 +12,7 @@ namespace SharpPipe.Tests
                 void TestDelegate()
                     {
                         Seq<string> seq = ABCSeq
-                                           | add   | (string) null
+                                           | append   | (string) null
                                            | where | notempty
                                            | fail  | when | any(isempty);
                     }
@@ -25,11 +26,11 @@ namespace SharpPipe.Tests
                 void TestDelegate()
                     {
                         Seq<string> seq = ABCSeq
-                                           | add | (string) null
+                                           | append | (string) null
                                            | failwith("fail $seq") | when | any(isempty);
                     }
 
-                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("fail Seq<String>"));
+                Assert.That(TestDelegate, Throws.TypeOf<SutraUserException>().With.Message.EqualTo("fail Seq<String>"));
             }
 
         [Test]
@@ -38,11 +39,11 @@ namespace SharpPipe.Tests
                 void TestDelegate()
                     {
                         Seq<string> seq = ABCSeq
-                                           | add  | (string) null
-                                           | fail | new PipeUserException("TEST") | when | any(isempty);
+                                           | append  | (string) null
+                                           | fail | new SutraUserException("TEST") | when | any(isempty);
                     }
 
-                Assert.That(TestDelegate, Throws.TypeOf<PipeUserException>().With.Message.EqualTo("TEST"));
+                Assert.That(TestDelegate, Throws.TypeOf<SutraUserException>().With.Message.EqualTo("TEST"));
             }
 
         [Test]
@@ -54,7 +55,7 @@ namespace SharpPipe.Tests
                                            | fail | when | (() => true);
                     }
 
-                Assert.That(TestDelegate, Throws.TypeOf<PipeCommandException>());
+                Assert.That(TestDelegate, Throws.TypeOf<SutraCommandException>());
             }
 
         [TestCase("B", true)]
@@ -67,7 +68,7 @@ namespace SharpPipe.Tests
                                            | fail | when | any(equals(ifInput));
                     }
 
-                ThrowAssert<PipeCommandException>(TestDelegate, shouldThrow);
+                ThrowAssert<SutraCommandException>(TestDelegate, shouldThrow);
             }
     }
 }

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
-using static SharpPipe.Commands;
+using Sutra.Transformations;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     /// <summary>
     /// A pipe monad containing a single object.
     /// </summary>

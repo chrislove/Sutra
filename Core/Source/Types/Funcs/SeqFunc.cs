@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         public static class seqfunc {
             [PublicAPI]

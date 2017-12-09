@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using SharpPipe.CurryLib;
-using static SharpPipe.Commands;
+using Sutra.CurryLib;
+using static Sutra.Commands;
 
-namespace SharpPipe.Tests {
+namespace Sutra.Tests {
     [TestFixture]
     public sealed class ConversionTests : TestBase {
         [Test]
@@ -17,9 +17,9 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_Pipe_ToEnumerable() {
-            Func<int, IEnumerable<string>> converter = inval => Enumerable.Range(0, 3)
-                                                                        .Select(i => inval + i)
-                                                                        .Select(i => i.ToString());
+                Func<int, IEnumerable<string>> converter = inval => Enumerable.Range(0, 3)
+                                                                              .Select(i => inval + i)
+                                                                              .Select(i => i.ToString());
 
             string result = start.pipe | 100
                             | to.seq(converter)

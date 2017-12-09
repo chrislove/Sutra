@@ -4,9 +4,10 @@ using System.Linq;
 using Castle.Core.Internal;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
+using static Sutra.Conditions;
 
-namespace SharpPipe.Tests {
+namespace Sutra.Tests {
     [TestFixture]
     public abstract class TestBase {
         [NotNull] protected readonly string[] ABCArray = {"A", "B", "C"};
@@ -16,16 +17,16 @@ namespace SharpPipe.Tests {
         protected Pipe<string>                TestPipe    => start.pipe | "TEST";
 
         protected static Seq<string> EmptyAndTestSeq => start.seq.of<string>()
-                                                        | add | (string) null
+                                                        | append | (string) null
                                                         | fail| when | isempty
-                                                        | add | "TEST";
+                                                        | append | "TEST";
         
         protected string WriteOutput;
 
         [SetUp]
         public void BaseSetup() => WriteOutput = "";
 
-        [NotNull] protected Action<string> write               => i => WriteOutput += i.To<string>("Write");
+        [NotNull] protected Action<string> write  => i => WriteOutput += i;
         protected Act<Option<string>> writeoption => Act.From( (Option<string> i) => WriteOutput += i.ValueOr("NONE"));
 
         protected static void ThrowAssert<TException>(TestDelegate testDelegate, bool shouldThrow, [CanBeNull] string message = null) where TException : Exception {

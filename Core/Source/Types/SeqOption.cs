@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe
+namespace Sutra
 {
     /// <summary>
     /// Shortcut for Option{IEnumerable{Option{T}}}
@@ -51,7 +51,7 @@ namespace SharpPipe
 
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<T>, IEnumerable<U>> func )
             {
-                foreach (IEnumerable<Option<T>> enm in this.Enm)
+                foreach (IEnumerable<Option<T>> enm in Enm)
                     foreach (IEnumerable<T> lowered in enm.Lower().Enm)
                         return func(lowered).Return().Return();
 

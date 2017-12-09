@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
-        /// Returns a single value from sequence or throws an excepton.
+        /// Returns a single value from a sequence or throws an excepton.
         /// </summary>
         public static DoSingle single => new DoSingle();
     }

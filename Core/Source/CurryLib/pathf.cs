@@ -1,8 +1,8 @@
 using System.IO;
 using JetBrains.Annotations;
-using static SharpPipe.Commands;
+using static Sutra.Commands;
 
-namespace SharpPipe {
+namespace Sutra {
     namespace CurryLib {
         [PublicAPI]
         public static class pathf {

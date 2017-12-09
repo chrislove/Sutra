@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands {
         /// <summary>
         /// Throws an exception if the condition on the right is met.
@@ -18,9 +18,6 @@ namespace SharpPipe {
         /// <summary>
         /// Throws an exception with message if the condition on the right is met.
         /// </summary>
-        /// <example><code>
-        /// seq  | failwith | "Invalid Value" | whenany | IS(1);
-        /// </code></example>
         public static DoFailWith   failwith([CanBeNull] string message)     => new DoFailWith(message);
     }
 
@@ -45,27 +42,26 @@ namespace SharpPipe {
         private const string PipeStringIdentifier = "$pipe";
         private const string SeqStringIdentifier  = "$seq";
         
-        private readonly string _message;
+        internal readonly string Message;
 
         internal DoFailWith( [CanBeNull] string message )
             {
                 NextException.Reset();
-                _message = message;
+                Message = message;
             }
 
         internal string GetMessageFor<T>( Pipe<T> pipe )
             {
                 foreach (T value in pipe.Option.Enm)
-                    return _message.Replace(PipeStringIdentifier, value.ToString());
+                    return Message.Replace(PipeStringIdentifier, value.ToString());
 
-                return _message.Replace(PipeStringIdentifier, pipe.GetType().GetFriendlyName());
+                return Message.Replace(PipeStringIdentifier, pipe.GetType().GetFriendlyName());
             }
 
         internal string GetMessageFor<T>( Seq<T> seq )
             {
-                return _message.Replace(SeqStringIdentifier, seq.GetType().GetFriendlyName());
+                return Message.Replace(SeqStringIdentifier, seq.GetType().GetFriendlyName());
             }
-
     }
     
     /// <summary>
@@ -84,10 +80,9 @@ namespace SharpPipe {
                 foreach (Exception exc in NextException.Get().Enm)
                     return exc;
 
-                return new PipeCommandException("fail");
+                return new SutraCommandException("fail");
             }
         
-        [NotNull]
         internal void ThrowExceptionFor( [CanBeNull] object exceptionSource = null )
             {
                 throw GetExceptionFor(exceptionSource);
@@ -95,7 +90,7 @@ namespace SharpPipe {
 
         internal DoFail( [NotNull] IPipe<T> pipe, Option<Exception> exc, string message = null ) : base(pipe) {
             if (exc.HasValue)          UserException = exc;
-            else if (message != null)  UserException = new PipeUserException(message).To<Exception>("DoFail").ToOption();
+            else if (message != null)  UserException = new SutraUserException(message).To<Exception>("DoFail").ToOption();
         }
     }
 }

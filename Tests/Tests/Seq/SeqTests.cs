@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using static SharpPipe.Commands;
-using static SharpPipe.CurryLib.strf;
+using static Sutra.Commands;
+using static Sutra.CurryLib.strf;
 
 // ReSharper disable SuggestVarOrType_Elsewhere
 // ReSharper disable PossibleMultipleSeqeration
 
-namespace SharpPipe.Tests {
+namespace Sutra.Tests {
     [TestFixture]
     public sealed class SeqTests : TestBase {
         private static PipeFunc<int, string> ConvertToString => fun((int i) => i.ToString());
@@ -25,13 +25,12 @@ namespace SharpPipe.Tests {
 
         [Test]
         public void Test_IEnumerableComposition() {
-            string enumPipeStr = start.seq
-                                 | Enumerable.Repeat("A", 2)
-                                 | add | Enumerable.Repeat("B", 3)
+            string result = start.seq | Enumerable.Repeat("A", 2)
+                                 | append | Enumerable.Repeat("B", 3)
                                  | concat
                                  | !get;
 
-            Assert.That(enumPipeStr, Is.EqualTo("AABBB"));
+            Assert.That(result, Is.EqualTo("AABBB"));
         }
         
         [Test]

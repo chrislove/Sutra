@@ -7,8 +7,8 @@
     <ProjectGuid>{B7FCE9F6-A994-43C4-B660-1A1FAB3ECF5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharpPipe</RootNamespace>
-    <AssemblyName>SharpPipe</AssemblyName>
+    <RootNamespace>Sutra</RootNamespace>
+    <AssemblyName>Sutra</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,40 +47,42 @@
   <ItemGroup>
     <Compile Include="Source\Annotations.cs" />
     <Compile Include="Source\Commands\getor.cs" />
-    <Compile Include="Source\Commands\inv.cs" />
+    <Compile Include="Source\Commands\map\map.cs" />
+    <Compile Include="Source\Commands\map\map.seq.cs" />
+    <Compile Include="Source\Commands\map\mapf.cs" />
     <Compile Include="Source\Commands\none.cs" />
     <Compile Include="Source\Commands\opt.cs" />
+    <Compile Include="Source\Commands\or.cs" />
+    <Compile Include="Source\Commands\put.cs" />
     <Compile Include="Source\Commands\some.cs" />
     <Compile Include="Source\Commands\Seq\collectf.cs" />
     <Compile Include="Source\Commands\tee.cs" />
-    <Compile Include="Source\Commands\any.cs" />
     <Compile Include="Source\Commands\fun.cs" />
-    <Compile Include="Source\Commands\mapf.cs" />
     <Compile Include="Source\Commands\end.cs" />
-    <Compile Include="Source\Commands\Fail\fail.cs" />
-    <Compile Include="Source\Commands\Fail\fail.pipe.cs" />
-    <Compile Include="Source\Commands\Fail\fail.seq.cs" />
-    <Compile Include="Source\Commands\isempty.cs" />
-    <Compile Include="Source\Commands\Pipe\or.cs" />
-    <Compile Include="Source\Commands\Pipe\when.pipe.cs" />
+    <Compile Include="Source\Commands\fail\fail.cs" />
+    <Compile Include="Source\Commands\fail\fail.pipe.cs" />
+    <Compile Include="Source\Commands\fail\fail.seq.cs" />
     <Compile Include="Source\Commands\Seq\iter.cs" />
     <Compile Include="Source\Commands\start.cs" />
     <Compile Include="Source\Commands\toseq.cs" />
     <Compile Include="Source\Commands\Command.cs" />
-    <Compile Include="Source\Commands\Seq\when.seq.cs" />
     <Compile Include="Source\Commands\Seq\collect.cs" />
     <Compile Include="Source\Commands\Seq\single.cs" />
-    <Compile Include="Source\Commands\Predicates.cs" />
-    <Compile Include="Source\Commands\map.cs" />
-    <Compile Include="Source\Commands\when.cs" />
     <Compile Include="Source\Commands\Seq\add.cs" />
     <Compile Include="Source\Commands\Seq\distinct.cs" />
-    <Compile Include="Source\Commands\Seq\map.seq.cs" />
     <Compile Include="Source\Commands\Seq\where.cs" />
     <Compile Include="Source\Commands\Seq\first.cs" />
     <Compile Include="Source\Commands\Seq\getarray.cs" />
     <Compile Include="Source\Commands\Seq\getlist.cs" />
     <Compile Include="Source\Commands\get.cs" />
+    <Compile Include="Source\Commands\when\when.cs" />
+    <Compile Include="Source\Commands\when\when.pipe.cs" />
+    <Compile Include="Source\Commands\when\when.seq.cs" />
+    <Compile Include="Source\Conditions\any.cs" />
+    <Compile Include="Source\Conditions\not.cs" />
+    <Compile Include="Source\Conditions\equals.cs" />
+    <Compile Include="Source\Conditions\isempty.cs" />
+    <Compile Include="Source\Conditions\issingle.cs" />
     <Compile Include="Source\CurryLib\datetime.cs" />
     <Compile Include="Source\CurryLib\pathf.cs" />
     <Compile Include="Source\CurryLib\strf.cs" />
@@ -88,19 +93,17 @@
     <Compile Include="Source\Exceptions\ErrorManager.cs" />
     <Compile Include="Source\Exceptions\ExceptionFactory.cs" />
     <Compile Include="Source\Exceptions\NextException.cs" />
-    <Compile Include="Source\Exceptions\NullFunctionException.cs" />
-    <Compile Include="Source\Exceptions\NullPipeException.cs" />
-    <Compile Include="Source\Exceptions\PipeCommandException.cs" />
-    <Compile Include="Source\Exceptions\PipeUserException.cs" />
-    <Compile Include="Source\Exceptions\SharpPipeException.cs" />
+    <Compile Include="Source\Exceptions\SutraCommandException.cs" />
+    <Compile Include="Source\Exceptions\SutraUserException.cs" />
+    <Compile Include="Source\Exceptions\SutraException.cs" />
     <Compile Include="Source\Exceptions\TypeMismatchException.cs" />
+    <Compile Include="Source\Exceptions\UninitializedSomeException.cs" />
     <Compile Include="Source\Types\Funcs\FromSeqFunc.cs" />
     <Compile Include="Source\Types\Funcs\PipeFunc.cs" />
     <Compile Include="Source\Types\Funcs\SeqFunc.cs" />
     <Compile Include="Source\Types\Funcs\ToSeqFunc.cs" />
     <Compile Include="Source\Types\IOption.cs" />
     <Compile Include="Source\Types\Option.cs" />
-    <Compile Include="Source\Types\put.cs" />
     <Compile Include="Source\Types\SeqOption.cs" />
     <Compile Include="Source\Types\OptionMixin.cs" />
     <Compile Include="Source\Types\Pipes\IPipe.cs" />
@@ -111,9 +114,10 @@
     <Compile Include="Source\Types\Some\Some.cs" />
     <Compile Include="Source\Types\Some\Fun.cs" />
     <Compile Include="Source\Types\Some\SomeExtensions.cs" />
-    <Compile Include="Source\Types\Some\somestr.cs" />
-    <Compile Include="Source\Types\Some\SomeStrExtensions.cs" />
-    <Compile Include="Source\Types\str.cs" />
+    <Compile Include="Source\Types\Str\somestr.cs" />
+    <Compile Include="Source\Types\Str\SomeStrExtensions.cs" />
+    <Compile Include="Source\Types\Str\str.cs" />
+    <Compile Include="Source\Types\Str\StrExtensions.cs" />
     <Compile Include="Source\Types\Transformations\FuncConverter.cs" />
     <Compile Include="Source\Types\Transformations\FuncTransformations.cs" />
     <Compile Include="Source\Types\Transformations\OptionTransformations.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using SharpPipe.Transformations;
+using Sutra.Transformations;
 
-namespace SharpPipe {
+namespace Sutra {
     public static partial class Commands
     {
         /// <summary>
