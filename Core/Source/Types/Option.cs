@@ -26,7 +26,8 @@ namespace Sutra
                 _value = value;
                 HasValue = value != null;
 
-                if (value is string str)
+                string str = value as string;
+                if (str != null)
                     HasValue = !string.IsNullOrEmpty(str);
             }
         
@@ -42,7 +43,7 @@ namespace Sutra
 
         public Option<U> Map<U>( [NotNull] Func<T, U> func )
             {
-                return HasValue ? func(_value).ToOption() : default;
+                return HasValue ? func(_value).ToOption() : none<U>();
             }
 
         public Option<U> Map<U>( [NotNull] Func<T, U> func, U defaultValue )

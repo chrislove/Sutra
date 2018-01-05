@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 using Sutra.Transformations;
+using static Sutra.Commands;
 
 namespace Sutra
 {
@@ -71,7 +72,7 @@ namespace Sutra
 
         public static Pipe<T> operator |( DoWherePipe<T> doWhere, [NotNull] Func<IOption, bool> predicate )
             {
-                Func<Option<T>, Option<T>> func = option => predicate(option) ? option : default;
+                Func<Option<T>, Option<T>> func = option => predicate(option) ? option : none<T>();
                 
                 return doWhere._pipe.Map(func);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Sutra.Transformations;
+using static Sutra.Commands;
 
 namespace Sutra
 {
@@ -40,7 +41,7 @@ namespace Sutra
 
         public SeqOption<U> Map<U>( [NotNull] Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func )
             {
-                return this.Match(func, default).Return();
+                return this.Match(func, null).Return();
             }
 
         [Pure]
@@ -55,7 +56,7 @@ namespace Sutra
                     foreach (IEnumerable<T> lowered in enm.Lower().Enm)
                         return func(lowered).Return().Return();
 
-                return default;
+                return default(SeqOption<U>);
             }
         
         /// <summary>
@@ -82,8 +83,8 @@ namespace Sutra
                 return Lower().Match(func, default(Option<U>));
             }
 
-        public Option<IEnumerable<Option<T>>> ToOption() => HasValue ? _value.ToOption() : default;
-        public Option<IEnumerable<IOption>> ToIOption()  => HasValue ? _value.Cast<IOption>().ToOption() : default;
+        public Option<IEnumerable<Option<T>>> ToOption() => HasValue ? _value.ToOption() : none<IEnumerable<Option<T>>>();
+        public Option<IEnumerable<IOption>> ToIOption()  => HasValue ? _value.Cast<IOption>().ToOption() : none<IEnumerable<IOption>>();
 
         /// <summary>
         /// Returns sequence contents if all are non-empty, otherwise none. Safe.

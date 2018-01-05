@@ -60,7 +60,6 @@ namespace Sutra.Tests
 
                 string combined = start.pipe | inPath
                                   | pathf.prepend(projectDirectory)
-                                  | pathf.getfullpath
                                   | !get;
 
                 Assert.That(combined, Is.EqualTo(Path.Combine(projectDirectory, inPath)));

@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Sutra.Transformations;
+using static Sutra.Commands;
 
 namespace Sutra
 {
@@ -15,7 +16,7 @@ namespace Sutra
 		[NotNull] private Func<Option<TIn>, Option<TOut>> Func { get; }
 
 		public PipeFunc([NotNull] Func<TIn, TOut> func) => Func = option => option.Map(func);
-		public PipeFunc([NotNull] Func<TIn, Option<TOut>> func) => Func = option => option.Map(func).ValueOr(default);
+		public PipeFunc([NotNull] Func<TIn, Option<TOut>> func) => Func = option => option.Map(func).ValueOr(none<TOut>());
 		public PipeFunc([NotNull] Func<Option<TIn>, Option<TOut>> func) => Func = func ?? throw new ArgumentNullException(nameof(func));
 
 		/// <summary>

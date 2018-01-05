@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using JetBrains.Annotations;
 using Sutra.Transformations;
+using static Sutra.Commands;
 
 namespace Sutra
 {
@@ -12,7 +13,7 @@ namespace Sutra
         public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFail _ ) => new DoFailPipe<T>(pipe);
 
         [NotNull]
-        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, default, failWith.GetMessageFor(pipe));
+        public static DoFailPipe<T> operator |( Pipe<T> pipe, DoFailWith failWith ) => new DoFailPipe<T>(pipe, none<Exception>(), failWith.GetMessageFor(pipe));
     }
 
     /// <summary>
@@ -21,7 +22,7 @@ namespace Sutra
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoFailPipe<T> : DoFail<T>
     {
-        internal DoFailPipe( [NotNull] IPipe<T> pipe, Option<Exception> exc = default, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailPipe( [NotNull] IPipe<T> pipe, Option<Exception> exc = default(Option<Exception>), string message = null ) : base(pipe, exc, message) { }
 
         // PIPE | fail '|' when
         [NotNull]
@@ -39,7 +40,7 @@ namespace Sutra
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DoFailIfPipe<T> : DoFailPipe<T>
     {
-        internal DoFailIfPipe( [NotNull] IPipe<T> pipe, Option<Exception> exc = default, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailIfPipe( [NotNull] IPipe<T> pipe, Option<Exception> exc = default(Option<Exception>), string message = null ) : base(pipe, exc, message) { }
 
         /// <summary>
         /// Throws if predicate on the right evaluates to true.

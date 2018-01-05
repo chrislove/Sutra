@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using static Sutra.Commands;
 
 namespace Sutra.Transformations
 {
@@ -15,7 +16,7 @@ namespace Sutra.Transformations
                 bool isAnyEmpty = enm.Any(i => !i.HasValue);
                 
                 if (isAnyEmpty)
-                    return default;
+                    return none<IEnumerable<T>>();
 
                 return enm.Select(option => option._value()).ToOption();
             }
@@ -38,9 +39,9 @@ namespace Sutra.Transformations
                 bool isAnyEmpty = enm.Any(i => !i.HasValue);
                 
                 if (isAnyEmpty)
-                    return default;
+                    return default(SeqOption<T>);
 
-                return enm.SelectMany(seqOption => seqOption.Match(i => i, default)).Return();
+                return enm.SelectMany(seqOption => seqOption.Match(i => i, null)).Return();
             }
     }
 }

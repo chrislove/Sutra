@@ -44,9 +44,9 @@ namespace Sutra
 
         public static str NewNotNull( [CanBeNull] string value ) => new str(value, value != null);
 
-        public static str none => default;
+        public static str none => default(str);
 
-        public Option<U> Map<U>( [NotNull] Func<string, U> func ) => HasValue ? func(_value).ToOption() : default;
+        public Option<U> Map<U>( [NotNull] Func<string, U> func ) => HasValue ? func(_value).ToOption() : none<U>();
 
         public str Map( [NotNull] Func<string, string>   func ) => HasValue ? func(_value) : str.none;
         public str Map( [NotNull] Func<somestr, somestr> func ) => HasValue ? func(_value) : str.none;

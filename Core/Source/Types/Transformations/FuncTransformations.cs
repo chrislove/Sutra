@@ -75,7 +75,7 @@ namespace Sutra.Transformations
         [Pure] [NotNull]
         public static Func<Option<T>, U> ToOptionFunc<T,U>( [CanBeNull] this Func<Some<T>, U> func )
             {
-                return i => i.HasValue ? func(i | some) : default;
+                return i => i.HasValue ? func(i | some) : default(U);
             }
         
         

@@ -1,6 +1,7 @@
 using System;
 using JetBrains.Annotations;
 using Sutra.Transformations;
+using static Sutra.Commands;
 
 namespace Sutra
 {
@@ -15,9 +16,9 @@ namespace Sutra
                         foreach (var factory in _factory.Enm)
                             return factory().ToOption();
 
-                        return default;
+                        return none<Exception>();
                     } finally {
-                        _factory = default;
+                        _factory = none<Func<Exception>>();
                     }
             }
 
@@ -28,6 +29,6 @@ namespace Sutra
                 _factory = factory.ToOption();
             }
 
-        public static void Reset() => _factory = default;
+        public static void Reset() => _factory = none<Func<Exception>>();
     }
 }

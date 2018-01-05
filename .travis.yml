@@ -1,0 +1,58 @@
+language: csharp
+solution: Sutra.sln
+
+install:
+  - nuget restore Sutra.sln
+  - nuget install NUnit.Console -Version 3.7.0 -OutputDirectory testrunner
+  - nuget install OpenCover -Version 4.6.166 -OutputDirectory testrunner
+#  - nuget install NUnit.Runners -Version 3.7.0 -OutputDirectory testrunner
+#  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  
+#mono: none
+#dist: trusty
+#addons:
+#  apt:
+#    sources:
+#    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
+#      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
+#    packages:
+#        - dotnet-hostfxr-1.0.1
+#        - dotnet-sharedframework-microsoft.netcore.app-1.0.5
+#dotnet: 2.0.0
+#script:
+# - dotnet restore
+# - dotnet build
+# - dotnet test Tests/Tests.csproj
+# - dotnet test ./test/TEST_PROJECT_NAME -c Release -f netcoreapp1.0
+
+script:
+  - xbuild /p:Configuration=Release Sutra.sln
+  
+  - NUNITCONSOLE="./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
+  - OPENCOVER="./testrunner/OpenCover.4.6.166/tools/OpenCover.Console.exe"
+  - TARGETDLL="./Tests/bin/Release/SutraTests.dll"
+  
+  #TestResult.xml
+  
+  - mono $OPENCOVER -register:user -target:$NUNITCONSOLE "-targetargs:$TARGETDLL" -output:opencoverCoverage.xml
+#  - mono $OPENCOVER -register:user -target:$NUNITCONSOLE "-targetargs:$TARGETDLL" -filter:"+[Sutra*]*" -output:opencoverCoverage.xml
+#      "-targetargs:""src\GameOfLife.NUnit.Tests\bin\$env:CONFIGURATION\GameOfLife.NUnit.Tests.dll"" /noshadow"
+#  - mono ./testrunner/OpenCover.4.6.166/tools/OpenCover.Console.exe /result:coverage.xml ./Tests/bin/Release/SutraTests.dll
+#  - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe /result:coverage.xml ./Tests/bin/Release/SutraTests.dll
+  - cat opencoverCoverage.xml
+#  - ls coverage
+  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+  - echo $TRAVIS_COMMIT
+  - echo $TRAVIS_BRANCH
+  - echo $REPO_COMMIT_AUTHOR
+  - echo $REPO_COMMIT_AUTHOR_EMAIL
+  - echo $REPO_COMMIT_MESSAGE
+  - echo $TRAVIS_JOB_ID
+  - mono ./packages/coveralls.io.1.4.2/tools/coveralls.net.exe --opencover -f opencoverCoverage.xml -d
+#  --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
+
+  
+#  - mono ./testrunner/NUnit.Runners.3.7.0/tools/nunit-console.exe ./Tests/bin/Release/SutraTests.dll
+#  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/bin/Release/SutraTests.dll

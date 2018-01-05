@@ -1,6 +1,6 @@
 ﻿namespace Sutra {
     public static partial class Commands
     {
-        public static Option<T> none<T>() => default;
+        public static Option<T> none<T>() => default(Option<T>);
     }
 }

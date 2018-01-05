@@ -52,7 +52,7 @@ namespace Sutra.Transformations {
         [Pure] [NotNull]
         public static Func<SeqOption<T>, SeqOption<U>> Map<T, U>( [NotNull] this Func<IEnumerable<Option<T>>, IEnumerable<Option<U>>> func )
             {
-                return seq => seq.Match(func, default).Return();
+                return seq => seq.Match(func, null).Return();
             }
     }
 }

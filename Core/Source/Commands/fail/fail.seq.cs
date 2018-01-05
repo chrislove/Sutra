@@ -10,7 +10,7 @@ namespace Sutra
         [NotNull]
         public static DoFailSeq<T> operator |( Seq<T> seq, DoFail _ ) => new DoFailSeq<T>(seq);
 
-        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, default, failWith.GetMessageFor(seq));
+        public static DoFailSeq<T> operator |( Seq<T> seq, DoFailWith failWith ) => new DoFailSeq<T>(seq, default(Option<Exception>), failWith.GetMessageFor(seq));
     }
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace Sutra
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DoFailSeq<T> : DoFail<T>
     {
-        internal DoFailSeq( [NotNull] IPipe<T> pipe, Option<Exception> exc = default, string message = null ) : base(pipe, exc, message) { }
+        internal DoFailSeq( [NotNull] IPipe<T> pipe, Option<Exception> exc = default(Option<Exception>), string message = null ) : base(pipe, exc, message) { }
 
         // seq | fail '|' when
         [NotNull]
