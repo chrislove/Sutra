@@ -75,6 +75,8 @@ namespace Sutra {
         /// </summary>
         [NotNull]
         public static T operator |( Some<T> a, DoGet _ ) => a._;
+        
+        public static Option<T> operator |( Some<T> a, DoToOption _ ) => new Option<T>(a);
 
     }
 }

@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 
 namespace Sutra {
-    internal static partial class Conditions
+    public static partial class Conditions
     {
         /// <summary>
         /// Evaluates to true if the value within the pipe is equal to obj.

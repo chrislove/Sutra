@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 
 namespace Sutra {
-    internal static partial class Conditions {
+    public static partial class Conditions {
         [PublicAPI] [NotNull]
         public static Func<T, bool> not<T>( Func<T, bool> func ) => i => !func(i);
 

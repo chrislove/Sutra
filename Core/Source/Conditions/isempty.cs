@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 
 namespace Sutra {
-    internal static partial class Conditions
+    public static partial class Conditions
     {
         /// <summary>
         /// Evaluates to true if the pipe or sequence is empty.
